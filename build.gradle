@@ -25,7 +25,7 @@ minecraft {
 
 tasks.injectTags.outputClassName.set("${mod_base_package}.Tags")
 
-tasks.deobfuscateMergedJarToSrg.configure {accessTransformerFiles.from("src/main/resources/META-INF/accesstranformer.cfg")}
+tasks.deobfuscateMergedJarToSrg.configure {accessTransformerFiles.from("src/main/resources/META-INF/occulus_at.cfg")}
 
 repositories {
 	maven {	url "https://maven.cleanroommc.com" }
