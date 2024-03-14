@@ -15,7 +15,13 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import io.github.singlerr.TextComponentExtension;
+import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -42,30 +48,31 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 
+@ExtensionMethod({TextComponentExtension.class})
 public class ShaderPackScreen extends GuiScreen implements HudHideable {
 	/**
 	 * Queue rendering to happen on top of all elements. Useful for tooltips or dialogs.
 	 */
 	public static final Set<Runnable> TOP_LAYER_RENDER_QUEUE = new HashSet<>();
 
-	private static final Component SELECT_TITLE = new TranslatableComponent("pack.iris.select.title").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
-	private static final Component CONFIGURE_TITLE = new TranslatableComponent("pack.iris.configure.title").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
+	private static final ITextComponent SELECT_TITLE = new TextComponentTranslation("pack.iris.select.title").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC);
+	private static final ITextComponent CONFIGURE_TITLE = new TextComponentTranslation("pack.iris.configure.title").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC);
 	private static final int COMMENT_PANEL_WIDTH = 314;
 
-	private final Screen parent;
-	private final MutableComponent irisTextComponent;
+	private final GuiScreen parent;
+	private final ITextComponent irisTextComponent;
 
 	private ShaderPackSelectionList shaderPackList;
 
 	private @Nullable ShaderPackOptionList shaderOptionList = null;
 	private @Nullable NavigationController navigation = null;
-	private Button screenSwitchButton;
+	private GuiButton screenSwitchButton;
 
-	private Component notificationDialog = null;
+	private ITextComponent notificationDialog = null;
 	private int notificationDialogTimer = 0;
 
 	private @Nullable AbstractElementWidget<?> hoveredElement = null;
-	private Optional<Component> hoveredElementCommentTitle = Optional.empty();
+	private Optional<ITextComponent> hoveredElementCommentTitle = Optional.empty();
 	private List<FormattedCharSequence> hoveredElementCommentBody = new ArrayList<>();
 	private int hoveredElementCommentTimer = 0;
 
