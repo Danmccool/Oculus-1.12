@@ -6,13 +6,13 @@
 [![](http://cf.way2muchnoise.eu/short_oculus_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/oculus)
 [![](http://cf.way2muchnoise.eu/versions/Available%20for_oculus_full.svg)](https://www.curseforge.com/minecraft/mc-mods/oculus/files)
 
-Oculus is an Unofficial Fork of ["Iris"](https://www.curseforge.com/minecraft/mc-mods/irisshaders), made to work with Forge Mod Loader.
+Oculus is an Unofficial Fork of ["Iris"](https://www.curseforge.com/minecraft/mc-mods/irisshaders) ported to 1.12.2, made to work with Forge Mod Loader.
 
 ## Disclaimer
 Oculus is not and never will be compatible with Optifine!
 
 ## Dependencies
-Oculus requires [Rubidium](https://www.curseforge.com/minecraft/mc-mods/rubidium) made by Asek3!
+Oculus requires [Vintagium](https://github.com/Asek3/sodium-1.12) made by Asek3!
 
 ## Features
 * Performance. Oculus should fully utilize your graphics card when paired with optimization mods like Rubidium.
