@@ -1,5 +1,7 @@
 package net.coderbot.iris.compat.sodium.mixin.directional_shading;
 
+import me.jellysquid.mods.sodium.client.world.WorldSlice;
+import net.minecraft.util.EnumFacing;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -12,12 +14,12 @@ import net.minecraft.world.level.BlockAndTintGetter;
 @Mixin(FlatLightPipeline.class)
 public class MixinFlatLightPipeline {
 	@Redirect(method = "calculate", at = @At(value = "INVOKE",
-			target = "net/minecraft/world/level/BlockAndTintGetter.getShade (Lnet/minecraft/core/Direction;Z)F"))
-	private float iris$getBrightness(BlockAndTintGetter level, Direction direction, boolean shaded) {
+			target ="Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBrightness(Lnet/minecraft/util/EnumFacing;Z)F"))
+	private float iris$getBrightness(WorldSlice instance, EnumFacing direction, boolean shaded) {
 		if (BlockRenderingSettings.INSTANCE.shouldDisableDirectionalShading()) {
 			return 1.0F;
 		} else {
-			return level.getShade(direction, shaded);
+			return instance.getBrightness(direction, shaded);
 		}
 	}
 }

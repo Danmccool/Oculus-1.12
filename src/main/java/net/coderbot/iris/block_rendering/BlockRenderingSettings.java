@@ -2,6 +2,8 @@ package net.coderbot.iris.block_rendering;
 
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.registries.IRegistryDelegate;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,11 +14,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+
 public class BlockRenderingSettings {
 	public static final BlockRenderingSettings INSTANCE = new BlockRenderingSettings();
 
 	private boolean reloadRequired;
-	private Object2IntMap<BlockState> blockStateIds;
+	private Object2IntMap<IBlockState> blockStateIds;
 	private Map<IRegistryDelegate<Block>, RenderType> blockTypeIds;
 	private Object2IntFunction<NamespacedId> entityIds;
 	private float ambientOcclusionLevel;

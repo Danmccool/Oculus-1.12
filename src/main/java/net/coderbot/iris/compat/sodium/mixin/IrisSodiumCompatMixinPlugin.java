@@ -3,6 +3,7 @@ package net.coderbot.iris.compat.sodium.mixin;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraftforge.fml.common.Loader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -20,7 +21,7 @@ public class IrisSodiumCompatMixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public void onLoad(String mixinPackage) {
-		isRubidiumLoaded = FMLLoader.getLoadingModList().getModFileById("rubidium") != null;
+		isRubidiumLoaded = Loader.isModLoaded("rubidium");
 	}
 
 	@Override

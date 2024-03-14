@@ -1,5 +1,6 @@
 package net.coderbot.iris.compat.sodium.mixin.block_id;
 
+import net.minecraft.block.state.IBlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +18,6 @@ import net.coderbot.iris.block_rendering.BlockRenderingSettings;
 import net.coderbot.iris.compat.sodium.impl.block_context.BlockContextHolder;
 import net.coderbot.iris.compat.sodium.impl.block_context.ChunkBuildBuffersExt;
 import net.coderbot.iris.compat.sodium.impl.block_context.ContextAwareVertexWriter;
-import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Associates the block context holder with the chunk build buffers, allowing {@link MixinChunkRenderRebuildTask} to pass
@@ -30,7 +30,7 @@ public class MixinChunkBuildBuffers implements ChunkBuildBuffersExt {
 
 	@Inject(method = "<init>", at = @At("RETURN"), remap = false)
 	private void iris$onConstruct(ChunkVertexType vertexType, BlockRenderPassManager renderPassManager, CallbackInfo ci) {
-		Object2IntMap<BlockState> blockStateIds = BlockRenderingSettings.INSTANCE.getBlockStateIds();
+		Object2IntMap<IBlockState> blockStateIds = BlockRenderingSettings.INSTANCE.getBlockStateIds();
 
 		if (blockStateIds != null) {
 			this.contextHolder = new BlockContextHolder(blockStateIds);

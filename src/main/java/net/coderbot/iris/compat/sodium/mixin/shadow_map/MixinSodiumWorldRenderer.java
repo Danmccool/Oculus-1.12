@@ -1,5 +1,6 @@
 package net.coderbot.iris.compat.sodium.mixin.shadow_map;
 
+import net.minecraft.util.BlockRenderLayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -86,7 +87,7 @@ public class MixinSodiumWorldRenderer {
 	}
 
 	@Inject(method = "updateChunks", at = @At("RETURN"))
-	private void iris$captureVisibleBlockEntities(Camera camera, Frustum frustum, boolean hasForcedFrustum, int frame, boolean spectator, CallbackInfo ci) {
+	private void iris$captureVisibleBlockEntities(Frustum frustum, float ticks, boolean hasForcedFrustum, int frame, boolean spectator, CallbackInfo ci) {
 		if (ShadowRenderingState.areShadowsCurrentlyBeingRendered()) {
 			ShadowRenderer.visibleBlockEntities.addAll(this.chunkRenderManager.getVisibleBlockEntities());
 		}
@@ -107,8 +108,7 @@ public class MixinSodiumWorldRenderer {
 					 target = "me/jellysquid/mods/sodium/client/render/SodiumWorldRenderer.lastCameraX : D",
 					 ordinal = 0,
 					 remap = false))
-	private void iris$ensureStateSwappedInUpdateChunks(Camera camera, Frustum frustum, boolean hasForcedFrustum,
-													   int frame, boolean spectator, CallbackInfo ci) {
+	private void iris$ensureStateSwappedInUpdateChunks(Frustum frustum, float ticks, boolean hasForcedFrustum, int frame, boolean spectator, CallbackInfo ci) {
 		iris$ensureStateSwapped();
 	}
 
@@ -131,8 +131,7 @@ public class MixinSodiumWorldRenderer {
 	}
 
 	@Inject(method = "drawChunkLayer",  remap = false, at = @At("HEAD"))
-	private void iris$beforeDrawChunkLayer(RenderType renderType, PoseStack poseStack, double x, double y,
-										   double z, CallbackInfo ci) {
+	private void iris$beforeDrawChunkLayer(BlockRenderLayer renderLayer, double x, double y, double z, CallbackInfo ci) {
 		iris$ensureStateSwapped();
 	}
 }

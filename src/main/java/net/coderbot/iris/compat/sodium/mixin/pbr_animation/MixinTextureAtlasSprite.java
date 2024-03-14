@@ -1,5 +1,6 @@
 package net.coderbot.iris.compat.sodium.mixin.pbr_animation;
 
+import net.minecraft.client.renderer.texture.TextureMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 @Mixin(TextureAtlasSprite.class)
 public class MixinTextureAtlasSprite {
+	TextureMap
 	@Inject(method = "markActive()V", at = @At("TAIL"), remap = false)
 	private void iris$onTailMarkActive(CallbackInfo ci) {
 		PBRSpriteHolder pbrHolder = ((TextureAtlasSpriteExtension) this).getPBRHolder();

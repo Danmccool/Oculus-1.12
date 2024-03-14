@@ -3,6 +3,7 @@ package net.coderbot.batchedentityrendering.mixin;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,7 +20,7 @@ import net.coderbot.batchedentityrendering.impl.BufferBuilderExt;
 @Mixin(BufferBuilder.class)
 public class MixinBufferBuilder_SegmentRendering implements BufferBuilderExt {
     @Shadow
-    private ByteBuffer buffer;
+    private ByteBuffer byteBuffer;
 
     @Shadow
     @Final
@@ -40,7 +41,7 @@ public class MixinBufferBuilder_SegmentRendering implements BufferBuilderExt {
     @Override
     public void setupBufferSlice(ByteBuffer buffer, BufferBuilder.DrawState drawState) {
         // add the buffer slice
-        this.buffer = buffer;
+        this.byteBuffer = buffer;
 
         // add our singular parameter
         this.vertexCounts.clear();

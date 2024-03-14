@@ -8,6 +8,9 @@ import com.mojang.math.Matrix4f;
 
 import me.jellysquid.mods.sodium.client.render.GameRendererContext;
 import net.coderbot.iris.shadows.ShadowRenderingState;
+import repack.joml.Matrix4f;
+
+import java.nio.FloatBuffer;
 
 /**
  * Allows the Iris shadow map projection matrix to be used during shadow rendering instead of the player view's
@@ -17,12 +20,12 @@ import net.coderbot.iris.shadows.ShadowRenderingState;
 public class MixinGameRendererContext {
 	@Redirect(method = "getModelViewProjectionMatrix",
 			at = @At(value = "INVOKE",
-					target = "com/mojang/math/Matrix4f.copy ()Lcom/mojang/math/Matrix4f;"))
-	private static Matrix4f iris$useShadowProjectionMatrix(Matrix4f matrix) {
+					target = "Lrepack/joml/Matrix4f;get(Ljava/nio/FloatBuffer;)Ljava/nio/FloatBuffer;"))
+	private static FloatBuffer iris$useShadowProjectionMatrix(Matrix4f instance, FloatBuffer buffer) {
 		if (ShadowRenderingState.areShadowsCurrentlyBeingRendered()) {
-			return ShadowRenderingState.getShadowOrthoMatrix();
+			return instance.get(ShadowRenderingState.getShadowOrthoMatrix());
 		} else {
-			return matrix.copy();
+			return instance.get(buffer);
 		}
 	}
 }

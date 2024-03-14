@@ -1,5 +1,6 @@
 package net.coderbot.iris.compat.sodium.mixin.directional_shading;
 
+import net.minecraft.util.EnumFacing;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,7 +14,7 @@ import net.minecraft.core.Direction;
 @Mixin(SmoothLightPipeline.class)
 public class MixinSmoothLightPipeline {
 	@Inject(method = "applySidedBrightness", at = @At("HEAD"), cancellable = true, remap = false)
-	private void iris$disableDirectionalShading(QuadLightData out, Direction face, boolean shade, CallbackInfo ci) {
+	private void iris$disableDirectionalShading(QuadLightData out, EnumFacing face, boolean shade, CallbackInfo ci) {
 		if (BlockRenderingSettings.INSTANCE.shouldDisableDirectionalShading()) {
 			ci.cancel();
 		}

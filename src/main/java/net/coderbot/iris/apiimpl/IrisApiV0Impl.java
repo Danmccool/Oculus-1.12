@@ -12,6 +12,7 @@ import net.coderbot.iris.vertices.IrisTextVertexSinkImpl;
 import net.irisshaders.iris.api.v0.IrisApi;
 import net.irisshaders.iris.api.v0.IrisApiConfig;
 import net.irisshaders.iris.api.v0.IrisTextVertexSink;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.screens.Screen;
 
 public class IrisApiV0Impl implements IrisApi {
@@ -41,7 +42,7 @@ public class IrisApiV0Impl implements IrisApi {
 
 	@Override
 	public Object openMainIrisScreenObj(Object parent) {
-		return new ShaderPackScreen((Screen) parent);
+		return new ShaderPackScreen((GuiScreen) parent);
 	}
 
 	@Override

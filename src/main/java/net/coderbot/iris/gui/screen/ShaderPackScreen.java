@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.gui.GuiScreen;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -41,7 +42,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 
-public class ShaderPackScreen extends Screen implements HudHideable {
+public class ShaderPackScreen extends GuiScreen implements HudHideable {
 	/**
 	 * Queue rendering to happen on top of all elements. Useful for tooltips or dialogs.
 	 */

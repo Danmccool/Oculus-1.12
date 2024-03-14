@@ -8,6 +8,7 @@ import net.coderbot.iris.compat.sodium.impl.vertex_format.IrisModelVertexFormats
 import net.coderbot.iris.shaderpack.transform.StringTransformations;
 import net.coderbot.iris.shaderpack.transform.Transformations;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,7 +59,7 @@ public class MixinChunkRenderShaderBackend implements ChunkRenderBackendExt {
 	protected ChunkProgram activeProgram;
 
 	@Shadow
-	public void begin(PoseStack poseStack) {
+	public void begin() {
 		throw new AssertionError();
 	}
 
@@ -71,7 +72,7 @@ public class MixinChunkRenderShaderBackend implements ChunkRenderBackendExt {
 		irisChunkProgramOverrides = new IrisChunkProgramOverrides();
 	}
 
-	@Redirect(method = "createShader", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/gl/shader/ShaderLoader;loadShader(Lme/jellysquid/mods/sodium/client/gl/device/RenderDevice;Lme/jellysquid/mods/sodium/client/gl/shader/ShaderType;Lnet/minecraft/resources/ResourceLocation;Ljava/util/List;)Lme/jellysquid/mods/sodium/client/gl/shader/GlShader;", ordinal = 0))
+	@Redirect(method = "createShader", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/gl/shader/ShaderLoader;loadShader(Lme/jellysquid/mods/sodium/client/gl/device/RenderDevice;Lme/jellysquid/mods/sodium/client/gl/shader/ShaderType;Lnet/minecraft/util/ResourceLocation;Ljava/util/List;)Lme/jellysquid/mods/sodium/client/gl/shader/GlShader;", ordinal = 0))
 	private GlShader iris$redirectOriginalShader(RenderDevice device, ShaderType type, ResourceLocation name, List<String> constants) {
 		if (this.vertexType == IrisModelVertexFormats.MODEL_VERTEX_XHFP) {
 			String shader = getShaderSource(getShaderPath(name));
@@ -142,7 +143,7 @@ public class MixinChunkRenderShaderBackend implements ChunkRenderBackendExt {
 	}
 
 	@Override
-	public void iris$begin(PoseStack poseStack, BlockRenderPass pass) {
+	public void iris$begin(BlockRenderPass pass) {
 		if (ShadowRenderingState.areShadowsCurrentlyBeingRendered()) {
 			// No back face culling during the shadow pass
 			// TODO: Hopefully this won't be necessary in the future...
@@ -152,7 +153,7 @@ public class MixinChunkRenderShaderBackend implements ChunkRenderBackendExt {
 		this.override = irisChunkProgramOverrides.getProgramOverride(device, pass);
 
 		Iris.getPipelineManager().getPipeline().ifPresent(WorldRenderingPipeline::beginSodiumTerrainRendering);
-		begin(poseStack);
+		begin();
 	}
 
 	@Inject(method = "begin",
@@ -162,14 +163,14 @@ public class MixinChunkRenderShaderBackend implements ChunkRenderBackendExt {
 					args = "opcode=PUTFIELD",
 					remap = false,
 					shift = At.Shift.AFTER))
-	private void iris$applyOverride(PoseStack poseStack, CallbackInfo ci) {
+	private void iris$applyOverride(CallbackInfo ci) {
 		if (override != null) {
 			this.activeProgram = override;
 		}
 	}
 
 	@Inject(method = "end", at = @At("RETURN"))
-	private void iris$onEnd(PoseStack poseStack, CallbackInfo ci) {
+	private void iris$onEnd(CallbackInfo ci) {
 		ProgramUniforms.clearActiveUniforms();
 		ProgramSamplers.clearActiveSamplers();
 		Iris.getPipelineManager().getPipeline().ifPresent(WorldRenderingPipeline::endSodiumTerrainRendering);

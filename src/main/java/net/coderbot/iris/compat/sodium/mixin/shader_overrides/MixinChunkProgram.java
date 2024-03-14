@@ -15,7 +15,7 @@ import net.coderbot.iris.gl.IrisRenderSystem;
 @Mixin(ChunkProgram.class)
 public class MixinChunkProgram {
 	@Redirect(method = "setup", remap = false,
-			at = @At(value = "INVOKE", target = "com/mojang/blaze3d/platform/GlStateManager.func_227718_f_ (II)V", remap = false))
+			at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL20;glUniform1i(II)V"))
 	private void iris$redirectUniform1i(int location, int value) {
 		if (location == -1) {
 			return;
@@ -25,7 +25,7 @@ public class MixinChunkProgram {
 	}
 
 	@Redirect(method = "setup", remap = false,
-			at = @At(value = "INVOKE", target = "org/lwjgl/opengl/GL20C.glUniform3f (IFFF)V", remap = false))
+			at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL20;glUniform3f(IFFF)V",remap = false))
 	private void iris$redirectUniform3f(int location, float v1, float v2, float v3) {
 		if (location == -1) {
 			return;
@@ -35,7 +35,7 @@ public class MixinChunkProgram {
 	}
 
 	@Redirect(method = "setup", remap = false,
-			at = @At(value = "INVOKE", target = "org/lwjgl/opengl/GL20C.glUniform2f (IFF)V", remap = false))
+			at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL20;glUniform2f(IFF)V", remap = false))
 	private void iris$redirectUniform2f(int location, float v1, float v2) {
 		if (location == -1) {
 			return;
@@ -46,7 +46,7 @@ public class MixinChunkProgram {
 
 	@Redirect(method = "setup", remap = false,
 			at = @At(value = "INVOKE",
-					target = "com/mojang/blaze3d/platform/GlStateManager.func_227698_c_ (IZLjava/nio/FloatBuffer;)V",
+					target = "Lorg/lwjgl/opengl/GL20;glUniformMatrix4(IZLjava/nio/FloatBuffer;)V",
 					remap = false))
 	private void iris$redirectUniformMatrix4fv(int location, boolean transpose, FloatBuffer buffer) {
 		if (location == -1) {

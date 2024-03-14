@@ -1,7 +1,6 @@
 package net.coderbot.iris.colorspace;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.coderbot.iris.gl.IrisRenderSystem;
 import net.coderbot.iris.gl.framebuffer.GlFramebuffer;
 import net.coderbot.iris.gl.program.Program;
@@ -11,6 +10,7 @@ import net.coderbot.iris.postprocess.FullScreenQuadRenderer;
 import net.coderbot.iris.shaderpack.StringPair;
 import net.coderbot.iris.shaderpack.preprocessor.JcppProcessor;
 import net.coderbot.iris.vendored.joml.Matrix4f;
+import net.minecraft.client.renderer.GlStateManager;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11C;
 import org.lwjgl.opengl.GL30C;
@@ -38,7 +38,8 @@ public class ColorSpaceFragmentConverter implements ColorSpaceConverter {
             program = null;
             framebuffer.destroy();
             framebuffer = null;
-            GlStateManager._deleteTexture(swapTexture);
+
+            GlStateManager.deleteTexture(swapTexture);
             swapTexture = 0;
         }
 
@@ -68,7 +69,7 @@ public class ColorSpaceFragmentConverter implements ColorSpaceConverter {
         builder.uniformJomlMatrix(UniformUpdateFrequency.ONCE, "projection", () -> new Matrix4f(2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, -1, -1, 0, 1));
         builder.addDynamicSampler(() -> target, "readImage");
 
-        swapTexture = GlStateManager._genTexture();
+        swapTexture = GlStateManager.generateTexture();
         IrisRenderSystem.texImage2D(swapTexture, GL30C.GL_TEXTURE_2D, 0, GL30C.GL_RGBA8, width, height, 0, GL30C.GL_RGBA, GL30C.GL_UNSIGNED_BYTE, null);
 
         this.framebuffer = new GlFramebuffer();

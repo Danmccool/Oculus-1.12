@@ -1,5 +1,7 @@
 package net.coderbot.iris.compat.sodium.mixin.shadow_map;
 
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.tileentity.TileEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -54,7 +56,7 @@ public class MixinChunkRenderManager implements SwappableChunkRenderManager {
 	@Shadow(remap = false)
 	@Final
 	@Mutable
-	private ObjectList<BlockEntity> visibleBlockEntities;
+	private ObjectList<TileEntity> visibleBlockEntities;
 
 	@Shadow(remap = false)
 	private boolean dirty;
@@ -69,7 +71,7 @@ public class MixinChunkRenderManager implements SwappableChunkRenderManager {
 	private ObjectList<ChunkRenderContainer<?>> tickableChunksSwap;
 
 	@Unique
-	private ObjectList<BlockEntity> visibleBlockEntitiesSwap;
+	private ObjectList<TileEntity> visibleBlockEntitiesSwap;
 
 	@Unique
 	private int visibleChunkCountSwap;
@@ -81,9 +83,7 @@ public class MixinChunkRenderManager implements SwappableChunkRenderManager {
 	private static final ObjectArrayFIFOQueue<?> EMPTY_QUEUE = new ObjectArrayFIFOQueue<>();
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void iris$onInit(SodiumWorldRenderer renderer, ChunkRenderBackend<?> backend,
-							 BlockRenderPassManager renderPassManager, ClientLevel level, int renderDistance,
-							 CallbackInfo ci) {
+	private void iris$onInit(SodiumWorldRenderer renderer, ChunkRenderBackend backend, BlockRenderPassManager renderPassManager, WorldClient world, int renderDistance, CallbackInfo ci) {
 		this.chunkRenderListsSwap = new ChunkRenderList[BlockRenderPass.COUNT];
 		this.tickableChunksSwap = new ObjectArrayList<>();
 		this.visibleBlockEntitiesSwap = new ObjectArrayList<>();
@@ -105,7 +105,7 @@ public class MixinChunkRenderManager implements SwappableChunkRenderManager {
 		tickableChunks = tickableChunksSwap;
 		tickableChunksSwap = tickableChunksTmp;
 
-		ObjectList<BlockEntity> visibleBlockEntitiesTmp = visibleBlockEntities;
+		ObjectList<TileEntity> visibleBlockEntitiesTmp = visibleBlockEntities;
 		visibleBlockEntities = visibleBlockEntitiesSwap;
 		visibleBlockEntitiesSwap = visibleBlockEntitiesTmp;
 
