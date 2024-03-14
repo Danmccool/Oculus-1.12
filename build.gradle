@@ -42,7 +42,9 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
-	mavenLocal()
+	flatDir{
+		dir 'libs'
+	}
 }
 
 dependencies {
@@ -59,7 +61,7 @@ dependencies {
 	}
 
 	implementation 'org.jetbrains:annotations:20.1.0'
-	implementation "me.jellysquid.mods.sodium:vintagium:mc1.12.2-0.1"
+	implementation rfg.deobf("me.jellysquid.mods.sodium:vintagium:mc1.12.2-0.1")
 
 }
 
