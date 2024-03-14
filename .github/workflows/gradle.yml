@@ -40,6 +40,8 @@ jobs:
         git clone https://github.com/Asek3/sodium-1.12
         chmod +x sodium-1.12/gradlew
         ./sodium-1.12/gradlew build
+    - name: Move Vintagium to libs folder
+      run: |
         cp ./sodium-1.12/build/libs/*.jar ./libs/
     - name: Build with Gradle Wrapper
       run: ./gradlew build
