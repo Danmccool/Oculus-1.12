@@ -1,25 +1,18 @@
 package net.coderbot.iris.shaderpack.include;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import net.coderbot.iris.Iris;
+import net.coderbot.iris.shaderpack.error.RusticError;
+import net.coderbot.iris.shaderpack.transform.line.LineTransform;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
-import net.coderbot.iris.Iris;
-import net.coderbot.iris.shaderpack.error.RusticError;
-import net.coderbot.iris.shaderpack.transform.line.LineTransform;
 
 /**
  * A directed graph data structure that holds the loaded source of all shader programs
@@ -57,205 +50,205 @@ import net.coderbot.iris.shaderpack.transform.line.LineTransform;
  * </ul>
  */
 public class IncludeGraph {
-	private final ImmutableMap<AbsolutePackPath, FileNode> nodes;
-	private final ImmutableMap<AbsolutePackPath, RusticError> failures;
+    private final ImmutableMap<AbsolutePackPath, FileNode> nodes;
+    private final ImmutableMap<AbsolutePackPath, RusticError> failures;
 
-	private IncludeGraph(ImmutableMap<AbsolutePackPath, FileNode> nodes,
-						 ImmutableMap<AbsolutePackPath, RusticError> failures) {
-		this.nodes = nodes;
-		this.failures = failures;
-	}
+    private IncludeGraph(ImmutableMap<AbsolutePackPath, FileNode> nodes,
+                         ImmutableMap<AbsolutePackPath, RusticError> failures) {
+        this.nodes = nodes;
+        this.failures = failures;
+    }
 
-	public IncludeGraph(Path root, ImmutableList<AbsolutePackPath> startingPaths) {
-		Map<AbsolutePackPath, AbsolutePackPath> cameFrom = new HashMap<>();
-		Map<AbsolutePackPath, Integer> lineNumberInclude = new HashMap<>();
+    public IncludeGraph(Path root, ImmutableList<AbsolutePackPath> startingPaths) {
+        Map<AbsolutePackPath, AbsolutePackPath> cameFrom = new HashMap<>();
+        Map<AbsolutePackPath, Integer> lineNumberInclude = new HashMap<>();
 
-		Map<AbsolutePackPath, FileNode> nodes = new HashMap<>();
-		Map<AbsolutePackPath, RusticError> failures = new HashMap<>();
+        Map<AbsolutePackPath, FileNode> nodes = new HashMap<>();
+        Map<AbsolutePackPath, RusticError> failures = new HashMap<>();
 
-		List<AbsolutePackPath> queue = new ArrayList<>(startingPaths);
-		Set<AbsolutePackPath> seen = new HashSet<>(startingPaths);
+        List<AbsolutePackPath> queue = new ArrayList<>(startingPaths);
+        Set<AbsolutePackPath> seen = new HashSet<>(startingPaths);
 
-		while (!queue.isEmpty()) {
-			AbsolutePackPath next = queue.remove(queue.size() - 1);
+        while (!queue.isEmpty()) {
+            AbsolutePackPath next = queue.remove(queue.size() - 1);
 
-			String source;
+            String source;
 
-			try {
-				source = readFile(next.resolved(root));
-			} catch (IOException e) {
-				AbsolutePackPath src = cameFrom.get(next);
+            try {
+                source = readFile(next.resolved(root));
+            } catch (IOException e) {
+                AbsolutePackPath src = cameFrom.get(next);
 
-				if (src == null) {
-					throw new RuntimeException("unexpected error: failed to read " + next.getPathString(), e);
-				}
+                if (src == null) {
+                    throw new RuntimeException("unexpected error: failed to read " + next.getPathString(), e);
+                }
 
-				String topLevelMessage;
-				String detailMessage;
+                String topLevelMessage;
+                String detailMessage;
 
-				if (e instanceof NoSuchFileException) {
-					topLevelMessage = "failed to resolve #include directive";
-					detailMessage = "file not found";
-				} else {
-					topLevelMessage = "unexpected I/O error while resolving #include directive: " + e;
-					detailMessage = "IO error";
-				}
+                if (e instanceof NoSuchFileException) {
+                    topLevelMessage = "failed to resolve #include directive";
+                    detailMessage = "file not found";
+                } else {
+                    topLevelMessage = "unexpected I/O error while resolving #include directive: " + e;
+                    detailMessage = "IO error";
+                }
 
-				String badLine = nodes.get(src).getLines().get(lineNumberInclude.get(next)).trim();
+                String badLine = nodes.get(src).getLines().get(lineNumberInclude.get(next)).trim();
 
-				RusticError topLevelError = new RusticError("error", topLevelMessage, detailMessage, src.getPathString(),
-					lineNumberInclude.get(next) + 1, badLine);
+                RusticError topLevelError = new RusticError("error", topLevelMessage, detailMessage, src.getPathString(),
+                        lineNumberInclude.get(next) + 1, badLine);
 
-				failures.put(next, topLevelError);
+                failures.put(next, topLevelError);
 
-				continue;
-			}
+                continue;
+            }
 
-			ImmutableList<String> lines = ImmutableList.copyOf(source.split("\\R"));
+            ImmutableList<String> lines = ImmutableList.copyOf(source.split("\\R"));
 
-			FileNode node = new FileNode(next, lines);
-			boolean selfInclude = false;
+            FileNode node = new FileNode(next, lines);
+            boolean selfInclude = false;
 
-			for (Map.Entry<Integer, AbsolutePackPath> include : node.getIncludes().entrySet()) {
-				int line = include.getKey();
-				AbsolutePackPath included = include.getValue();
+            for (Map.Entry<Integer, AbsolutePackPath> include : node.getIncludes().entrySet()) {
+                int line = include.getKey();
+                AbsolutePackPath included = include.getValue();
 
-				if (next.equals(included)) {
-					selfInclude = true;
-					failures.put(next, new RusticError("error", "trivial #include cycle detected",
-						"file includes itself", next.getPathString(), line + 1, lines.get(line)));
+                if (next.equals(included)) {
+                    selfInclude = true;
+                    failures.put(next, new RusticError("error", "trivial #include cycle detected",
+                            "file includes itself", next.getPathString(), line + 1, lines.get(line)));
 
-					break;
-				} else if (!seen.contains(included)) {
-					queue.add(included);
-					seen.add(included);
-					cameFrom.put(included, next);
-					lineNumberInclude.put(included, line);
-				}
-			}
+                    break;
+                } else if (!seen.contains(included)) {
+                    queue.add(included);
+                    seen.add(included);
+                    cameFrom.put(included, next);
+                    lineNumberInclude.put(included, line);
+                }
+            }
 
-			if (!selfInclude) {
-				nodes.put(next, node);
-			}
-		}
+            if (!selfInclude) {
+                nodes.put(next, node);
+            }
+        }
 
-		this.nodes = ImmutableMap.copyOf(nodes);
-		this.failures = ImmutableMap.copyOf(failures);
+        this.nodes = ImmutableMap.copyOf(nodes);
+        this.failures = ImmutableMap.copyOf(failures);
 
-		detectCycle();
-	}
+        detectCycle();
+    }
 
-	private void detectCycle() {
-		List<AbsolutePackPath> cycle = new ArrayList<>();
-		Set<AbsolutePackPath> visited = new HashSet<>();
+    private static String readFile(Path path) throws IOException {
+        return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+    }
 
-		for (AbsolutePackPath start : nodes.keySet()) {
-			if (exploreForCycles(start, cycle, visited)) {
-				AbsolutePackPath lastFilePath = null;
+    private void detectCycle() {
+        List<AbsolutePackPath> cycle = new ArrayList<>();
+        Set<AbsolutePackPath> visited = new HashSet<>();
 
-				StringBuilder error = new StringBuilder();
+        for (AbsolutePackPath start : nodes.keySet()) {
+            if (exploreForCycles(start, cycle, visited)) {
+                AbsolutePackPath lastFilePath = null;
 
-				for (AbsolutePackPath node : cycle) {
-					if (lastFilePath == null) {
-						lastFilePath = node;
-						continue;
-					}
+                StringBuilder error = new StringBuilder();
 
-					FileNode lastFile = nodes.get(lastFilePath);
-					int lineNumber = -1;
+                for (AbsolutePackPath node : cycle) {
+                    if (lastFilePath == null) {
+                        lastFilePath = node;
+                        continue;
+                    }
 
-					for (Map.Entry<Integer, AbsolutePackPath> include : lastFile.getIncludes().entrySet()) {
-						if (include.getValue() == node) {
-							lineNumber = include.getKey() + 1;
-						}
-					}
+                    FileNode lastFile = nodes.get(lastFilePath);
+                    int lineNumber = -1;
 
-					String badLine = lastFile.getLines().get(lineNumber - 1);
+                    for (Map.Entry<Integer, AbsolutePackPath> include : lastFile.getIncludes().entrySet()) {
+                        if (include.getValue() == node) {
+                            lineNumber = include.getKey() + 1;
+                        }
+                    }
 
-					String detailMessage = node.equals(start) ? "final #include in cycle" : "#include involved in cycle";
+                    String badLine = lastFile.getLines().get(lineNumber - 1);
 
-					if (lastFilePath.equals(start)) {
-						// first node in cycle
-						error.append(new RusticError("error", "#include cycle detected",
-							detailMessage, lastFilePath.getPathString(), lineNumber, badLine));
-					} else {
-						error.append("\n  = ").append(new RusticError("note", "cycle involves another file",
-							detailMessage, lastFilePath.getPathString(), lineNumber, badLine));
-					}
+                    String detailMessage = node.equals(start) ? "final #include in cycle" : "#include involved in cycle";
 
-					lastFilePath = node;
-				}
+                    if (lastFilePath.equals(start)) {
+                        // first node in cycle
+                        error.append(new RusticError("error", "#include cycle detected",
+                                detailMessage, lastFilePath.getPathString(), lineNumber, badLine));
+                    } else {
+                        error.append("\n  = ").append(new RusticError("note", "cycle involves another file",
+                                detailMessage, lastFilePath.getPathString(), lineNumber, badLine));
+                    }
 
-				error.append(
-					"\n  = note: #include directives are resolved before any other preprocessor directives, any form of #include guard will not work" +
-						"\n  = note: other cycles may still exist, only the first detected non-trivial cycle will be reported");
+                    lastFilePath = node;
+                }
 
-				// TODO: Expose this to the caller (more semantic error handling)
-				Iris.logger.error(error.toString());
+                error.append(
+                        "\n  = note: #include directives are resolved before any other preprocessor directives, any form of #include guard will not work" +
+                                "\n  = note: other cycles may still exist, only the first detected non-trivial cycle will be reported");
 
-				throw new IllegalStateException("Cycle detected in #include graph, see previous messages for details");
-			}
-		}
-	}
+                // TODO: Expose this to the caller (more semantic error handling)
+                Iris.logger.error(error.toString());
 
-	private boolean exploreForCycles(AbsolutePackPath frontier, List<AbsolutePackPath> path, Set<AbsolutePackPath> visited) {
-		if (visited.contains(frontier)) {
-			path.add(frontier);
-			return true;
-		}
+                throw new IllegalStateException("Cycle detected in #include graph, see previous messages for details");
+            }
+        }
+    }
 
-		path.add(frontier);
-		visited.add(frontier);
+    private boolean exploreForCycles(AbsolutePackPath frontier, List<AbsolutePackPath> path, Set<AbsolutePackPath> visited) {
+        if (visited.contains(frontier)) {
+            path.add(frontier);
+            return true;
+        }
 
-		for (AbsolutePackPath included : nodes.get(frontier).getIncludes().values()) {
-			if (!nodes.containsKey(included)) {
-				// file that failed to load for another reason, error should already be reported
-				continue;
-			}
+        path.add(frontier);
+        visited.add(frontier);
 
-			if (exploreForCycles(included, path, visited)) {
-				return true;
-			}
-		}
+        for (AbsolutePackPath included : nodes.get(frontier).getIncludes().values()) {
+            if (!nodes.containsKey(included)) {
+                // file that failed to load for another reason, error should already be reported
+                continue;
+            }
 
-		path.remove(path.size() - 1);
-		visited.remove(frontier);
+            if (exploreForCycles(included, path, visited)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        path.remove(path.size() - 1);
+        visited.remove(frontier);
 
-	public ImmutableMap<AbsolutePackPath, FileNode> getNodes() {
-		return nodes;
-	}
+        return false;
+    }
 
-	public List<IncludeGraph> computeWeaklyConnectedComponents() {
-		//List<IncludeGraph> components = new ArrayList<>();
+    public ImmutableMap<AbsolutePackPath, FileNode> getNodes() {
+        return nodes;
+    }
 
-		// TODO: WCC
-		//throw new UnsupportedOperationException();
+    public List<IncludeGraph> computeWeaklyConnectedComponents() {
+        //List<IncludeGraph> components = new ArrayList<>();
 
-		//return components;
+        // TODO: WCC
+        //throw new UnsupportedOperationException();
 
-		// TODO: This digraph might not be weakly connected
-		//       A digraph is weakly connected if its corresponding undirected
-		//       graph is connected
-		//       Make an adjacency list and then go from there
-		return Collections.singletonList(this);
-	}
+        //return components;
 
-	public IncludeGraph map(Function<AbsolutePackPath, LineTransform> transformProvider) {
-		ImmutableMap.Builder<AbsolutePackPath, FileNode> mappedNodes = ImmutableMap.builder();
+        // TODO: This digraph might not be weakly connected
+        //       A digraph is weakly connected if its corresponding undirected
+        //       graph is connected
+        //       Make an adjacency list and then go from there
+        return Collections.singletonList(this);
+    }
 
-		nodes.forEach((path, node) -> mappedNodes.put(path, node.map(transformProvider.apply(path))));
+    public IncludeGraph map(Function<AbsolutePackPath, LineTransform> transformProvider) {
+        ImmutableMap.Builder<AbsolutePackPath, FileNode> mappedNodes = ImmutableMap.builder();
 
-		return new IncludeGraph(mappedNodes.build(), failures);
-	}
+        nodes.forEach((path, node) -> mappedNodes.put(path, node.map(transformProvider.apply(path))));
 
-	public ImmutableMap<AbsolutePackPath, RusticError> getFailures() {
-		return failures;
-	}
+        return new IncludeGraph(mappedNodes.build(), failures);
+    }
 
-	private static String readFile(Path path) throws IOException {
-		return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-	}
+    public ImmutableMap<AbsolutePackPath, RusticError> getFailures() {
+        return failures;
+    }
 }

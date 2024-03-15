@@ -1,9 +1,5 @@
 package net.coderbot.batchedentityrendering.impl.ordering;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-
 import de.odysseus.ithaka.digraph.Digraph;
 import de.odysseus.ithaka.digraph.Digraphs;
 import de.odysseus.ithaka.digraph.MapDigraph;
@@ -16,12 +12,15 @@ import net.coderbot.batchedentityrendering.impl.TransparencyType;
 import net.coderbot.batchedentityrendering.impl.WrappableRenderType;
 import net.minecraft.client.renderer.RenderType;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+
 public class GraphTranslucencyRenderOrderManager implements RenderOrderManager {
     private final FeedbackArcSetProvider feedbackArcSetProvider;
     private final EnumMap<TransparencyType, Digraph<RenderType>> types;
-
-    private boolean inGroup = false;
     private final EnumMap<TransparencyType, RenderType> currentTypes;
+    private boolean inGroup = false;
 
     public GraphTranslucencyRenderOrderManager() {
         feedbackArcSetProvider = new SimpleFeedbackArcSetProvider();
@@ -52,7 +51,7 @@ public class GraphTranslucencyRenderOrderManager implements RenderOrderManager {
         graph.add(renderType);
 
         if (inGroup) {
-			RenderType previous = currentTypes.put(transparencyType, renderType);
+            RenderType previous = currentTypes.put(transparencyType, renderType);
 
             if (previous == null) {
                 return;

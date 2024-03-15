@@ -18,17 +18,17 @@ package de.odysseus.ithaka.digraph.io.dot;
 import de.odysseus.ithaka.digraph.Digraph;
 
 public interface DotProvider<V, G extends Digraph<? extends V>> {
-	Iterable<DotAttribute> getDefaultGraphAttributes(G digraph);
+    Iterable<DotAttribute> getDefaultGraphAttributes(G digraph);
 
-	Iterable<DotAttribute> getDefaultNodeAttributes(G digraph);
+    Iterable<DotAttribute> getDefaultNodeAttributes(G digraph);
 
-	Iterable<DotAttribute> getDefaultEdgeAttributes(G digraph);
+    Iterable<DotAttribute> getDefaultEdgeAttributes(G digraph);
 
-	String getNodeId(V vertex);
+    String getNodeId(V vertex);
 
-	Iterable<DotAttribute> getNodeAttributes(V vertex);
+    Iterable<DotAttribute> getNodeAttributes(V vertex);
 
-	Iterable<DotAttribute> getEdgeAttributes(V source, V target, int edgeWeight);
+    Iterable<DotAttribute> getEdgeAttributes(V source, V target, int edgeWeight);
 
-	Iterable<DotAttribute> getSubgraphAttributes(G subgraph, V vertex);
+    Iterable<DotAttribute> getSubgraphAttributes(G subgraph, V vertex);
 }

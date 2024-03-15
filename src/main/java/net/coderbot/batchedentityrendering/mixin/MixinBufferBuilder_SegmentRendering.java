@@ -1,8 +1,7 @@
 package net.coderbot.batchedentityrendering.mixin;
 
-import java.nio.ByteBuffer;
-import java.util.List;
-
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.coderbot.batchedentityrendering.impl.BufferBuilderExt;
 import net.minecraft.client.renderer.BufferBuilder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,10 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.VertexFormat;
-
-import net.coderbot.batchedentityrendering.impl.BufferBuilderExt;
+import java.nio.ByteBuffer;
+import java.util.List;
 
 @Mixin(BufferBuilder.class)
 public class MixinBufferBuilder_SegmentRendering implements BufferBuilderExt {
@@ -37,6 +34,12 @@ public class MixinBufferBuilder_SegmentRendering implements BufferBuilderExt {
 
     @Shadow
     private int totalUploadedBytes;
+    @Shadow
+    private VertexFormat format;
+    @Shadow
+    private int vertices;
+    @Unique
+    private boolean dupeNextVertex;
 
     @Override
     public void setupBufferSlice(ByteBuffer buffer, BufferBuilder.DrawState drawState) {
@@ -86,13 +89,7 @@ public class MixinBufferBuilder_SegmentRendering implements BufferBuilderExt {
     }
 
     @Shadow
-    private VertexFormat format;
-
-    @Shadow
-    private int vertices;
-
-    @Shadow
-	protected void ensureVertexCapacity() {
+    protected void ensureVertexCapacity() {
         throw new AssertionError("not shadowed");
     }
 
@@ -106,9 +103,6 @@ public class MixinBufferBuilder_SegmentRendering implements BufferBuilderExt {
         duplicateLastVertex();
         dupeNextVertex = true;
     }
-
-    @Unique
-    private boolean dupeNextVertex;
 
     private void duplicateLastVertex() {
         int i = this.format.getVertexSize();

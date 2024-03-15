@@ -9,7 +9,7 @@ import com.mojang.blaze3d.platform.NativeImage;
  * The source code is provided under both the MIT and Apache-2.0 licenses, whichever is more suitable for your purposes.
  */
 public class ColorSRGB {
-    private static final int[] TO_SRGB8_TABLE = new int[] {
+    private static final int[] TO_SRGB8_TABLE = new int[]{
             0x0073000d, 0x007a000d, 0x0080000d, 0x0087000d, 0x008d000d, 0x0094000d, 0x009a000d, 0x00a1000d,
             0x00a7001a, 0x00b4001a, 0x00c1001a, 0x00ce001a, 0x00da001a, 0x00e7001a, 0x00f4001a, 0x0101001a,
             0x010e0033, 0x01280033, 0x01410033, 0x015b0033, 0x01750033, 0x018f0033, 0x01a80033, 0x01c20033,
@@ -25,7 +25,7 @@ public class ColorSRGB {
             0x5e0c0a23, 0x631c0980, 0x67db08f6, 0x6c55087f, 0x70940818, 0x74a007bd, 0x787d076c, 0x7c330723,
     };
 
-    private static final float[] FROM_SRGB8_TABLE = new float[] {
+    private static final float[] FROM_SRGB8_TABLE = new float[]{
             0.0f, 0.000303527f, 0.000607054f, 0.00091058103f, 0.001214108f, 0.001517635f, 0.0018211621f, 0.002124689f,
             0.002428216f, 0.002731743f, 0.00303527f, 0.0033465356f, 0.003676507f, 0.004024717f, 0.004391442f,
             0.0047769533f, 0.005181517f, 0.0056053917f, 0.0060488326f, 0.006512091f, 0.00699541f, 0.0074990317f,
@@ -68,6 +68,7 @@ public class ColorSRGB {
 
     /**
      * Converts a linear sRGB component into a non-linear RGB component.
+     *
      * @param c The non-linear sRGB component (0 to 255)
      * @return The linear RGB component (0.0 to 1.0)
      */
@@ -77,6 +78,7 @@ public class ColorSRGB {
 
     /**
      * Converts the linear RGB components into non-linear sRGB space, and then packs them alongside a non-linear alpha.
+     *
      * @param r The red-component in non-linear sRGB space (0.0 to 1.0)
      * @param g The green-component in non-linear sRGB space (0.0 to 1.0)
      * @param b The blue-component in non-linear sRGB space (0.0 to 1.0)
@@ -88,6 +90,7 @@ public class ColorSRGB {
 
     /**
      * Converts a linear RGB component into a non-linear SRGB8 component.
+     *
      * @param c The linear RGB component (0.0 to 1.0)
      * @return The non-linear SRGB8 component (0 to 255)
      */

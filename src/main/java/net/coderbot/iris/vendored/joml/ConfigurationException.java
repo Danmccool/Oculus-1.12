@@ -25,11 +25,12 @@ package net.coderbot.iris.vendored.joml;
 
 /**
  * Exception thrown when using an invalid JOML runtime configuration.
- * 
+ *
  * @author Kai Burjack
  */
 public class ConfigurationException extends RuntimeException {
     private static final long serialVersionUID = -7832356906364070687L;
+
     public ConfigurationException(String message, Throwable cause) {
         super(message, cause);
     }

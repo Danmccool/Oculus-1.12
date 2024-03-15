@@ -15,68 +15,68 @@
  */
 package de.odysseus.ithaka.digraph.io.dot;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.Writer;
 
 public class DotAttribute {
-	private static boolean isIdentifier(String value) {
-		if (!Character.isJavaIdentifierStart(value.charAt(0))) {
-			return false;
-		}
-		for (char c : value.substring(1).toCharArray()) {
-			if (!Character.isJavaIdentifierPart(c)) {
-				return false;
-			}
-		}
-		return true;
-	}
+    private final String name;
+    private final String value;
+    private final boolean quotes;
 
-	private final String name;
-	private final String value;
-	private final boolean quotes;
+    public DotAttribute(String name, String value) {
+        this.name = name;
+        this.value = value;
+        this.quotes = !isIdentifier(value);
+    }
 
-	public DotAttribute(String name, String value) {
-		this.name = name;
-		this.value = value;
-		this.quotes = !isIdentifier(value);
-	}
+    public DotAttribute(String name, Number value) {
+        this.name = name;
+        this.value = value.toString();
+        this.quotes = false;
+    }
 
-	public DotAttribute(String name, Number value) {
-		this.name = name;
-		this.value = value.toString();
-		this.quotes = false;
-	}
+    public DotAttribute(String name, boolean value) {
+        this.name = name;
+        this.value = String.valueOf(value);
+        this.quotes = false;
+    }
 
-	public DotAttribute(String name, boolean value) {
-		this.name = name;
-		this.value = String.valueOf(value);
-		this.quotes = false;
-	}
+    public DotAttribute(String name, Color value) {
+        this.name = name;
+        this.value = String.format("#%6X", value.getRGB() & 0x00FFFFFF);
+        this.quotes = true;
+    }
 
-	public DotAttribute(String name, Color value) {
-		this.name = name;
-		this.value = String.format("#%6X", value.getRGB() & 0x00FFFFFF);
-		this.quotes = true;
-	}
+    private static boolean isIdentifier(String value) {
+        if (!Character.isJavaIdentifierStart(value.charAt(0))) {
+            return false;
+        }
+        for (char c : value.substring(1).toCharArray()) {
+            if (!Character.isJavaIdentifierPart(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void write(Writer writer) throws IOException {
-		writer.write(name);
-		writer.write('=');
-		if (quotes) {
-			writer.write('"');
-		}
-		writer.write(value);
-		if (quotes) {
-			writer.write('"');
-		}
-	}
+    public void write(Writer writer) throws IOException {
+        writer.write(name);
+        writer.write('=');
+        if (quotes) {
+            writer.write('"');
+        }
+        writer.write(value);
+        if (quotes) {
+            writer.write('"');
+        }
+    }
 }

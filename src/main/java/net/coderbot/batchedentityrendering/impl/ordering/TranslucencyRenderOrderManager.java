@@ -1,14 +1,14 @@
 package net.coderbot.batchedentityrendering.impl.ordering;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-
 import net.coderbot.batchedentityrendering.impl.BlendingStateHolder;
 import net.coderbot.batchedentityrendering.impl.TransparencyType;
 import net.coderbot.batchedentityrendering.impl.WrappableRenderType;
 import net.minecraft.client.renderer.RenderType;
+
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 public class TranslucencyRenderOrderManager implements RenderOrderManager {
     private final EnumMap<TransparencyType, LinkedHashSet<RenderType>> renderTypes;

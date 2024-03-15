@@ -27,27 +27,100 @@ package net.coderbot.iris.vendored.joml;
  * Computes the weighted average of multiple rotations represented as {@link Quaternionf} instances.
  * <p>
  * Instances of this class are <i>not</i> thread-safe.
- * 
+ *
  * @author Kai Burjack
  */
 public class QuaternionfInterpolator {
+
+    private final SvdDecomposition3f svdDecomposition3f = new SvdDecomposition3f();
+    private final float[] m = new float[9];
+    private final Matrix3f u = new Matrix3f();
+    private final Matrix3f v = new Matrix3f();
+
+    /**
+     * Compute the weighted average of all of the quaternions given in <code>qs</code> using the specified interpolation factors <code>weights</code>, and store the result in <code>dest</code>.
+     *
+     * @param qs               the quaternions to interpolate over
+     * @param weights          the weights of each individual quaternion in <code>qs</code>
+     * @param maxSvdIterations the maximum number of iterations in the Singular Value Decomposition step used by this method
+     * @param dest             will hold the result
+     * @return dest
+     */
+    public Quaternionf computeWeightedAverage(Quaternionfc[] qs, float[] weights, int maxSvdIterations, Quaternionf dest) {
+        float m00 = 0.0f, m01 = 0.0f, m02 = 0.0f;
+        float m10 = 0.0f, m11 = 0.0f, m12 = 0.0f;
+        float m20 = 0.0f, m21 = 0.0f, m22 = 0.0f;
+        // Sum the rotation matrices of qs
+        for (int i = 0; i < qs.length; i++) {
+            Quaternionfc q = qs[i];
+            float dx = q.x() + q.x();
+            float dy = q.y() + q.y();
+            float dz = q.z() + q.z();
+            float q00 = dx * q.x();
+            float q11 = dy * q.y();
+            float q22 = dz * q.z();
+            float q01 = dx * q.y();
+            float q02 = dx * q.z();
+            float q03 = dx * q.w();
+            float q12 = dy * q.z();
+            float q13 = dy * q.w();
+            float q23 = dz * q.w();
+            m00 += weights[i] * (1.0f - q11 - q22);
+            m01 += weights[i] * (q01 + q23);
+            m02 += weights[i] * (q02 - q13);
+            m10 += weights[i] * (q01 - q23);
+            m11 += weights[i] * (1.0f - q22 - q00);
+            m12 += weights[i] * (q12 + q03);
+            m20 += weights[i] * (q02 + q13);
+            m21 += weights[i] * (q12 - q03);
+            m22 += weights[i] * (1.0f - q11 - q00);
+        }
+        m[0] = m00;
+        m[1] = m01;
+        m[2] = m02;
+        m[3] = m10;
+        m[4] = m11;
+        m[5] = m12;
+        m[6] = m20;
+        m[7] = m21;
+        m[8] = m22;
+        // Compute the Singular Value Decomposition of 'm'
+        svdDecomposition3f.svd(m, maxSvdIterations, u, v);
+        // Compute rotation matrix
+        u.mul(v.transpose());
+        // Build quaternion from it
+        return dest.setFromNormalized(u).normalize();
+    }
 
     /**
      * Performs singular value decomposition on {@link Matrix3f}.
      * <p>
      * This code was adapted from <a href="http://www.public.iastate.edu/~dicook/JSS/paper/code/svd.c">http://www.public.iastate.edu/</a>.
-     * 
+     *
      * @author Kai Burjack
      */
     private static class SvdDecomposition3f {
-        private final float rv1[];
-        private final float w[];
-        private final float v[];
+        private final float[] rv1;
+        private final float[] w;
+        private final float[] v;
 
         SvdDecomposition3f() {
             this.rv1 = new float[3];
             this.w = new float[3];
             this.v = new float[9];
+        }
+
+        private static float PYTHAG(float a, float b) {
+            float at = java.lang.Math.abs(a), bt = java.lang.Math.abs(b), ct, result;
+            if (at > bt) {
+                ct = bt / at;
+                result = at * (float) java.lang.Math.sqrt(1.0 + ct * ct);
+            } else if (bt > 0.0f) {
+                ct = at / bt;
+                result = bt * (float) java.lang.Math.sqrt(1.0 + ct * ct);
+            } else
+                result = 0.0f;
+            return (result);
         }
 
         private float SIGN(float a, float b) {
@@ -272,83 +345,6 @@ public class QuaternionfInterpolator {
             destU.set(a);
             destV.set(v);
         }
-
-        private static float PYTHAG(float a, float b) {
-            float at = java.lang.Math.abs(a), bt = java.lang.Math.abs(b), ct, result;
-            if (at > bt) {
-                ct = bt / at;
-                result = at * (float) java.lang.Math.sqrt(1.0 + ct * ct);
-            } else if (bt > 0.0f) {
-                ct = at / bt;
-                result = bt * (float) java.lang.Math.sqrt(1.0 + ct * ct);
-            } else
-                result = 0.0f;
-            return (result);
-        }
-    }
-
-    private final SvdDecomposition3f svdDecomposition3f = new SvdDecomposition3f();
-    private final float[] m = new float[9];
-    private final Matrix3f u = new Matrix3f();
-    private final Matrix3f v = new Matrix3f();
-
-    /**
-     * Compute the weighted average of all of the quaternions given in <code>qs</code> using the specified interpolation factors <code>weights</code>, and store the result in <code>dest</code>.
-     * 
-     * @param qs
-     *            the quaternions to interpolate over
-     * @param weights
-     *            the weights of each individual quaternion in <code>qs</code>
-     * @param maxSvdIterations
-     *            the maximum number of iterations in the Singular Value Decomposition step used by this method
-     * @param dest
-     *            will hold the result
-     * @return dest
-     */
-    public Quaternionf computeWeightedAverage(Quaternionfc[] qs, float[] weights, int maxSvdIterations, Quaternionf dest) {
-        float m00 = 0.0f, m01 = 0.0f, m02 = 0.0f;
-        float m10 = 0.0f, m11 = 0.0f, m12 = 0.0f;
-        float m20 = 0.0f, m21 = 0.0f, m22 = 0.0f;
-        // Sum the rotation matrices of qs
-        for (int i = 0; i < qs.length; i++) {
-            Quaternionfc q = qs[i];
-            float dx = q.x() + q.x();
-            float dy = q.y() + q.y();
-            float dz = q.z() + q.z();
-            float q00 = dx * q.x();
-            float q11 = dy * q.y();
-            float q22 = dz * q.z();
-            float q01 = dx * q.y();
-            float q02 = dx * q.z();
-            float q03 = dx * q.w();
-            float q12 = dy * q.z();
-            float q13 = dy * q.w();
-            float q23 = dz * q.w();
-            m00 += weights[i] * (1.0f - q11 - q22);
-            m01 += weights[i] * (q01 + q23);
-            m02 += weights[i] * (q02 - q13);
-            m10 += weights[i] * (q01 - q23);
-            m11 += weights[i] * (1.0f - q22 - q00);
-            m12 += weights[i] * (q12 + q03);
-            m20 += weights[i] * (q02 + q13);
-            m21 += weights[i] * (q12 - q03);
-            m22 += weights[i] * (1.0f - q11 - q00);
-        }
-        m[0] = m00;
-        m[1] = m01;
-        m[2] = m02;
-        m[3] = m10;
-        m[4] = m11;
-        m[5] = m12;
-        m[6] = m20;
-        m[7] = m21;
-        m[8] = m22;
-        // Compute the Singular Value Decomposition of 'm'
-        svdDecomposition3f.svd(m, maxSvdIterations, u, v);
-        // Compute rotation matrix
-        u.mul(v.transpose());
-        // Build quaternion from it
-        return dest.setFromNormalized(u).normalize();
     }
 
 }

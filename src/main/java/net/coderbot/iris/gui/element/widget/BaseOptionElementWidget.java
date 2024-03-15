@@ -1,12 +1,6 @@
 package net.coderbot.iris.gui.element.widget;
 
-import java.util.Optional;
-
-import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.coderbot.iris.gui.GuiUtil;
 import net.coderbot.iris.gui.NavigationController;
 import net.coderbot.iris.gui.screen.ShaderPackScreen;
@@ -16,177 +10,175 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.Optional;
 
 public abstract class BaseOptionElementWidget<T extends OptionMenuElement> extends CommentedElementWidget<T> {
-	protected static final Component SET_TO_DEFAULT = new TranslatableComponent("options.iris.setToDefault").withStyle(ChatFormatting.GREEN);
-	protected static final Component DIVIDER = new TextComponent(": ");
+    protected static final Component SET_TO_DEFAULT = new TranslatableComponent("options.iris.setToDefault").withStyle(ChatFormatting.GREEN);
+    protected static final Component DIVIDER = new TextComponent(": ");
 
-	protected MutableComponent unmodifiedLabel;
-	protected ShaderPackScreen screen;
-	protected NavigationController navigation;
-	private MutableComponent label;
+    protected MutableComponent unmodifiedLabel;
+    protected ShaderPackScreen screen;
+    protected NavigationController navigation;
+    protected Component trimmedLabel;
+    protected Component valueLabel;
+    private MutableComponent label;
+    private boolean isLabelTrimmed;
+    private int maxLabelWidth;
+    private int valueSectionWidth;
 
-	protected Component trimmedLabel;
-	protected Component valueLabel;
+    public BaseOptionElementWidget(T element) {
+        super(element);
+    }
 
-	private boolean isLabelTrimmed;
-	private int maxLabelWidth;
-	private int valueSectionWidth;
+    @Override
+    public void init(ShaderPackScreen screen, NavigationController navigation) {
+        this.screen = screen;
+        this.navigation = navigation;
+        this.valueLabel = null;
+        this.trimmedLabel = null;
+    }
 
-	public BaseOptionElementWidget(T element) {
-		super(element);
-	}
+    protected final void setLabel(MutableComponent label) {
+        this.label = label.copy().append(DIVIDER);
+        this.unmodifiedLabel = label;
+    }
 
-	@Override
-	public void init(ShaderPackScreen screen, NavigationController navigation) {
-		this.screen = screen;
-		this.navigation = navigation;
-		this.valueLabel = null;
-		this.trimmedLabel = null;
-	}
+    protected final void updateRenderParams(int width, int minValueSectionWidth) {
+        // Lazy init of value label
+        if (this.valueLabel == null) {
+            this.valueLabel = createValueLabel();
+        }
 
-	protected final void setLabel(MutableComponent label) {
-		this.label = label.copy().append(DIVIDER);
-		this.unmodifiedLabel = label;
-	}
+        // Determine the width of the value box
+        Font font = Minecraft.getInstance().font;
+        this.valueSectionWidth = Math.max(minValueSectionWidth, font.width(this.valueLabel) + 8);
 
-	protected final void updateRenderParams(int width, int minValueSectionWidth) {
-		// Lazy init of value label
-		if (this.valueLabel == null) {
-			this.valueLabel = createValueLabel();
-		}
+        // Determine maximum width of trimmed label
+        this.maxLabelWidth = (width - 8) - this.valueSectionWidth;
 
-		// Determine the width of the value box
-		Font font = Minecraft.getInstance().font;
-		this.valueSectionWidth = Math.max(minValueSectionWidth, font.width(this.valueLabel) + 8);
+        // Lazy init of trimmed label, and make sure it is only trimmed when necessary
+        if (this.trimmedLabel == null || font.width(this.label) > this.maxLabelWidth != isLabelTrimmed) {
+            updateLabels();
+        }
 
-		// Determine maximum width of trimmed label
-		this.maxLabelWidth = (width - 8) - this.valueSectionWidth;
+        // Set whether the label has been trimmed (used when updating label and determining whether to render tooltips)
+        this.isLabelTrimmed = font.width(this.label) > this.maxLabelWidth;
+    }
 
-		// Lazy init of trimmed label, and make sure it is only trimmed when necessary
-		if (this.trimmedLabel == null || font.width(this.label) > this.maxLabelWidth != isLabelTrimmed) {
-			updateLabels();
-		}
+    protected final void renderOptionWithValue(PoseStack poseStack, int x, int y, int width, int height, boolean hovered, float sliderPosition, int sliderWidth) {
+        GuiUtil.bindIrisWidgetsTexture();
 
-		// Set whether the label has been trimmed (used when updating label and determining whether to render tooltips)
-		this.isLabelTrimmed = font.width(this.label) > this.maxLabelWidth;
-	}
+        // Draw button background
+        GuiUtil.drawButton(poseStack, x, y, width, height, hovered, false);
 
-	protected final void renderOptionWithValue(PoseStack poseStack, int x, int y, int width, int height, boolean hovered, float sliderPosition, int sliderWidth) {
-		GuiUtil.bindIrisWidgetsTexture();
+        // Draw the value box
+        GuiUtil.drawButton(poseStack, (x + width) - (this.valueSectionWidth + 2), y + 2, this.valueSectionWidth, height - 4, false, true);
 
-		// Draw button background
-		GuiUtil.drawButton(poseStack, x, y, width, height, hovered, false);
+        // Draw the preview slider
+        if (sliderPosition >= 0) {
+            // Range of x values the slider can occupy
+            int sliderSpace = (this.valueSectionWidth - 4) - sliderWidth;
 
-		// Draw the value box
-		GuiUtil.drawButton(poseStack, (x + width) - (this.valueSectionWidth + 2), y + 2, this.valueSectionWidth, height - 4, false, true);
+            // Position of slider
+            int sliderPos = ((x + width) - this.valueSectionWidth) + (int) (sliderPosition * sliderSpace);
 
-		// Draw the preview slider
-		if (sliderPosition >= 0) {
-			// Range of x values the slider can occupy
-			int sliderSpace = (this.valueSectionWidth - 4) - sliderWidth;
+            GuiUtil.drawButton(poseStack, sliderPos, y + 4, sliderWidth, height - 8, false, false);
+        }
 
-			// Position of slider
-			int sliderPos = ((x + width) - this.valueSectionWidth) + (int)(sliderPosition * sliderSpace);
+        Font font = Minecraft.getInstance().font;
 
-			GuiUtil.drawButton(poseStack, sliderPos, y + 4, sliderWidth, height - 8, false, false);
-		}
+        // Draw the label
+        font.drawShadow(poseStack, this.trimmedLabel, x + 6, y + 7, 0xFFFFFF);
+        // Draw the value label
+        font.drawShadow(poseStack, this.valueLabel, (x + (width - 2)) - (int) (this.valueSectionWidth * 0.5) - (int) (font.width(this.valueLabel) * 0.5), y + 7, 0xFFFFFF);
+    }
 
-		Font font = Minecraft.getInstance().font;
+    protected final void renderOptionWithValue(PoseStack poseStack, int x, int y, int width, int height, boolean hovered) {
+        this.renderOptionWithValue(poseStack, x, y, width, height, hovered, -1, 0);
+    }
 
-		// Draw the label
-		font.drawShadow(poseStack, this.trimmedLabel, x + 6, y + 7, 0xFFFFFF);
-		// Draw the value label
-		font.drawShadow(poseStack, this.valueLabel, (x + (width - 2)) - (int)(this.valueSectionWidth * 0.5) - (int)(font.width(this.valueLabel) * 0.5), y + 7, 0xFFFFFF);
-	}
+    protected final void tryRenderTooltip(PoseStack poseStack, int mouseX, int mouseY, boolean hovered) {
+        if (Screen.hasShiftDown()) {
+            renderTooltip(poseStack, SET_TO_DEFAULT, mouseX, mouseY, hovered);
+        } else if (this.isLabelTrimmed && !this.screen.isDisplayingComment()) {
+            renderTooltip(poseStack, this.unmodifiedLabel, mouseX, mouseY, hovered);
+        }
+    }
 
-	protected final void renderOptionWithValue(PoseStack poseStack, int x, int y, int width, int height, boolean hovered) {
-		this.renderOptionWithValue(poseStack, x, y, width, height, hovered, -1, 0);
-	}
+    protected final void renderTooltip(PoseStack poseStack, Component text, int mouseX, int mouseY, boolean hovered) {
+        if (hovered) {
+            ShaderPackScreen.TOP_LAYER_RENDER_QUEUE.add(() -> GuiUtil.drawTextPanel(Minecraft.getInstance().font, poseStack, text, mouseX + 2, mouseY - 16));
+        }
+    }
 
-	protected final void tryRenderTooltip(PoseStack poseStack, int mouseX, int mouseY, boolean hovered) {
-		if (Screen.hasShiftDown()) {
-			renderTooltip(poseStack, SET_TO_DEFAULT, mouseX, mouseY, hovered);
-		} else if (this.isLabelTrimmed && !this.screen.isDisplayingComment()) {
-			renderTooltip(poseStack, this.unmodifiedLabel, mouseX, mouseY, hovered);
-		}
-	}
+    protected final void updateLabels() {
+        this.trimmedLabel = createTrimmedLabel();
+        this.valueLabel = createValueLabel();
+    }
 
-	protected final void renderTooltip(PoseStack poseStack, Component text, int mouseX, int mouseY, boolean hovered) {
-		if (hovered) {
-			ShaderPackScreen.TOP_LAYER_RENDER_QUEUE.add(() -> GuiUtil.drawTextPanel(Minecraft.getInstance().font, poseStack, text, mouseX + 2, mouseY - 16));
-		}
-	}
+    protected final Component createTrimmedLabel() {
+        MutableComponent label = GuiUtil.shortenText(
+                Minecraft.getInstance().font,
+                this.label.copy(),
+                this.maxLabelWidth);
 
-	protected final void updateLabels() {
-		this.trimmedLabel = createTrimmedLabel();
-		this.valueLabel = createValueLabel();
-	}
+        if (this.isValueModified()) {
+            label = label.withStyle(style -> style.withColor(TextColor.fromRgb(0xffc94a)));
+        }
 
-	protected final Component createTrimmedLabel() {
-		MutableComponent label = GuiUtil.shortenText(
-				Minecraft.getInstance().font,
-				this.label.copy(),
-				this.maxLabelWidth);
+        return label;
+    }
 
-		if (this.isValueModified()) {
-			label = label.withStyle(style -> style.withColor(TextColor.fromRgb(0xffc94a)));
-		}
+    protected abstract Component createValueLabel();
 
-		return label;
-	}
+    public abstract boolean applyNextValue();
 
-	protected abstract Component createValueLabel();
+    public abstract boolean applyPreviousValue();
 
-	public abstract boolean applyNextValue();
+    public abstract boolean applyOriginalValue();
 
-	public abstract boolean applyPreviousValue();
+    public abstract boolean isValueModified();
 
-	public abstract boolean applyOriginalValue();
+    public abstract @Nullable String getCommentKey();
 
-	public abstract boolean isValueModified();
+    @Override
+    public Optional<Component> getCommentTitle() {
+        return Optional.of(this.unmodifiedLabel);
+    }
 
-	public abstract @Nullable String getCommentKey();
+    @Override
+    public Optional<Component> getCommentBody() {
+        return Optional.ofNullable(getCommentKey()).map(key -> I18n.exists(key) ? new TranslatableComponent(key) : null);
+    }
 
-	@Override
-	public Optional<Component> getCommentTitle() {
-		return Optional.of(this.unmodifiedLabel);
-	}
+    @Override
+    public boolean mouseClicked(double mx, double my, int button) {
+        if (button == GLFW.GLFW_MOUSE_BUTTON_1 || button == GLFW.GLFW_MOUSE_BUTTON_2) {
+            boolean refresh = false;
 
-	@Override
-	public Optional<Component> getCommentBody() {
-		return Optional.ofNullable(getCommentKey()).map(key -> I18n.exists(key) ? new TranslatableComponent(key) : null);
-	}
+            if (Screen.hasShiftDown()) {
+                refresh = applyOriginalValue();
+            }
+            if (!refresh) {
+                if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
+                    refresh = applyNextValue();
+                } else {
+                    refresh = applyPreviousValue();
+                }
+            }
 
-	@Override
-	public boolean mouseClicked(double mx, double my, int button) {
-		if (button == GLFW.GLFW_MOUSE_BUTTON_1 || button == GLFW.GLFW_MOUSE_BUTTON_2) {
-			boolean refresh = false;
+            if (refresh) {
+                this.navigation.refresh();
+            }
 
-			if (Screen.hasShiftDown()) {
-				refresh = applyOriginalValue();
-			}
-			if (!refresh) {
-				if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
-					refresh = applyNextValue();
-				} else {
-					refresh = applyPreviousValue();
-				}
-			}
+            GuiUtil.playButtonClickSound();
 
-			if (refresh) {
-				this.navigation.refresh();
-			}
-
-			GuiUtil.playButtonClickSound();
-
-			return true;
-		}
-		return super.mouseClicked(mx, my, button);
-	}
+            return true;
+        }
+        return super.mouseClicked(mx, my, button);
+    }
 }

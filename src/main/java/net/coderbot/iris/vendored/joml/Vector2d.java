@@ -60,9 +60,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Create a new {@link Vector2d} and initialize both of its components with the given value.
-     * 
-     * @param d    
-     *          the value of both components
+     *
+     * @param d the value of both components
      */
     public Vector2d(double d) {
         this.x = d;
@@ -71,11 +70,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Create a new {@link Vector2d} and initialize its components to the given values.
-     * 
-     * @param x
-     *          the x value
-     * @param y
-     *          the y value
+     *
+     * @param x the x value
+     * @param y the y value
      */
     public Vector2d(double x, double y) {
         this.x = x;
@@ -84,9 +81,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Create a new {@link Vector2d} and initialize its components to the one of the given vector.
-     * 
-     * @param v
-     *          the {@link Vector2dc} to copy the values from
+     *
+     * @param v the {@link Vector2dc} to copy the values from
      */
     public Vector2d(Vector2dc v) {
         x = v.x();
@@ -95,9 +91,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Create a new {@link Vector2d} and initialize its components to the one of the given vector.
-     * 
-     * @param v
-     *          the {@link Vector2fc} to copy the values from
+     *
+     * @param v the {@link Vector2fc} to copy the values from
      */
     public Vector2d(Vector2fc v) {
         x = v.x();
@@ -106,9 +101,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Create a new {@link Vector2d} and initialize its components to the one of the given vector.
-     * 
-     * @param v
-     *          the {@link Vector2ic} to copy the values from
+     *
+     * @param v the {@link Vector2ic} to copy the values from
      */
     public Vector2d(Vector2ic v) {
         x = v.x();
@@ -118,9 +112,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Create a new {@link Vector2d} and initialize its two components from the first
      * two elements of the given array.
-     * 
-     * @param xy
-     *          the array containing at least three elements
+     *
+     * @param xy the array containing at least three elements
      */
     public Vector2d(double[] xy) {
         this.x = xy[0];
@@ -130,9 +123,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Create a new {@link Vector2d} and initialize its two components from the first
      * two elements of the given array.
-     * 
-     * @param xy
-     *          the array containing at least two elements
+     *
+     * @param xy the array containing at least two elements
      */
     public Vector2d(float[] xy) {
         this.x = xy[0];
@@ -150,8 +142,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * the vector is read, use {@link #Vector2d(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param buffer values will be read in <code>x, y</code> order
      * @see #Vector2d(int, ByteBuffer)
      */
     public Vector2d(ByteBuffer buffer) {
@@ -164,10 +155,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer values will be read in <code>x, y</code> order
      */
     public Vector2d(int index, ByteBuffer buffer) {
         MemUtil.INSTANCE.get(this, index, buffer);
@@ -183,8 +172,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * the vector is read, use {@link #Vector2d(int, DoubleBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param buffer values will be read in <code>x, y</code> order
      * @see #Vector2d(int, DoubleBuffer)
      */
     public Vector2d(DoubleBuffer buffer) {
@@ -197,15 +185,66 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * <p>
      * This method will not increment the position of the given DoubleBuffer.
      *
-     * @param index
-     *          the absolute position into the DoubleBuffer
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param index  the absolute position into the DoubleBuffer
+     * @param buffer values will be read in <code>x, y</code> order
      */
     public Vector2d(int index, DoubleBuffer buffer) {
         MemUtil.INSTANCE.get(this, index, buffer);
     }
 
+    /**
+     * Get the length squared of a 2-dimensional double-precision vector.
+     *
+     * @param x The vector's x component
+     * @param y The vector's y component
+     * @return the length squared of the given vector
+     * @author F. Neurath
+     */
+    public static double lengthSquared(double x, double y) {
+        return x * x + y * y;
+    }
+
+    /**
+     * Get the length of a 2-dimensional double-precision vector.
+     *
+     * @param x The vector's x component
+     * @param y The vector's y component
+     * @return the length of the given vector
+     * @author F. Neurath
+     */
+    public static double length(double x, double y) {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    /**
+     * Return the distance between <code>(x1, y1)</code> and <code>(x2, y2)</code>.
+     *
+     * @param x1 the x component of the first vector
+     * @param y1 the y component of the first vector
+     * @param x2 the x component of the second vector
+     * @param y2 the y component of the second vector
+     * @return the euclidean distance
+     */
+    public static double distance(double x1, double y1, double x2, double y2) {
+        double dx = x1 - x2;
+        double dy = y1 - y2;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Return the squared distance between <code>(x1, y1)</code> and <code>(x2, y2)</code>.
+     *
+     * @param x1 the x component of the first vector
+     * @param y1 the y component of the first vector
+     * @param x2 the x component of the second vector
+     * @param y2 the y component of the second vector
+     * @return the euclidean distance squared
+     */
+    public static double distanceSquared(double x1, double y1, double x2, double y2) {
+        double dx = x1 - x2;
+        double dy = y1 - y2;
+        return dx * dx + dy * dy;
+    }
 
     public double x() {
         return this.x;
@@ -218,8 +257,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Set the x and y components to the supplied value.
      *
-     * @param d
-     *          the value of both components
+     * @param d the value of both components
      * @return this
      */
     public Vector2d set(double d) {
@@ -230,11 +268,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set the x and y components to the supplied values.
-     * 
-     * @param x
-     *          the x value
-     * @param y
-     *          the y value
+     *
+     * @param x the x value
+     * @param y the y value
      * @return this
      */
     public Vector2d set(double x, double y) {
@@ -245,9 +281,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set this {@link Vector2d} to the values of v.
-     * 
-     * @param v
-     *          the vector to copy from
+     *
+     * @param v the vector to copy from
      * @return this
      */
     public Vector2d set(Vector2dc v) {
@@ -258,9 +293,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set this {@link Vector2d} to be a clone of <code>v</code>.
-     * 
-     * @param v
-     *          the vector to copy from
+     *
+     * @param v the vector to copy from
      * @return this
      */
     public Vector2d set(Vector2fc v) {
@@ -271,9 +305,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set this {@link Vector2d} to be a clone of <code>v</code>.
-     * 
-     * @param v
-     *          the vector to copy from
+     *
+     * @param v the vector to copy from
      * @return this
      */
     public Vector2d set(Vector2ic v) {
@@ -284,9 +317,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set the two components of this vector to the first two elements of the given array.
-     * 
-     * @param xy
-     *          the array containing at least three elements
+     *
+     * @param xy the array containing at least three elements
      * @return this
      */
     public Vector2d set(double[] xy) {
@@ -297,9 +329,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set the two components of this vector to the first two elements of the given array.
-     * 
-     * @param xy
-     *          the array containing at least two elements
+     *
+     * @param xy the array containing at least two elements
      * @return this
      */
     public Vector2d set(float[] xy) {
@@ -307,7 +338,6 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
         this.y = xy[1];
         return this;
     }
-
 
     /**
      * Read this vector from the supplied {@link ByteBuffer} at the current
@@ -319,8 +349,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * the vector is read, use {@link #set(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param buffer values will be read in <code>x, y</code> order
      * @return this
      * @see #set(int, ByteBuffer)
      */
@@ -335,10 +364,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer values will be read in <code>x, y</code> order
      * @return this
      */
     public Vector2d set(int index, ByteBuffer buffer) {
@@ -356,8 +383,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * the vector is read, use {@link #set(int, DoubleBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param buffer values will be read in <code>x, y</code> order
      * @return this
      * @see #set(int, DoubleBuffer)
      */
@@ -372,10 +398,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * <p>
      * This method will not increment the position of the given DoubleBuffer.
      *
-     * @param index 
-     *          the absolute position into the DoubleBuffer
-     * @param buffer
-     *          values will be read in <code>x, y</code> order
+     * @param index  the absolute position into the DoubleBuffer
+     * @param buffer values will be read in <code>x, y</code> order
      * @return this
      */
     public Vector2d set(int index, DoubleBuffer buffer) {
@@ -383,15 +407,14 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
         return this;
     }
 
-
     public double get(int component) throws IllegalArgumentException {
         switch (component) {
-        case 0:
-            return x;
-        case 1:
-            return y;
-        default:
-            throw new IllegalArgumentException();
+            case 0:
+                return x;
+            case 1:
+                return y;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -416,10 +439,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Set the value of the specified component of this vector.
      *
-     * @param component
-     *          the component whose value to set, within <code>[0..1]</code>
-     * @param value
-     *          the value to set
+     * @param component the component whose value to set, within <code>[0..1]</code>
+     * @param value     the value to set
      * @return this
      * @throws IllegalArgumentException if <code>component</code> is not within <code>[0..1]</code>
      */
@@ -436,7 +457,6 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
         }
         return this;
     }
-
 
     public ByteBuffer get(ByteBuffer buffer) {
         MemUtil.INSTANCE.put(this, buffer.position(), buffer);
@@ -458,10 +478,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
         return buffer;
     }
 
-
     /**
      * Set this vector to be one of its perpendicular vectors.
-     * 
+     *
      * @return this
      */
     public Vector2d perpendicular() {
@@ -473,9 +492,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Subtract <code>v</code> from this vector.
-     * 
-     * @param v
-     *          the vector to subtract
+     *
+     * @param v the vector to subtract
      * @return this
      */
     public Vector2d sub(Vector2dc v) {
@@ -486,11 +504,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Subtract <code>(x, y)</code> from this vector.
-     * 
-     * @param x
-     *          the x component to subtract
-     * @param y
-     *          the y component to subtract
+     *
+     * @param x the x component to subtract
+     * @param y the y component to subtract
      * @return this
      */
     public Vector2d sub(double x, double y) {
@@ -507,9 +523,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Subtract <code>v</code> from this vector.
-     * 
-     * @param v
-     *          the vector to subtract
+     *
+     * @param v the vector to subtract
      * @return this
      */
     public Vector2d sub(Vector2fc v) {
@@ -532,9 +547,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Multiply the components of this vector by the given scalar.
-     * 
-     * @param scalar
-     *        the value to multiply this vector's components by
+     *
+     * @param scalar the value to multiply this vector's components by
      * @return this
      */
     public Vector2d mul(double scalar) {
@@ -551,11 +565,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Multiply the components of this Vector2d by the given scalar values and store the result in <code>this</code>.
-     * 
-     * @param x
-     *          the x component to multiply this vector by
-     * @param y
-     *          the y component to multiply this vector by
+     *
+     * @param x the x component to multiply this vector by
+     * @param y the y component to multiply this vector by
      * @return this
      */
     public Vector2d mul(double x, double y) {
@@ -572,9 +584,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Multiply this Vector2d component-wise by another Vector2d.
-     * 
-     * @param v
-     *          the vector to multiply by
+     *
+     * @param v the vector to multiply by
      * @return this
      */
     public Vector2d mul(Vector2dc v) {
@@ -591,9 +602,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Divide this Vector2d by the given scalar value.
-     * 
-     * @param scalar
-     *          the scalar to divide this vector by
+     *
+     * @param scalar the scalar to divide this vector by
      * @return this
      */
     public Vector2d div(double scalar) {
@@ -612,11 +622,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Divide the components of this Vector2d by the given scalar values and store the result in <code>this</code>.
-     * 
-     * @param x
-     *          the x component to divide this vector by
-     * @param y
-     *          the y component to divide this vector by
+     *
+     * @param x the x component to divide this vector by
+     * @param y the y component to divide this vector by
      * @return this
      */
     public Vector2d div(double x, double y) {
@@ -633,9 +641,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Divide this Vector2d component-wise by another Vector2dc.
-     * 
-     * @param v
-     *          the vector to divide by
+     *
+     * @param v the vector to divide by
      * @return this
      */
     public Vector2d div(Vector2d v) {
@@ -646,9 +653,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Divide this Vector3d component-wise by another Vector2fc.
-     * 
-     * @param v
-     *          the vector to divide by
+     *
+     * @param v the vector to divide by
      * @return this
      */
     public Vector2d div(Vector2fc v) {
@@ -672,8 +678,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Multiply the given matrix <code>mat</code> with this Vector2d.
      *
-     * @param mat
-     *          the matrix to multiply this vector by
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector2d mul(Matrix2fc mat) {
@@ -687,8 +692,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Multiply the given matrix <code>mat</code> with this Vector2d.
      *
-     * @param mat
-     *          the matrix to multiply this vector by
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector2d mul(Matrix2dc mat) {
@@ -718,8 +722,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Multiply the transpose of the given matrix with this Vector2d and store the result in <code>this</code>.
      *
-     * @param mat
-     *          the matrix
+     * @param mat the matrix
      * @return this
      */
     public Vector2d mulTranspose(Matrix2dc mat) {
@@ -741,8 +744,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Multiply the transpose of the given matrix with  this Vector2d and store the result in <code>this</code>.
      *
-     * @param mat
-     *          the matrix
+     * @param mat the matrix
      * @return this
      */
     public Vector2d mulTranspose(Matrix2fc mat) {
@@ -765,9 +767,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * Multiply the given 3x2 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>z</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector2d mulPosition(Matrix3x2dc mat) {
@@ -790,9 +791,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * Multiply the given 3x2 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>z</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector2d mulDirection(Matrix3x2dc mat) {
@@ -816,8 +816,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     }
 
     public double angle(Vector2dc v) {
-        double dot = x*v.x() + y*v.y();
-        double det = x*v.y() - y*v.x();
+        double dot = x * v.x() + y * v.y();
+        double det = x * v.y() - y * v.x();
         return Math.atan2(det, dot);
     }
 
@@ -825,35 +825,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
         return x * x + y * y;
     }
 
-    /**
-     * Get the length squared of a 2-dimensional double-precision vector.
-     *
-     * @param x The vector's x component
-     * @param y The vector's y component
-     *
-     * @return the length squared of the given vector
-     *
-     * @author F. Neurath
-     */
-    public static double lengthSquared(double x, double y) {
-        return x * x + y * y;
-    }
-
     public double length() {
-        return Math.sqrt(x * x + y * y);
-    }
-
-    /**
-     * Get the length of a 2-dimensional double-precision vector.
-     *
-     * @param x The vector's x component
-     * @param y The vector's y component
-     *
-     * @return the length of the given vector
-     *
-     * @author F. Neurath
-     */
-    public static double length(double x, double y) {
         return Math.sqrt(x * x + y * y);
     }
 
@@ -894,46 +866,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     }
 
     /**
-     * Return the distance between <code>(x1, y1)</code> and <code>(x2, y2)</code>.
-     *
-     * @param x1
-     *          the x component of the first vector
-     * @param y1
-     *          the y component of the first vector
-     * @param x2
-     *          the x component of the second vector
-     * @param y2
-     *          the y component of the second vector
-     * @return the euclidean distance
-     */
-    public static double distance(double x1, double y1, double x2, double y2) {
-        double dx = x1 - x2;
-        double dy = y1 - y2;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    /**
-     * Return the squared distance between <code>(x1, y1)</code> and <code>(x2, y2)</code>.
-     *
-     * @param x1
-     *          the x component of the first vector
-     * @param y1
-     *          the y component of the first vector
-     * @param x2
-     *          the x component of the second vector
-     * @param y2
-     *          the y component of the second vector
-     * @return the euclidean distance squared
-     */
-    public static double distanceSquared(double x1, double y1, double x2, double y2) {
-        double dx = x1 - x2;
-        double dy = y1 - y2;
-        return dx * dx + dy * dy;
-    }
-
-    /**
      * Normalize this vector.
-     * 
+     *
      * @return this
      */
     public Vector2d normalize() {
@@ -952,9 +886,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Scale this vector to have the given length.
-     * 
-     * @param length
-     *          the desired length
+     *
+     * @param length the desired length
      * @return this
      */
     public Vector2d normalize(double length) {
@@ -973,9 +906,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Add <code>v</code> to this vector.
-     * 
-     * @param v
-     *          the vector to add
+     *
+     * @param v the vector to add
      * @return this
      */
     public Vector2d add(Vector2dc v) {
@@ -986,11 +918,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Add <code>(x, y)</code> to this vector.
-     * 
-     * @param x
-     *          the x component to add
-     * @param y
-     *          the y component to add
+     *
+     * @param x the x component to add
+     * @param y the y component to add
      * @return this
      */
     public Vector2d add(double x, double y) {
@@ -1007,9 +937,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Add <code>v</code> to this vector.
-     * 
-     * @param v
-     *          the vector to add
+     *
+     * @param v the vector to add
      * @return this
      */
     public Vector2d add(Vector2fc v) {
@@ -1032,7 +961,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set all components to zero.
-     * 
+     *
      * @return this
      */
     public Vector2d zero() {
@@ -1054,7 +983,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Negate this vector.
-     * 
+     *
      * @return this
      */
     public Vector2d negate() {
@@ -1075,11 +1004,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
      * <p>
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
-     * 
-     * @param other
-     *          the other vector
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
+     *
+     * @param other the other vector
+     * @param t     the interpolation factor between 0.0 and 1.0
      * @return this
      */
     public Vector2d lerp(Vector2dc other, double t) {
@@ -1115,9 +1042,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
         Vector2d other = (Vector2d) obj;
         if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
             return false;
-        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-            return false;
-        return true;
+        return Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
     }
 
     public boolean equals(Vector2dc v, double delta) {
@@ -1129,24 +1054,20 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
             return false;
         if (!Runtime.equals(x, v.x(), delta))
             return false;
-        if (!Runtime.equals(y, v.y(), delta))
-            return false;
-        return true;
+        return Runtime.equals(y, v.y(), delta);
     }
 
     public boolean equals(double x, double y) {
         if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(x))
             return false;
-        if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(y))
-            return false;
-        return true;
+        return Double.doubleToLongBits(this.y) == Double.doubleToLongBits(y);
     }
 
     /**
      * Return a string representation of this vector.
      * <p>
      * This method creates a new {@link DecimalFormat} on every invocation with the format string "<code>0.000E0;-</code>".
-     * 
+     *
      * @return the string representation
      */
     public String toString() {
@@ -1155,9 +1076,8 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Return a string representation of this vector by formatting the vector components with the given {@link NumberFormat}.
-     * 
-     * @param formatter
-     *          the {@link NumberFormat} used to format the vector components with
+     *
+     * @param formatter the {@link NumberFormat} used to format the vector components with
      * @return the string representation
      */
     public String toString(NumberFormat formatter) {
@@ -1166,11 +1086,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector2d fma(Vector2dc a, Vector2dc b) {
@@ -1181,11 +1099,9 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector2d fma(double a, Vector2dc b) {
@@ -1209,8 +1125,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Set the components of this vector to be the component-wise minimum of this and the other vector.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return this
      */
     public Vector2d min(Vector2dc v) {
@@ -1228,8 +1143,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
     /**
      * Set the components of this vector to be the component-wise maximum of this and the other vector.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return this
      */
     public Vector2d max(Vector2dc v) {
@@ -1322,7 +1236,7 @@ public class Vector2d implements Externalizable, Cloneable, Vector2dc {
 
     /**
      * Set <code>this</code> vector's components to their respective absolute values.
-     * 
+     *
      * @return this
      */
     public Vector2d absolute() {

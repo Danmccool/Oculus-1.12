@@ -1,8 +1,7 @@
 package net.coderbot.batchedentityrendering.impl;
 
-import org.lwjgl.opengl.GL11C;
-
 import net.minecraft.client.renderer.RenderType;
+import org.lwjgl.opengl.GL11C;
 
 public class RenderTypeUtil {
     public static boolean isTriangleStripDrawMode(RenderType renderType) {

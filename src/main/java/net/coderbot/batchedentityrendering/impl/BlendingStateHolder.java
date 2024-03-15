@@ -1,5 +1,5 @@
 package net.coderbot.batchedentityrendering.impl;
 
 public interface BlendingStateHolder {
-	TransparencyType getTransparencyType();
+    TransparencyType getTransparencyType();
 }

@@ -35,7 +35,7 @@ import java.text.NumberFormat;
 /**
  * Contains the definition of a Vector comprising 4 floats and associated
  * transformations.
- * 
+ *
  * @author Richard Greenlees
  * @author Kai Burjack
  * @author F. Neurath
@@ -70,9 +70,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Create a new {@link Vector4f} with the same values as <code>v</code>.
-     * 
-     * @param v
-     *          the {@link Vector4fc} to copy the values from
+     *
+     * @param v the {@link Vector4fc} to copy the values from
      */
     public Vector4f(Vector4fc v) {
         this.x = v.x();
@@ -83,9 +82,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Create a new {@link Vector4f} with the same values as <code>v</code>.
-     * 
-     * @param v
-     *          the {@link Vector4ic} to copy the values from
+     *
+     * @param v the {@link Vector4ic} to copy the values from
      */
     public Vector4f(Vector4ic v) {
         this.x = v.x();
@@ -97,11 +95,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Create a new {@link Vector4f} with the first three components from the
      * given <code>v</code> and the given <code>w</code>.
-     * 
-     * @param v
-     *          the {@link Vector3fc}
-     * @param w
-     *          the w component
+     *
+     * @param v the {@link Vector3fc}
+     * @param w the w component
      */
     public Vector4f(Vector3fc v, float w) {
         this.x = v.x();
@@ -113,11 +109,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Create a new {@link Vector4f} with the first three components from the
      * given <code>v</code> and the given <code>w</code>.
-     * 
-     * @param v
-     *          the {@link Vector3ic}
-     * @param w
-     *          the w component
+     *
+     * @param v the {@link Vector3ic}
+     * @param w the w component
      */
     public Vector4f(Vector3ic v, float w) {
         this.x = v.x();
@@ -129,13 +123,10 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Create a new {@link Vector4f} with the first two components from the
      * given <code>v</code> and the given <code>z</code>, and <code>w</code>.
-     * 
-     * @param v
-     *          the {@link Vector2fc}
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     *
+     * @param v the {@link Vector2fc}
+     * @param z the z component
+     * @param w the w component
      */
     public Vector4f(Vector2fc v, float z, float w) {
         this.x = v.x();
@@ -147,13 +138,10 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Create a new {@link Vector4f} with the first two components from the
      * given <code>v</code> and the given <code>z</code>, and <code>w</code>.
-     * 
-     * @param v
-     *          the {@link Vector2ic}
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     *
+     * @param v the {@link Vector2ic}
+     * @param z the z component
+     * @param w the w component
      */
     public Vector4f(Vector2ic v, float z, float w) {
         this.x = v.x();
@@ -165,8 +153,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Create a new {@link Vector4f} and initialize all four components with the given value.
      *
-     * @param d
-     *          the value of all four components
+     * @param d the value of all four components
      */
     public Vector4f(float d) {
         this.x = d;
@@ -177,15 +164,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Create a new {@link Vector4f} with the given component values.
-     * 
-     * @param x
-     *          the x component
-     * @param y
-     *          the y component
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     *
+     * @param x the x component
+     * @param y the y component
+     * @param z the z component
+     * @param w the w component
      */
     public Vector4f(float x, float y, float z, float w) {
         this.x = x;
@@ -197,9 +180,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Create a new {@link Vector4f} and initialize its four components from the first
      * four elements of the given array.
-     * 
-     * @param xyzw
-     *          the array containing at least four elements
+     *
+     * @param xyzw the array containing at least four elements
      */
     public Vector4f(float[] xyzw) {
         this.x = xyzw[0];
@@ -219,8 +201,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * the vector is read, use {@link #Vector4f(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      * @see #Vector4f(int, ByteBuffer)
      */
     public Vector4f(ByteBuffer buffer) {
@@ -233,10 +214,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index 
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      */
     public Vector4f(int index, ByteBuffer buffer) {
         MemUtil.INSTANCE.get(this, index, buffer);
@@ -252,8 +231,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * the vector is read, use {@link #Vector4f(int, FloatBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      * @see #Vector4f(int, FloatBuffer)
      */
     public Vector4f(FloatBuffer buffer) {
@@ -266,15 +244,95 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * <p>
      * This method will not increment the position of the given FloatBuffer.
      *
-     * @param index 
-     *          the absolute position into the FloatBuffer
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      */
     public Vector4f(int index, FloatBuffer buffer) {
         MemUtil.INSTANCE.get(this, index, buffer);
     }
 
+    /**
+     * Get the length squared of a 4-dimensional single-precision vector.
+     *
+     * @param x the vector's x component
+     * @param y the vector's y component
+     * @param z the vector's z component
+     * @param w the vector's w component
+     * @return the length squared of the given vector
+     * @author F. Neurath
+     */
+    public static float lengthSquared(float x, float y, float z, float w) {
+        return Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w)));
+    }
+
+    /**
+     * Get the length squared of a 4-dimensional int vector.
+     *
+     * @param x the vector's x component
+     * @param y the vector's y component
+     * @param z the vector's z component
+     * @param w the vector's w component
+     * @return the length squared of the given vector
+     */
+    public static float lengthSquared(int x, int y, int z, int w) {
+        return Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w)));
+    }
+
+    /**
+     * Get the length of a 4-dimensional single-precision vector.
+     *
+     * @param x The vector's x component
+     * @param y The vector's y component
+     * @param z The vector's z component
+     * @param w The vector's w component
+     * @return the length of the given vector
+     * @author F. Neurath
+     */
+    public static float length(float x, float y, float z, float w) {
+        return Math.sqrt(Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w))));
+    }
+
+    /**
+     * Return the distance between <code>(x1, y1, z1, w1)</code> and <code>(x2, y2, z2, w2)</code>.
+     *
+     * @param x1 the x component of the first vector
+     * @param y1 the y component of the first vector
+     * @param z1 the z component of the first vector
+     * @param w1 the w component of the first vector
+     * @param x2 the x component of the second vector
+     * @param y2 the y component of the second vector
+     * @param z2 the z component of the second vector
+     * @param w2 the 2 component of the second vector
+     * @return the euclidean distance
+     */
+    public static float distance(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        float dz = z1 - z2;
+        float dw = w1 - w2;
+        return Math.sqrt(Math.fma(dx, dx, Math.fma(dy, dy, Math.fma(dz, dz, dw * dw))));
+    }
+
+    /**
+     * Return the squared distance between <code>(x1, y1, z1, w1)</code> and <code>(x2, y2, z2, w2)</code>.
+     *
+     * @param x1 the x component of the first vector
+     * @param y1 the y component of the first vector
+     * @param z1 the z component of the first vector
+     * @param w1 the w component of the first vector
+     * @param x2 the x component of the second vector
+     * @param y2 the y component of the second vector
+     * @param z2 the z component of the second vector
+     * @param w2 the w component of the second vector
+     * @return the euclidean distance squared
+     */
+    public static float distanceSquared(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        float dz = z1 - z2;
+        float dw = w1 - w2;
+        return Math.fma(dx, dx, Math.fma(dy, dy, Math.fma(dz, dz, dw * dw)));
+    }
 
     public float x() {
         return this.x;
@@ -294,9 +352,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set this {@link Vector4f} to the values of the given <code>v</code>.
-     * 
-     * @param v
-     *          the vector whose values will be copied into this
+     *
+     * @param v the vector whose values will be copied into this
      * @return this
      */
     public Vector4f set(Vector4fc v) {
@@ -309,9 +366,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set this {@link Vector4f} to the values of the given <code>v</code>.
-     * 
-     * @param v
-     *          the vector whose values will be copied into this
+     *
+     * @param v the vector whose values will be copied into this
      * @return this
      */
     public Vector4f set(Vector4ic v) {
@@ -327,9 +383,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * <p>
      * Note that due to the given vector <code>v</code> storing the components in double-precision,
      * there is the possibility to lose precision.
-     * 
-     * @param v
-     *          the vector whose values will be copied into this
+     *
+     * @param v the vector whose values will be copied into this
      * @return this
      */
     public Vector4f set(Vector4dc v) {
@@ -343,11 +398,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Set the first three components of this to the components of
      * <code>v</code> and the last component to <code>w</code>.
-     * 
-     * @param v
-     *          the {@link Vector3fc} to copy
-     * @param w
-     *          the w component
+     *
+     * @param v the {@link Vector3fc} to copy
+     * @param w the w component
      * @return this
      */
     public Vector4f set(Vector3fc v, float w) {
@@ -361,11 +414,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Set the first three components of this to the components of
      * <code>v</code> and the last component to <code>w</code>.
-     * 
-     * @param v
-     *          the {@link Vector3ic} to copy
-     * @param w
-     *          the w component
+     *
+     * @param v the {@link Vector3ic} to copy
+     * @param w the w component
      * @return this
      */
     public Vector4f set(Vector3ic v, float w) {
@@ -380,12 +431,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * Sets the first two components of this to the components of given <code>v</code>
      * and last two components to the given <code>z</code>, and <code>w</code>.
      *
-     * @param v
-     *          the {@link Vector2fc}
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     * @param v the {@link Vector2fc}
+     * @param z the z component
+     * @param w the w component
      * @return this
      */
     public Vector4f set(Vector2fc v, float z, float w) {
@@ -400,12 +448,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * Sets the first two components of this to the components of given <code>v</code>
      * and last two components to the given <code>z</code>, and <code>w</code>.
      *
-     * @param v
-     *          the {@link Vector2ic}
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     * @param v the {@link Vector2ic}
+     * @param z the z component
+     * @param w the w component
      * @return this
      */
     public Vector4f set(Vector2ic v, float z, float w) {
@@ -419,8 +464,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Set the x, y, z, and w components to the supplied value.
      *
-     * @param d
-     *          the value of all four components
+     * @param d the value of all four components
      * @return this
      */
     public Vector4f set(float d) {
@@ -433,15 +477,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set the x, y, z, and w components to the supplied values.
-     * 
-     * @param x
-     *          the x component
-     * @param y
-     *          the y component
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     *
+     * @param x the x component
+     * @param y the y component
+     * @param z the z component
+     * @param w the w component
      * @return this
      */
     public Vector4f set(float x, float y, float z, float w) {
@@ -454,13 +494,10 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set the x, y, z components to the supplied values.
-     * 
-     * @param x
-     *          the x component
-     * @param y
-     *          the y component
-     * @param z
-     *          the z component
+     *
+     * @param x the x component
+     * @param y the y component
+     * @param z the z component
      * @return this
      */
     public Vector4f set(float x, float y, float z) {
@@ -473,8 +510,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Set the x, y, z, and w components to the supplied value.
      *
-     * @param d
-     *          the value of all four components
+     * @param d the value of all four components
      * @return this
      */
     public Vector4f set(double d) {
@@ -487,15 +523,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set the x, y, z, and w components to the supplied values.
-     * 
-     * @param x
-     *          the x component
-     * @param y
-     *          the y component
-     * @param z
-     *          the z component
-     * @param w
-     *          the w component
+     *
+     * @param x the x component
+     * @param y the y component
+     * @param z the z component
+     * @param w the w component
      * @return this
      */
     public Vector4f set(double x, double y, double z, double w) {
@@ -508,9 +540,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set the four components of this vector to the first four elements of the given array.
-     * 
-     * @param xyzw
-     *          the array containing at least four elements
+     *
+     * @param xyzw the array containing at least four elements
      * @return this
      */
     public Vector4f set(float[] xyzw) {
@@ -520,7 +551,6 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         this.w = xyzw[3];
         return this;
     }
-
 
     /**
      * Read this vector from the supplied {@link ByteBuffer} at the current
@@ -532,8 +562,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * the vector is read, use {@link #set(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      * @return this
      * @see #set(int, ByteBuffer)
      */
@@ -548,10 +577,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      * @return this
      */
     public Vector4f set(int index, ByteBuffer buffer) {
@@ -569,8 +596,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * the vector is read, use {@link #set(int, FloatBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      * @return this
      * @see #set(int, FloatBuffer)
      */
@@ -585,10 +611,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * <p>
      * This method will not increment the position of the given FloatBuffer.
      *
-     * @param index 
-     *          the absolute position into the FloatBuffer
-     * @param buffer
-     *          values will be read in <code>x, y, z, w</code> order
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer values will be read in <code>x, y, z, w</code> order
      * @return this
      */
     public Vector4f set(int index, FloatBuffer buffer) {
@@ -596,14 +620,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         return this;
     }
 
-
     /**
      * Set the value of the specified component of this vector.
      *
-     * @param component
-     *          the component whose value to set, within <code>[0..3]</code>
-     * @param value
-     *          the value to set
+     * @param component the component whose value to set, within <code>[0..3]</code>
+     * @param value     the value to set
      * @return this
      * @throws IllegalArgumentException if <code>component</code> is not within <code>[0..3]</code>
      */
@@ -627,7 +648,6 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         return this;
     }
 
-
     public FloatBuffer get(FloatBuffer buffer) {
         MemUtil.INSTANCE.put(this, buffer.position(), buffer);
         return buffer;
@@ -648,12 +668,10 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         return buffer;
     }
 
-
     /**
      * Subtract the supplied vector from this one.
-     * 
-     * @param v
-     *          the vector to subtract
+     *
+     * @param v the vector to subtract
      * @return this
      */
     public Vector4f sub(Vector4fc v) {
@@ -666,15 +684,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Subtract <code>(x, y, z, w)</code> from this.
-     * 
-     * @param x
-     *          the x component to subtract
-     * @param y
-     *          the y component to subtract
-     * @param z
-     *          the z component to subtract
-     * @param w
-     *          the w component to subtract
+     *
+     * @param x the x component to subtract
+     * @param y the y component to subtract
+     * @param z the z component to subtract
+     * @param w the w component to subtract
      * @return this
      */
     public Vector4f sub(float x, float y, float z, float w) {
@@ -703,9 +717,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Add the supplied vector to this one.
-     * 
-     * @param v
-     *          the vector to add
+     *
+     * @param v the vector to add
      * @return this
      */
     public Vector4f add(Vector4fc v) {
@@ -726,15 +739,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Increment the components of this vector by the given values.
-     * 
-     * @param x
-     *          the x component to add
-     * @param y
-     *          the y component to add
-     * @param z
-     *          the z component to add
-     * @param w
-     *          the w component to add
+     *
+     * @param x the x component to add
+     * @param y the y component to add
+     * @param z the z component to add
+     * @param w the w component to add
      * @return this
      */
     public Vector4f add(float x, float y, float z, float w) {
@@ -755,11 +764,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector4f fma(Vector4fc a, Vector4fc b) {
@@ -772,11 +779,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector4f fma(float a, Vector4fc b) {
@@ -806,11 +811,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Add the component-wise multiplication of <code>this * a</code> to <code>b</code>
      * and store the result in <code>this</code>.
-     * 
-     * @param a
-     *          the multiplicand
-     * @param b
-     *          the addend
+     *
+     * @param a the multiplicand
+     * @param b the addend
      * @return this
      */
     public Vector4f mulAdd(Vector4fc a, Vector4fc b) {
@@ -823,11 +826,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Add the component-wise multiplication of <code>this * a</code> to <code>b</code>
      * and store the result in <code>this</code>.
-     * 
-     * @param a
-     *          the multiplicand
-     * @param b
-     *          the addend
+     *
+     * @param a the multiplicand
+     * @param b the addend
      * @return this
      */
     public Vector4f mulAdd(float a, Vector4fc b) {
@@ -853,9 +854,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Multiply this Vector4f component-wise by another Vector4f.
-     * 
-     * @param v
-     *          the other vector
+     *
+     * @param v the other vector
      * @return this
      */
     public Vector4f mul(Vector4fc v) {
@@ -876,9 +876,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Divide this Vector4f component-wise by another Vector4f.
-     * 
-     * @param v
-     *          the vector to divide by
+     *
+     * @param v the vector to divide by
      * @return this
      */
     public Vector4f div(Vector4fc v) {
@@ -900,9 +899,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Multiply the given matrix mat with this Vector4f and store the result in
      * <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply the vector with
+     *
+     * @param mat the matrix to multiply the vector with
      * @return this
      */
     public Vector4f mul(Matrix4fc mat) {
@@ -910,6 +908,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
             return mulAffine(mat, this);
         return mulGeneric(mat, this);
     }
+
     public Vector4f mul(Matrix4fc mat, Vector4f dest) {
         if ((mat.properties() & Matrix4fc.PROPERTY_AFFINE) != 0)
             return mulAffine(mat, dest);
@@ -919,9 +918,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Multiply the transpose of the given matrix <code>mat</code> with this Vector4f and store the result in
      * <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix whose transpose to multiply the vector with
+     *
+     * @param mat the matrix whose transpose to multiply the vector with
      * @return this
      */
     public Vector4f mulTranspose(Matrix4fc mat) {
@@ -929,6 +927,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
             return mulAffineTranspose(mat, this);
         return mulGenericTranspose(mat, this);
     }
+
     public Vector4f mulTranspose(Matrix4fc mat, Vector4f dest) {
         if ((mat.properties() & Matrix4fc.PROPERTY_AFFINE) != 0)
             return mulAffineTranspose(mat, dest);
@@ -961,6 +960,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         dest.w = Math.fma(mat.m30(), x, Math.fma(mat.m31(), y, mat.m32() * z + w));
         return dest;
     }
+
     private Vector4f mulGenericTranspose(Matrix4fc mat, Vector4f dest) {
         float x = this.x, y = this.y, z = this.z, w = this.w;
         dest.x = Math.fma(mat.m00(), x, Math.fma(mat.m01(), y, Math.fma(mat.m02(), z, mat.m03() * w)));
@@ -973,9 +973,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Multiply the given matrix mat with this Vector4f and store the result in
      * <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply the vector with
+     *
+     * @param mat the matrix to multiply the vector with
      * @return this
      */
     public Vector4f mul(Matrix4x3fc mat) {
@@ -1008,9 +1007,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Multiply the given matrix <code>mat</code> with this Vector4f, perform perspective division.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector4f mulProject(Matrix4fc mat) {
@@ -1035,9 +1033,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Multiply all components of this {@link Vector4f} by the given scalar
      * value.
-     * 
-     * @param scalar
-     *          the scalar to multiply by
+     *
+     * @param scalar the scalar to multiply by
      * @return this
      */
     public Vector4f mul(float scalar) {
@@ -1058,15 +1055,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Multiply the components of this Vector4f by the given scalar values and store the result in <code>this</code>.
-     * 
-     * @param x
-     *          the x component to multiply by
-     * @param y
-     *          the y component to multiply by
-     * @param z
-     *          the z component to multiply by
-     * @param w
-     *          the w component to multiply by
+     *
+     * @param x the x component to multiply by
+     * @param y the y component to multiply by
+     * @param z the z component to multiply by
+     * @param w the w component to multiply by
      * @return this
      */
     public Vector4f mul(float x, float y, float z, float w) {
@@ -1088,9 +1081,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Divide all components of this {@link Vector4f} by the given scalar
      * value.
-     * 
-     * @param scalar
-     *          the scalar to divide by
+     *
+     * @param scalar the scalar to divide by
      * @return this
      */
     public Vector4f div(float scalar) {
@@ -1113,15 +1105,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Divide the components of this Vector4f by the given scalar values and store the result in <code>this</code>.
-     * 
-     * @param x
-     *          the x component to divide by
-     * @param y
-     *          the y component to divide by
-     * @param z
-     *          the z component to divide by
-     * @param w
-     *          the w component to divide by
+     *
+     * @param x the x component to divide by
+     * @param y the y component to divide by
+     * @param z the z component to divide by
+     * @param w the w component to divide by
      * @return this
      */
     public Vector4f div(float x, float y, float z, float w) {
@@ -1142,12 +1130,10 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Rotate this vector by the given quaternion <code>quat</code> and store the result in <code>this</code>.
-     * 
-     * @see Quaternionf#transform(Vector4f)
-     * 
-     * @param quat
-     *          the quaternion to rotate this vector
+     *
+     * @param quat the quaternion to rotate this vector
      * @return this
+     * @see Quaternionf#transform(Vector4f)
      */
     public Vector4f rotate(Quaternionfc quat) {
         return quat.transform(this, this);
@@ -1159,15 +1145,11 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Rotate this vector the specified radians around the given rotation axis.
-     * 
-     * @param angle
-     *          the angle in radians
-     * @param x
-     *          the x component of the rotation axis
-     * @param y
-     *          the y component of the rotation axis
-     * @param z
-     *          the z component of the rotation axis
+     *
+     * @param angle the angle in radians
+     * @param x     the x component of the rotation axis
+     * @param y     the y component of the rotation axis
+     * @param z     the z component of the rotation axis
      * @return this
      */
     public Vector4f rotateAbout(float angle, float x, float y, float z) {
@@ -1189,6 +1171,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
             return rotateZ(aZ * angle, dest);
         return rotateAxisInternal(angle, aX, aY, aZ, dest);
     }
+
     private Vector4f rotateAxisInternal(float angle, float aX, float aY, float aZ, Vector4f dest) {
         float hangle = angle * 0.5f;
         float sinAngle = Math.sin(hangle);
@@ -1198,16 +1181,15 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         float xy = qx * qy, xz = qx * qz, yw = qy * qw, yz = qy * qz, xw = qx * qw;
         float x = this.x, y = this.y, z = this.z;
         dest.x = (w2 + x2 - z2 - y2) * x + (-zw + xy - zw + xy) * y + (yw + xz + xz + yw) * z;
-        dest.y = (xy + zw + zw + xy) * x + ( y2 - z2 + w2 - x2) * y + (yz + yz - xw - xw) * z;
-        dest.z = (xz - yw + xz - yw) * x + ( yz + yz + xw + xw) * y + (z2 - y2 - x2 + w2) * z;
+        dest.y = (xy + zw + zw + xy) * x + (y2 - z2 + w2 - x2) * y + (yz + yz - xw - xw) * z;
+        dest.z = (xz - yw + xz - yw) * x + (yz + yz + xw + xw) * y + (z2 - y2 - x2 + w2) * z;
         return dest;
     }
 
     /**
      * Rotate this vector the specified radians around the X axis.
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
      */
     public Vector4f rotateX(float angle) {
@@ -1232,14 +1214,13 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Rotate this vector the specified radians around the Y axis.
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
      */
     public Vector4f rotateY(float angle) {
         float sin = Math.sin(angle), cos = Math.cosFromSin(sin, angle);
-        float x =  this.x * cos + this.z * sin;
+        float x = this.x * cos + this.z * sin;
         float z = -this.x * sin + this.z * cos;
         this.x = x;
         this.z = z;
@@ -1248,7 +1229,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     public Vector4f rotateY(float angle, Vector4f dest) {
         float sin = Math.sin(angle), cos = Math.cosFromSin(sin, angle);
-        float x =  this.x * cos + this.z * sin;
+        float x = this.x * cos + this.z * sin;
         float z = -this.x * sin + this.z * cos;
         dest.x = x;
         dest.y = this.y;
@@ -1259,9 +1240,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Rotate this vector the specified radians around the Z axis.
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
      */
     public Vector4f rotateZ(float angle) {
@@ -1288,59 +1268,13 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         return Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w)));
     }
 
-    /**
-     * Get the length squared of a 4-dimensional single-precision vector.
-     *
-     * @param x the vector's x component
-     * @param y the vector's y component
-     * @param z the vector's z component
-     * @param w the vector's w component
-     *
-     * @return the length squared of the given vector
-     *
-     * @author F. Neurath
-     */
-    public static float lengthSquared(float x, float y, float z, float w) {
-        return Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w)));
-    }
-
-    /**
-     * Get the length squared of a 4-dimensional int vector.
-     *
-     * @param x the vector's x component
-     * @param y the vector's y component
-     * @param z the vector's z component
-     * @param w the vector's w component
-     *
-     * @return the length squared of the given vector
-     */
-    public static float lengthSquared(int x, int y, int z, int w) {
-        return Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w)));
-    }
-
     public float length() {
         return Math.sqrt(Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w))));
     }
 
     /**
-     * Get the length of a 4-dimensional single-precision vector.
-     *
-     * @param x The vector's x component
-     * @param y The vector's y component
-     * @param z The vector's z component
-     * @param w The vector's w component
-     *
-     * @return the length of the given vector
-     *
-     * @author F. Neurath
-     */
-    public static float length(float x, float y, float z, float w) {
-        return Math.sqrt(Math.fma(x, x, Math.fma(y, y, Math.fma(z, z, w * w))));
-    }
-
-    /**
      * Normalizes this vector.
-     * 
+     *
      * @return this
      */
     public Vector4f normalize() {
@@ -1363,9 +1297,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Scale this vector to have the given length.
-     * 
-     * @param length
-     *          the desired length
+     *
+     * @param length the desired length
      * @return this
      */
     public Vector4f normalize(float length) {
@@ -1388,7 +1321,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Normalize this vector by computing only the norm of <code>(x, y, z)</code>.
-     * 
+     *
      * @return this
      */
     public Vector4f normalize3() {
@@ -1441,64 +1374,6 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
         return Math.fma(dx, dx, Math.fma(dy, dy, Math.fma(dz, dz, dw * dw)));
     }
 
-    /**
-     * Return the distance between <code>(x1, y1, z1, w1)</code> and <code>(x2, y2, z2, w2)</code>.
-     *
-     * @param x1
-     *          the x component of the first vector
-     * @param y1
-     *          the y component of the first vector
-     * @param z1
-     *          the z component of the first vector
-     * @param w1
-     *          the w component of the first vector
-     * @param x2
-     *          the x component of the second vector
-     * @param y2
-     *          the y component of the second vector
-     * @param z2
-     *          the z component of the second vector
-     * @param w2
-     *          the 2 component of the second vector
-     * @return the euclidean distance
-     */
-    public static float distance(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        float dx = x1 - x2;
-        float dy = y1 - y2;
-        float dz = z1 - z2;
-        float dw = w1 - w2;
-        return Math.sqrt(Math.fma(dx, dx, Math.fma(dy, dy, Math.fma(dz, dz, dw * dw))));
-    }
-
-    /**
-     * Return the squared distance between <code>(x1, y1, z1, w1)</code> and <code>(x2, y2, z2, w2)</code>.
-     *
-     * @param x1
-     *          the x component of the first vector
-     * @param y1
-     *          the y component of the first vector
-     * @param z1
-     *          the z component of the first vector
-     * @param w1
-     *          the w component of the first vector
-     * @param x2
-     *          the x component of the second vector
-     * @param y2
-     *          the y component of the second vector
-     * @param z2
-     *          the z component of the second vector
-     * @param w2
-     *          the w component of the second vector
-     * @return the euclidean distance squared
-     */
-    public static float distanceSquared(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        float dx = x1 - x2;
-        float dy = y1 - y2;
-        float dz = z1 - z2;
-        float dw = w1 - w2;
-        return Math.fma(dx, dx, Math.fma(dy, dy, Math.fma(dz, dz, dw * dw)));
-    }
-
     public float dot(Vector4fc v) {
         return Math.fma(this.x, v.x(), Math.fma(this.y, v.y(), Math.fma(this.z, v.z(), this.w * v.w())));
     }
@@ -1525,7 +1400,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Set all components to zero.
-     * 
+     *
      * @return this
      */
     public Vector4f zero() {
@@ -1538,7 +1413,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Negate this vector.
-     * 
+     *
      * @return this
      */
     public Vector4f negate() {
@@ -1561,7 +1436,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * Return a string representation of this vector.
      * <p>
      * This method creates a new {@link DecimalFormat} on every invocation with the format string "<code>0.000E0;-</code>".
-     * 
+     *
      * @return the string representation
      */
     public String toString() {
@@ -1570,9 +1445,8 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Return a string representation of this vector by formatting the vector components with the given {@link NumberFormat}.
-     * 
-     * @param formatter
-     *          the {@link NumberFormat} used to format the vector components with
+     *
+     * @param formatter the {@link NumberFormat} used to format the vector components with
      * @return the string representation
      */
     public String toString(NumberFormat formatter) {
@@ -1593,8 +1467,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Set the components of this vector to be the component-wise minimum of this and the other vector.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return this
      */
     public Vector4f min(Vector4fc v) {
@@ -1618,8 +1491,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
     /**
      * Set the components of this vector to be the component-wise maximum of this and the other vector.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return this
      */
     public Vector4f max(Vector4fc v) {
@@ -1664,9 +1536,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
             return false;
         if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
             return false;
-        if (Float.floatToIntBits(z) != Float.floatToIntBits(other.z))
-            return false;
-        return true;
+        return Float.floatToIntBits(z) == Float.floatToIntBits(other.z);
     }
 
     public boolean equals(Vector4fc v, float delta) {
@@ -1682,9 +1552,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
             return false;
         if (!Runtime.equals(z, v.z(), delta))
             return false;
-        if (!Runtime.equals(w, v.w(), delta))
-            return false;
-        return true;
+        return Runtime.equals(w, v.w(), delta);
     }
 
     public boolean equals(float x, float y, float z, float w) {
@@ -1694,9 +1562,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
             return false;
         if (Float.floatToIntBits(this.z) != Float.floatToIntBits(z))
             return false;
-        if (Float.floatToIntBits(this.w) != Float.floatToIntBits(w))
-            return false;
-        return true;
+        return Float.floatToIntBits(this.w) == Float.floatToIntBits(w);
     }
 
     public Vector4f smoothStep(Vector4fc v, float t, Vector4f dest) {
@@ -1727,11 +1593,9 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
      * <p>
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
-     * 
-     * @param other
-     *          the other vector
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
+     *
+     * @param other the other vector
+     * @param t     the interpolation factor between 0.0 and 1.0
      * @return this
      */
     public Vector4f lerp(Vector4fc other, float t) {
@@ -1752,16 +1616,16 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     public float get(int component) throws IllegalArgumentException {
         switch (component) {
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        case 3:
-            return w;
-        default:
-            throw new IllegalArgumentException();
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            case 3:
+                return w;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -1893,7 +1757,7 @@ public class Vector4f implements Externalizable, Cloneable, Vector4fc {
 
     /**
      * Compute the absolute of each of this vector's components.
-     * 
+     *
      * @return this
      */
     public Vector4f absolute() {

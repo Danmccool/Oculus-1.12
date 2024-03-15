@@ -1,13 +1,12 @@
 package net.coderbot.batchedentityrendering.impl.wrappers;
 
-import java.util.Objects;
-import java.util.Optional;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.coderbot.batchedentityrendering.impl.WrappableRenderType;
 import net.coderbot.batchedentityrendering.mixin.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderType;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class TaggingRenderTypeWrapper extends RenderType implements WrappableRenderType {
     private final int tag;
@@ -19,6 +18,10 @@ public class TaggingRenderTypeWrapper extends RenderType implements WrappableRen
 
         this.tag = tag;
         this.wrapped = wrapped;
+    }
+
+    private static boolean shouldSortOnUpload(RenderType type) {
+        return ((RenderTypeAccessor) type).shouldSortOnUpload();
     }
 
     @Override
@@ -60,10 +63,6 @@ public class TaggingRenderTypeWrapper extends RenderType implements WrappableRen
 
     @Override
     public String toString() {
-        return "tagged(" +tag+ "):" + this.wrapped.toString();
-    }
-
-    private static boolean shouldSortOnUpload(RenderType type) {
-        return ((RenderTypeAccessor) type).shouldSortOnUpload();
+        return "tagged(" + tag + "):" + this.wrapped.toString();
     }
 }

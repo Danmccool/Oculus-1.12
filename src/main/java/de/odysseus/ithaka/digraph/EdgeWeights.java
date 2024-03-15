@@ -23,21 +23,21 @@ import java.util.OptionalInt;
  * @param <V> vertex type
  */
 public interface EdgeWeights<V> {
-	// We're storing this in order to avoid reallocating this optional constantly.
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	OptionalInt UNIT_WEIGHT = OptionalInt.of(1);
+    // We're storing this in order to avoid reallocating this optional constantly.
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    OptionalInt UNIT_WEIGHT = OptionalInt.of(1);
 
-	/**
-	 * Unit edge weights.
-	 */
-	EdgeWeights<Object> UNIT_WEIGHTS = (source, target) -> UNIT_WEIGHT;
+    /**
+     * Unit edge weights.
+     */
+    EdgeWeights<Object> UNIT_WEIGHTS = (source, target) -> UNIT_WEIGHT;
 
-	/**
-	 * Get edge weight
-	 *
-	 * @param source source vertex
-	 * @param target target vertex
-	 * @return weight for edge starting at <code>source</code> and ending at <code>target</code>
-	 */
-	OptionalInt get(V source, V target);
+    /**
+     * Get edge weight
+     *
+     * @param source source vertex
+     * @param target target vertex
+     * @return weight for edge starting at <code>source</code> and ending at <code>target</code>
+     */
+    OptionalInt get(V source, V target);
 }

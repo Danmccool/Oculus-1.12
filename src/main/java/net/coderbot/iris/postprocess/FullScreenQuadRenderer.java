@@ -1,91 +1,88 @@
 package net.coderbot.iris.postprocess;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20C;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-
 import net.coderbot.iris.gl.IrisRenderSystem;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20C;
 
 /**
  * Renders a full-screen textured quad to the screen. Used in composite / deferred rendering.
  */
 public class FullScreenQuadRenderer {
-	private final int quadBuffer;
+    public static final FullScreenQuadRenderer INSTANCE = new FullScreenQuadRenderer();
+    private final int quadBuffer;
 
-	public static final FullScreenQuadRenderer INSTANCE = new FullScreenQuadRenderer();
+    private FullScreenQuadRenderer() {
+        this.quadBuffer = createQuad();
+    }
 
-	private FullScreenQuadRenderer() {
-		this.quadBuffer = createQuad();
-	}
+    @SuppressWarnings("deprecation")
+    public static void end() {
+        DefaultVertexFormat.POSITION_TEX.clearBufferState();
+        GlStateManager._glBindBuffer(GL20C.GL_ARRAY_BUFFER, 0);
 
-	public void render() {
-		begin();
+        RenderSystem.enableDepthTest();
 
-		renderQuad();
+        RenderSystem.matrixMode(GL11.GL_PROJECTION);
+        RenderSystem.popMatrix();
+        RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+        RenderSystem.popMatrix();
+    }
 
-		end();
-	}
+    /**
+     * Creates and uploads a vertex buffer containing a single full-screen quad
+     */
+    private static int createQuad() {
+        float[] vertices = new float[]{
+                // Vertex 0: Top right corner
+                1.0F, 1.0F, 0.0F,
+                1.0F, 1.0F,
+                // Vertex 1: Top left corner
+                0.0F, 1.0F, 0.0F,
+                0.0F, 1.0F,
+                // Vertex 2: Bottom right corner
+                1.0F, 0.0F, 0.0F,
+                1.0F, 0.0F,
+                // Vertex 3: Bottom left corner
+                0.0F, 0.0F, 0.0F,
+                0.0F, 0.0F
+        };
 
-	@SuppressWarnings("deprecation")
-	public void begin() {
-		RenderSystem.disableDepthTest();
+        return IrisRenderSystem.bufferStorage(GL20C.GL_ARRAY_BUFFER, vertices, GL20C.GL_STATIC_DRAW);
+    }
 
-		RenderSystem.matrixMode(GL11.GL_PROJECTION);
-		RenderSystem.pushMatrix();
-		RenderSystem.loadIdentity();
-		// scale the quad from [0, 1] to [-1, 1]
-		RenderSystem.translatef(-1.0F, -1.0F, 0.0F);
-		RenderSystem.scalef(2.0F, 2.0F, 0.0F);
+    public void render() {
+        begin();
 
-		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
-		RenderSystem.pushMatrix();
-		RenderSystem.loadIdentity();
+        renderQuad();
 
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        end();
+    }
 
-		GlStateManager._glBindBuffer(GL20C.GL_ARRAY_BUFFER, quadBuffer);
-		DefaultVertexFormat.POSITION_TEX.setupBufferState(0L);
-	}
+    @SuppressWarnings("deprecation")
+    public void begin() {
+        RenderSystem.disableDepthTest();
 
-	public void renderQuad() {
-		GlStateManager._drawArrays(GL20C.GL_TRIANGLE_STRIP, 0, 4);
-	}
+        RenderSystem.matrixMode(GL11.GL_PROJECTION);
+        RenderSystem.pushMatrix();
+        RenderSystem.loadIdentity();
+        // scale the quad from [0, 1] to [-1, 1]
+        RenderSystem.translatef(-1.0F, -1.0F, 0.0F);
+        RenderSystem.scalef(2.0F, 2.0F, 0.0F);
 
-	@SuppressWarnings("deprecation")
-	public static void end() {
-		DefaultVertexFormat.POSITION_TEX.clearBufferState();
-		GlStateManager._glBindBuffer(GL20C.GL_ARRAY_BUFFER, 0);
+        RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+        RenderSystem.pushMatrix();
+        RenderSystem.loadIdentity();
 
-		RenderSystem.enableDepthTest();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		RenderSystem.matrixMode(GL11.GL_PROJECTION);
-		RenderSystem.popMatrix();
-		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
-		RenderSystem.popMatrix();
-	}
+        GlStateManager._glBindBuffer(GL20C.GL_ARRAY_BUFFER, quadBuffer);
+        DefaultVertexFormat.POSITION_TEX.setupBufferState(0L);
+    }
 
-	/**
-	 * Creates and uploads a vertex buffer containing a single full-screen quad
-	 */
-	private static int createQuad() {
-		float[] vertices = new float[] {
-			// Vertex 0: Top right corner
-			1.0F, 1.0F, 0.0F,
-			1.0F, 1.0F,
-			// Vertex 1: Top left corner
-			0.0F, 1.0F, 0.0F,
-			0.0F, 1.0F,
-			// Vertex 2: Bottom right corner
-			1.0F, 0.0F, 0.0F,
-			1.0F, 0.0F,
-			// Vertex 3: Bottom left corner
-			0.0F, 0.0F, 0.0F,
-			0.0F, 0.0F
-		};
-
-		return IrisRenderSystem.bufferStorage(GL20C.GL_ARRAY_BUFFER, vertices, GL20C.GL_STATIC_DRAW);
-	}
+    public void renderQuad() {
+        GlStateManager._drawArrays(GL20C.GL_TRIANGLE_STRIP, 0, 4);
+    }
 }

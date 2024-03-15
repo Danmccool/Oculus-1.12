@@ -2,7 +2,6 @@ package net.coderbot.iris.pipeline;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
-
 import net.coderbot.batchedentityrendering.impl.FullyBufferedMultiBufferSource;
 import net.coderbot.iris.mixin.GameRendererAccessor;
 import net.coderbot.iris.uniforms.CapturedRenderingState;
@@ -21,129 +20,127 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GameType;
 
 public class HandRenderer {
-	public static final HandRenderer INSTANCE = new HandRenderer();
+    public static final HandRenderer INSTANCE = new HandRenderer();
+    public static final float DEPTH = 0.125F;
+    private final FullyBufferedMultiBufferSource bufferSource = new FullyBufferedMultiBufferSource();
+    private boolean ACTIVE;
+    private boolean renderingSolid;
 
-	private boolean ACTIVE;
-	private boolean renderingSolid;
-	private final FullyBufferedMultiBufferSource bufferSource = new FullyBufferedMultiBufferSource();
-
-	public static final float DEPTH = 0.125F;
-
-	private void setupGlState(GameRenderer gameRenderer, Camera camera, PoseStack poseStack, float tickDelta) {
+    private void setupGlState(GameRenderer gameRenderer, Camera camera, PoseStack poseStack, float tickDelta) {
         final PoseStack.Pose pose = poseStack.last();
 
-		// We need to scale the matrix by 0.125 so the hand doesn't clip through blocks.
-		Matrix4f scaleMatrix = Matrix4f.createScaleMatrix(1F, 1F, DEPTH);
-		scaleMatrix.multiply(gameRenderer.getProjectionMatrix(camera, tickDelta, false));
-		gameRenderer.resetProjectionMatrix(scaleMatrix);
+        // We need to scale the matrix by 0.125 so the hand doesn't clip through blocks.
+        Matrix4f scaleMatrix = Matrix4f.createScaleMatrix(1F, 1F, DEPTH);
+        scaleMatrix.multiply(gameRenderer.getProjectionMatrix(camera, tickDelta, false));
+        gameRenderer.resetProjectionMatrix(scaleMatrix);
 
-		pose.pose().setIdentity();
+        pose.pose().setIdentity();
         pose.normal().setIdentity();
 
-		((GameRendererAccessor) gameRenderer).invokeBobHurt(poseStack, tickDelta);
+        ((GameRendererAccessor) gameRenderer).invokeBobHurt(poseStack, tickDelta);
 
-		if (Minecraft.getInstance().options.bobView) {
-			((GameRendererAccessor) gameRenderer).invokeBobView(poseStack, tickDelta);
-		}
-	}
+        if (Minecraft.getInstance().options.bobView) {
+            ((GameRendererAccessor) gameRenderer).invokeBobView(poseStack, tickDelta);
+        }
+    }
 
-	private boolean canRender(Camera camera, GameRenderer gameRenderer) {
-		return !(!((GameRendererAccessor) gameRenderer).getRenderHand()
-				|| camera.isDetached()
-					|| !(camera.getEntity() instanceof Player)
-						|| ((GameRendererAccessor)gameRenderer).getPanoramicMode()
-							|| Minecraft.getInstance().options.hideGui
-								|| (camera.getEntity() instanceof LivingEntity && ((LivingEntity)camera.getEntity()).isSleeping())
-									|| Minecraft.getInstance().gameMode.getPlayerMode() == GameType.SPECTATOR);
-	}
+    private boolean canRender(Camera camera, GameRenderer gameRenderer) {
+        return !(!((GameRendererAccessor) gameRenderer).getRenderHand()
+                || camera.isDetached()
+                || !(camera.getEntity() instanceof Player)
+                || ((GameRendererAccessor) gameRenderer).getPanoramicMode()
+                || Minecraft.getInstance().options.hideGui
+                || (camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).isSleeping())
+                || Minecraft.getInstance().gameMode.getPlayerMode() == GameType.SPECTATOR);
+    }
 
-	public boolean isHandTranslucent(InteractionHand hand) {
-		Item item = Minecraft.getInstance().player.getItemBySlot(hand == InteractionHand.OFF_HAND ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND).getItem();
+    public boolean isHandTranslucent(InteractionHand hand) {
+        Item item = Minecraft.getInstance().player.getItemBySlot(hand == InteractionHand.OFF_HAND ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND).getItem();
 
-		if (item instanceof BlockItem) {
-			return ItemBlockRenderTypes.getChunkRenderType(((BlockItem) item).getBlock().defaultBlockState()) == RenderType.translucent();
-		}
+        if (item instanceof BlockItem) {
+            return ItemBlockRenderTypes.getChunkRenderType(((BlockItem) item).getBlock().defaultBlockState()) == RenderType.translucent();
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public boolean isAnyHandTranslucent() {
-		return isHandTranslucent(InteractionHand.MAIN_HAND) || isHandTranslucent(InteractionHand.OFF_HAND);
-	}
+    public boolean isAnyHandTranslucent() {
+        return isHandTranslucent(InteractionHand.MAIN_HAND) || isHandTranslucent(InteractionHand.OFF_HAND);
+    }
 
-	public void renderSolid(PoseStack poseStack, float tickDelta, Camera camera, GameRenderer gameRenderer, WorldRenderingPipeline pipeline) {
-		if (!canRender(camera, gameRenderer) || !IrisApi.getInstance().isShaderPackInUse()) {
-			return;
-		}
+    public void renderSolid(PoseStack poseStack, float tickDelta, Camera camera, GameRenderer gameRenderer, WorldRenderingPipeline pipeline) {
+        if (!canRender(camera, gameRenderer) || !IrisApi.getInstance().isShaderPackInUse()) {
+            return;
+        }
 
-		ACTIVE = true;
+        ACTIVE = true;
 
-		pipeline.setPhase(WorldRenderingPhase.HAND_SOLID);
+        pipeline.setPhase(WorldRenderingPhase.HAND_SOLID);
 
-		poseStack.pushPose();
+        poseStack.pushPose();
 
-		Minecraft.getInstance().getProfiler().push("iris_hand");
+        Minecraft.getInstance().getProfiler().push("iris_hand");
 
-		setupGlState(gameRenderer, camera, poseStack, tickDelta);
+        setupGlState(gameRenderer, camera, poseStack, tickDelta);
 
-		renderingSolid = true;
+        renderingSolid = true;
 
-		Minecraft.getInstance().getItemInHandRenderer().renderHandsWithItems(tickDelta, poseStack, bufferSource, Minecraft.getInstance().player, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(camera.getEntity(), tickDelta));
+        Minecraft.getInstance().getItemInHandRenderer().renderHandsWithItems(tickDelta, poseStack, bufferSource, Minecraft.getInstance().player, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(camera.getEntity(), tickDelta));
 
-		Minecraft.getInstance().getProfiler().pop();
+        Minecraft.getInstance().getProfiler().pop();
 
-		gameRenderer.resetProjectionMatrix(CapturedRenderingState.INSTANCE.getGbufferProjection());
+        gameRenderer.resetProjectionMatrix(CapturedRenderingState.INSTANCE.getGbufferProjection());
 
-		poseStack.popPose();
+        poseStack.popPose();
 
-		bufferSource.endBatch();
+        bufferSource.endBatch();
 
-		renderingSolid = false;
+        renderingSolid = false;
 
-		pipeline.setPhase(WorldRenderingPhase.NONE);
+        pipeline.setPhase(WorldRenderingPhase.NONE);
 
-		ACTIVE = false;
-	}
+        ACTIVE = false;
+    }
 
-	public void renderTranslucent(PoseStack poseStack, float tickDelta, Camera camera, GameRenderer gameRenderer, WorldRenderingPipeline pipeline) {
-		if (!canRender(camera, gameRenderer) || !isAnyHandTranslucent() || !IrisApi.getInstance().isShaderPackInUse()) {
-			return;
-		}
+    public void renderTranslucent(PoseStack poseStack, float tickDelta, Camera camera, GameRenderer gameRenderer, WorldRenderingPipeline pipeline) {
+        if (!canRender(camera, gameRenderer) || !isAnyHandTranslucent() || !IrisApi.getInstance().isShaderPackInUse()) {
+            return;
+        }
 
-		ACTIVE = true;
+        ACTIVE = true;
 
-		pipeline.setPhase(WorldRenderingPhase.HAND_TRANSLUCENT);
+        pipeline.setPhase(WorldRenderingPhase.HAND_TRANSLUCENT);
 
-		poseStack.pushPose();
+        poseStack.pushPose();
 
-		Minecraft.getInstance().getProfiler().push("iris_hand_translucent");
+        Minecraft.getInstance().getProfiler().push("iris_hand_translucent");
 
-		setupGlState(gameRenderer, camera, poseStack, tickDelta);
+        setupGlState(gameRenderer, camera, poseStack, tickDelta);
 
-		Minecraft.getInstance().getItemInHandRenderer().renderHandsWithItems(tickDelta, poseStack, bufferSource, Minecraft.getInstance().player, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(camera.getEntity(), tickDelta));
+        Minecraft.getInstance().getItemInHandRenderer().renderHandsWithItems(tickDelta, poseStack, bufferSource, Minecraft.getInstance().player, Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(camera.getEntity(), tickDelta));
 
-		poseStack.popPose();
+        poseStack.popPose();
 
-		Minecraft.getInstance().getProfiler().pop();
+        Minecraft.getInstance().getProfiler().pop();
 
-		gameRenderer.resetProjectionMatrix(CapturedRenderingState.INSTANCE.getGbufferProjection());
+        gameRenderer.resetProjectionMatrix(CapturedRenderingState.INSTANCE.getGbufferProjection());
 
-		bufferSource.endBatch();
+        bufferSource.endBatch();
 
-		pipeline.setPhase(WorldRenderingPhase.NONE);
+        pipeline.setPhase(WorldRenderingPhase.NONE);
 
-		ACTIVE = false;
-	}
+        ACTIVE = false;
+    }
 
-	public boolean isActive() {
-		return ACTIVE;
-	}
+    public boolean isActive() {
+        return ACTIVE;
+    }
 
-	public boolean isRenderingSolid() {
-		return renderingSolid;
-	}
+    public boolean isRenderingSolid() {
+        return renderingSolid;
+    }
 
-	public FullyBufferedMultiBufferSource getBufferSource() {
-		return bufferSource;
-	}
+    public FullyBufferedMultiBufferSource getBufferSource() {
+        return bufferSource;
+    }
 }

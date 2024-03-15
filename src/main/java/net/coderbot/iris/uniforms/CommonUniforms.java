@@ -1,13 +1,6 @@
 package net.coderbot.iris.uniforms;
 
-import static net.coderbot.iris.gl.uniform.UniformUpdateFrequency.ONCE;
-import static net.coderbot.iris.gl.uniform.UniformUpdateFrequency.PER_FRAME;
-import static net.coderbot.iris.gl.uniform.UniformUpdateFrequency.PER_TICK;
-
-import java.util.Objects;
-
 import com.mojang.blaze3d.platform.GlStateManager;
-
 import net.coderbot.iris.JomlConversions;
 import net.coderbot.iris.gl.state.StateUpdateNotifiers;
 import net.coderbot.iris.gl.uniform.DynamicUniformHolder;
@@ -23,11 +16,7 @@ import net.coderbot.iris.texture.TextureTracker;
 import net.coderbot.iris.uniforms.transforms.SmoothedFloat;
 import net.coderbot.iris.uniforms.transforms.SmoothedVec2f;
 import net.coderbot.iris.vendored.joml.Math;
-import net.coderbot.iris.vendored.joml.Vector2f;
-import net.coderbot.iris.vendored.joml.Vector2i;
-import net.coderbot.iris.vendored.joml.Vector3d;
-import net.coderbot.iris.vendored.joml.Vector4f;
-import net.coderbot.iris.vendored.joml.Vector4i;
+import net.coderbot.iris.vendored.joml.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -43,267 +32,269 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
+import static net.coderbot.iris.gl.uniform.UniformUpdateFrequency.*;
+
 public final class CommonUniforms {
-	private static final Minecraft client = Minecraft.getInstance();
-	private static final Vector2i ZERO_VECTOR_2i = new Vector2i();
-	private static final Vector4i ZERO_VECTOR_4i = new Vector4i(0, 0, 0, 0);
-	private static final Vector3d ZERO_VECTOR_3d = new Vector3d();
+    private static final Minecraft client = Minecraft.getInstance();
+    private static final Vector2i ZERO_VECTOR_2i = new Vector2i();
+    private static final Vector4i ZERO_VECTOR_4i = new Vector4i(0, 0, 0, 0);
+    private static final Vector3d ZERO_VECTOR_3d = new Vector3d();
 
-	private CommonUniforms() {
-		// no construction allowed
-	}
+    static {
+        GbufferPrograms.init();
+    }
 
-	// Needs to use a LocationalUniformHolder as we need it for the common uniforms
-	public static void addCommonUniforms(DynamicUniformHolder uniforms, IdMap idMap, PackDirectives directives, FrameUpdateNotifier updateNotifier) {
-		CameraUniforms.addCameraUniforms(uniforms, updateNotifier);
-		ViewportUniforms.addViewportUniforms(uniforms);
-		WorldTimeUniforms.addWorldTimeUniforms(uniforms);
-		SystemTimeUniforms.addSystemTimeUniforms(uniforms);
-		new CelestialUniforms(directives.getSunPathRotation()).addCelestialUniforms(uniforms);
-		IdMapUniforms.addIdMapUniforms(updateNotifier, uniforms, idMap, directives.isOldHandLight());
-		IrisExclusiveUniforms.addIrisExclusiveUniforms(uniforms);
-		MatrixUniforms.addMatrixUniforms(uniforms, directives);
-		HardcodedCustomUniforms.addHardcodedCustomUniforms(uniforms, updateNotifier);
-		FogUniforms.addFogUniforms(uniforms);
+    private CommonUniforms() {
+        // no construction allowed
+    }
 
-		// TODO: OptiFine doesn't think that atlasSize is a "dynamic" uniform,
-		//       but we do. How will custom uniforms depending on atlasSize work?
-		uniforms.uniform2i("atlasSize", () -> {
-			int glId = GlStateManagerAccessor.getTEXTURES()[0].binding;
+    // Needs to use a LocationalUniformHolder as we need it for the common uniforms
+    public static void addCommonUniforms(DynamicUniformHolder uniforms, IdMap idMap, PackDirectives directives, FrameUpdateNotifier updateNotifier) {
+        CameraUniforms.addCameraUniforms(uniforms, updateNotifier);
+        ViewportUniforms.addViewportUniforms(uniforms);
+        WorldTimeUniforms.addWorldTimeUniforms(uniforms);
+        SystemTimeUniforms.addSystemTimeUniforms(uniforms);
+        new CelestialUniforms(directives.getSunPathRotation()).addCelestialUniforms(uniforms);
+        IdMapUniforms.addIdMapUniforms(updateNotifier, uniforms, idMap, directives.isOldHandLight());
+        IrisExclusiveUniforms.addIrisExclusiveUniforms(uniforms);
+        MatrixUniforms.addMatrixUniforms(uniforms, directives);
+        HardcodedCustomUniforms.addHardcodedCustomUniforms(uniforms, updateNotifier);
+        FogUniforms.addFogUniforms(uniforms);
 
-			AbstractTexture texture = TextureTracker.INSTANCE.getTexture(glId);
-			if (texture instanceof TextureAtlas) {
-				TextureInfo info = TextureInfoCache.INSTANCE.getInfo(glId);
-				return new Vector2i(info.getWidth(), info.getHeight());
-			}
+        // TODO: OptiFine doesn't think that atlasSize is a "dynamic" uniform,
+        //       but we do. How will custom uniforms depending on atlasSize work?
+        uniforms.uniform2i("atlasSize", () -> {
+            int glId = GlStateManagerAccessor.getTEXTURES()[0].binding;
 
-			return ZERO_VECTOR_2i;
-		}, StateUpdateNotifiers.bindTextureNotifier);
+            AbstractTexture texture = TextureTracker.INSTANCE.getTexture(glId);
+            if (texture instanceof TextureAtlas) {
+                TextureInfo info = TextureInfoCache.INSTANCE.getInfo(glId);
+                return new Vector2i(info.getWidth(), info.getHeight());
+            }
 
-		uniforms.uniform2i("gtextureSize", () -> {
-			int glId = GlStateManagerAccessor.getTEXTURES()[0].binding;
+            return ZERO_VECTOR_2i;
+        }, StateUpdateNotifiers.bindTextureNotifier);
 
-			TextureInfo info = TextureInfoCache.INSTANCE.getInfo(glId);
-			return new Vector2i(info.getWidth(), info.getHeight());
+        uniforms.uniform2i("gtextureSize", () -> {
+            int glId = GlStateManagerAccessor.getTEXTURES()[0].binding;
 
-		}, StateUpdateNotifiers.bindTextureNotifier);
+            TextureInfo info = TextureInfoCache.INSTANCE.getInfo(glId);
+            return new Vector2i(info.getWidth(), info.getHeight());
 
-		uniforms.uniform4i("blendFunc", () -> {
-			GlStateManager.BlendState blend = GlStateManagerAccessor.getBLEND();
+        }, StateUpdateNotifiers.bindTextureNotifier);
 
-			if (((BooleanStateAccessor) blend.mode).isEnabled()) {
-				return new Vector4i(blend.srcRgb, blend.dstRgb, blend.srcAlpha, blend.dstAlpha);
-			} else {
-				return ZERO_VECTOR_4i;
-			}
-		}, StateUpdateNotifiers.blendFuncNotifier);
+        uniforms.uniform4i("blendFunc", () -> {
+            GlStateManager.BlendState blend = GlStateManagerAccessor.getBLEND();
 
-		uniforms.uniform1i("renderStage", () -> GbufferPrograms.getCurrentPhase().ordinal(), StateUpdateNotifiers.phaseChangeNotifier);
+            if (((BooleanStateAccessor) blend.mode).isEnabled()) {
+                return new Vector4i(blend.srcRgb, blend.dstRgb, blend.srcAlpha, blend.dstAlpha);
+            } else {
+                return ZERO_VECTOR_4i;
+            }
+        }, StateUpdateNotifiers.blendFuncNotifier);
 
-		CommonUniforms.generalCommonUniforms(uniforms, updateNotifier, directives);
-	}
+        uniforms.uniform1i("renderStage", () -> GbufferPrograms.getCurrentPhase().ordinal(), StateUpdateNotifiers.phaseChangeNotifier);
 
-	public static void generalCommonUniforms(UniformHolder uniforms, FrameUpdateNotifier updateNotifier, PackDirectives directives) {
-		ExternallyManagedUniforms.addExternallyManagedUniforms116(uniforms);
+        CommonUniforms.generalCommonUniforms(uniforms, updateNotifier, directives);
+    }
 
-		SmoothedVec2f eyeBrightnessSmooth = new SmoothedVec2f(directives.getEyeBrightnessHalfLife(), directives.getEyeBrightnessHalfLife(), CommonUniforms::getEyeBrightness, updateNotifier);
+    public static void generalCommonUniforms(UniformHolder uniforms, FrameUpdateNotifier updateNotifier, PackDirectives directives) {
+        ExternallyManagedUniforms.addExternallyManagedUniforms116(uniforms);
 
-		uniforms
-			.uniform1b(PER_FRAME, "hideGUI", () -> client.options.hideGui)
-			.uniform1i(PER_FRAME, "isEyeInWater", CommonUniforms::isEyeInWater)
-			.uniform1f(PER_FRAME, "blindness", CommonUniforms::getBlindness)
-			.uniform1f(PER_FRAME, "nightVision", CommonUniforms::getNightVision)
-			.uniform1b(PER_FRAME, "is_sneaking", CommonUniforms::isSneaking)
-			.uniform1b(PER_FRAME, "is_sprinting", CommonUniforms::isSprinting)
-			.uniform1b(PER_FRAME, "is_hurt", CommonUniforms::isHurt)
-			.uniform1b(PER_FRAME, "is_invisible", CommonUniforms::isInvisible)
-			.uniform1b(PER_FRAME, "is_burning", CommonUniforms::isBurning)
-			.uniform1b(PER_FRAME, "is_on_ground", CommonUniforms::isOnGround)
-			// TODO: Do we need to clamp this to avoid fullbright breaking shaders? Or should shaders be able to detect
-			//       that the player is trying to turn on fullbright?
-			.uniform1f(PER_FRAME, "screenBrightness", () -> client.options.gamma)
-			// just a dummy value for shaders where entityColor isn't supplied through a vertex attribute (and thus is
-			// not available) - suppresses warnings. See AttributeShaderTransformer for the actual entityColor code.
-			.uniform4f(ONCE, "entityColor", () -> new Vector4f(0, 0, 0, 0))
-			.uniform1f(ONCE, "pi", () -> Math.PI)
-			.uniform1f(PER_TICK, "playerMood", CommonUniforms::getPlayerMood)
-			.uniform2i(PER_FRAME, "eyeBrightness", CommonUniforms::getEyeBrightness)
-			.uniform2i(PER_FRAME, "eyeBrightnessSmooth", () -> {
-				Vector2f smoothed = eyeBrightnessSmooth.get();
-				return new Vector2i((int) smoothed.x(),(int) smoothed.y());
-			})
-			.uniform1f(PER_TICK, "rainStrength", CommonUniforms::getRainStrength)
-			.uniform1f(PER_TICK, "wetness", new SmoothedFloat(directives.getWetnessHalfLife(), directives.getDrynessHalfLife(), CommonUniforms::getRainStrength, updateNotifier))
-			.uniform3d(PER_FRAME, "skyColor", CommonUniforms::getSkyColor)
-			.uniform3d(PER_FRAME, "fogColor", CapturedRenderingState.INSTANCE::getFogColor);
-	}
+        SmoothedVec2f eyeBrightnessSmooth = new SmoothedVec2f(directives.getEyeBrightnessHalfLife(), directives.getEyeBrightnessHalfLife(), CommonUniforms::getEyeBrightness, updateNotifier);
 
-	private static boolean isOnGround() {
-		return client.player != null && client.player.isOnGround();
-	}
+        uniforms
+                .uniform1b(PER_FRAME, "hideGUI", () -> client.options.hideGui)
+                .uniform1i(PER_FRAME, "isEyeInWater", CommonUniforms::isEyeInWater)
+                .uniform1f(PER_FRAME, "blindness", CommonUniforms::getBlindness)
+                .uniform1f(PER_FRAME, "nightVision", CommonUniforms::getNightVision)
+                .uniform1b(PER_FRAME, "is_sneaking", CommonUniforms::isSneaking)
+                .uniform1b(PER_FRAME, "is_sprinting", CommonUniforms::isSprinting)
+                .uniform1b(PER_FRAME, "is_hurt", CommonUniforms::isHurt)
+                .uniform1b(PER_FRAME, "is_invisible", CommonUniforms::isInvisible)
+                .uniform1b(PER_FRAME, "is_burning", CommonUniforms::isBurning)
+                .uniform1b(PER_FRAME, "is_on_ground", CommonUniforms::isOnGround)
+                // TODO: Do we need to clamp this to avoid fullbright breaking shaders? Or should shaders be able to detect
+                //       that the player is trying to turn on fullbright?
+                .uniform1f(PER_FRAME, "screenBrightness", () -> client.options.gamma)
+                // just a dummy value for shaders where entityColor isn't supplied through a vertex attribute (and thus is
+                // not available) - suppresses warnings. See AttributeShaderTransformer for the actual entityColor code.
+                .uniform4f(ONCE, "entityColor", () -> new Vector4f(0, 0, 0, 0))
+                .uniform1f(ONCE, "pi", () -> Math.PI)
+                .uniform1f(PER_TICK, "playerMood", CommonUniforms::getPlayerMood)
+                .uniform2i(PER_FRAME, "eyeBrightness", CommonUniforms::getEyeBrightness)
+                .uniform2i(PER_FRAME, "eyeBrightnessSmooth", () -> {
+                    Vector2f smoothed = eyeBrightnessSmooth.get();
+                    return new Vector2i((int) smoothed.x(), (int) smoothed.y());
+                })
+                .uniform1f(PER_TICK, "rainStrength", CommonUniforms::getRainStrength)
+                .uniform1f(PER_TICK, "wetness", new SmoothedFloat(directives.getWetnessHalfLife(), directives.getDrynessHalfLife(), CommonUniforms::getRainStrength, updateNotifier))
+                .uniform3d(PER_FRAME, "skyColor", CommonUniforms::getSkyColor)
+                .uniform3d(PER_FRAME, "fogColor", CapturedRenderingState.INSTANCE::getFogColor);
+    }
 
-	private static boolean isHurt() {
-		if (client.player != null) {
-			return client.player.hurtTime > 0; // Do not use isHurt, that's not what we want!
-		} else {
-			return false;
-		}
-	}
+    private static boolean isOnGround() {
+        return client.player != null && client.player.isOnGround();
+    }
 
-	private static boolean isInvisible() {
-		if (client.player != null) {
-			return client.player.isInvisible();
-		} else {
-			return false;
-		}
-	}
+    private static boolean isHurt() {
+        if (client.player != null) {
+            return client.player.hurtTime > 0; // Do not use isHurt, that's not what we want!
+        } else {
+            return false;
+        }
+    }
 
-	private static boolean isBurning() {
-		if (client.player != null) {
-			return client.player.isOnFire();
-		} else {
-			return false;
-		}
-	}
+    private static boolean isInvisible() {
+        if (client.player != null) {
+            return client.player.isInvisible();
+        } else {
+            return false;
+        }
+    }
 
-	private static boolean isSneaking() {
-		if (client.player != null) {
-			return client.player.isCrouching();
-		} else {
-			return false;
-		}
-	}
+    private static boolean isBurning() {
+        if (client.player != null) {
+            return client.player.isOnFire();
+        } else {
+            return false;
+        }
+    }
 
-	private static boolean isSprinting() {
-		if (client.player != null) {
-			return client.player.isSprinting();
-		} else {
-			return false;
-		}
-	}
+    private static boolean isSneaking() {
+        if (client.player != null) {
+            return client.player.isCrouching();
+        } else {
+            return false;
+        }
+    }
 
-	private static Vector3d getSkyColor() {
-		if (client.level == null || client.cameraEntity == null) {
-			return ZERO_VECTOR_3d;
-		}
+    private static boolean isSprinting() {
+        if (client.player != null) {
+            return client.player.isSprinting();
+        } else {
+            return false;
+        }
+    }
 
-		return JomlConversions.fromVec3(client.level.getSkyColor(client.cameraEntity.blockPosition(),
-				CapturedRenderingState.INSTANCE.getTickDelta()));
-	}
+    private static Vector3d getSkyColor() {
+        if (client.level == null || client.cameraEntity == null) {
+            return ZERO_VECTOR_3d;
+        }
 
-	static float getBlindness() {
-		Entity cameraEntity = client.getCameraEntity();
+        return JomlConversions.fromVec3(client.level.getSkyColor(client.cameraEntity.blockPosition(),
+                CapturedRenderingState.INSTANCE.getTickDelta()));
+    }
 
-		if (cameraEntity instanceof LivingEntity) {
-			MobEffectInstance blindness = ((LivingEntity) cameraEntity).getEffect(MobEffects.BLINDNESS);
+    static float getBlindness() {
+        Entity cameraEntity = client.getCameraEntity();
 
-			if (blindness != null) {
-				// Guessing that this is what OF uses, based on how vanilla calculates the fog value in BackgroundRenderer
-				// TODO: Add this to ShaderDoc
-				return Math.clamp(0.0F, 1.0F, blindness.getDuration() / 20.0F);
-			}
-		}
+        if (cameraEntity instanceof LivingEntity) {
+            MobEffectInstance blindness = ((LivingEntity) cameraEntity).getEffect(MobEffects.BLINDNESS);
 
-		return 0.0F;
-	}
+            if (blindness != null) {
+                // Guessing that this is what OF uses, based on how vanilla calculates the fog value in BackgroundRenderer
+                // TODO: Add this to ShaderDoc
+                return Math.clamp(0.0F, 1.0F, blindness.getDuration() / 20.0F);
+            }
+        }
 
-	private static float getPlayerMood() {
-		if (!(client.cameraEntity instanceof LocalPlayer)) {
-			return 0.0F;
-		}
+        return 0.0F;
+    }
 
-		// This should always be 0 to 1 anyways but just making sure
-		return Math.clamp(0.0F, 1.0F, ((LocalPlayer) client.cameraEntity).getCurrentMood());
-	}
+    private static float getPlayerMood() {
+        if (!(client.cameraEntity instanceof LocalPlayer)) {
+            return 0.0F;
+        }
 
-	static float getRainStrength() {
-		if (client.level == null) {
-			return 0f;
-		}
+        // This should always be 0 to 1 anyways but just making sure
+        return Math.clamp(0.0F, 1.0F, ((LocalPlayer) client.cameraEntity).getCurrentMood());
+    }
 
-		// Note: Ensure this is in the range of 0 to 1 - some custom servers send out of range values.
-		return Math.clamp(0.0F, 1.0F,
-			client.level.getRainLevel(CapturedRenderingState.INSTANCE.getTickDelta()));
-	}
+    static float getRainStrength() {
+        if (client.level == null) {
+            return 0f;
+        }
 
-	private static Vector2i getEyeBrightness() {
-		if (client.cameraEntity == null || client.level == null) {
-			return ZERO_VECTOR_2i;
-		}
+        // Note: Ensure this is in the range of 0 to 1 - some custom servers send out of range values.
+        return Math.clamp(0.0F, 1.0F,
+                client.level.getRainLevel(CapturedRenderingState.INSTANCE.getTickDelta()));
+    }
 
-		Vec3 feet = client.cameraEntity.position();
-		Vec3 eyes = new Vec3(feet.x, client.cameraEntity.getEyeY(), feet.z);
-		BlockPos eyeBlockPos = new BlockPos(eyes);
+    private static Vector2i getEyeBrightness() {
+        if (client.cameraEntity == null || client.level == null) {
+            return ZERO_VECTOR_2i;
+        }
 
-		int blockLight = client.level.getBrightness(LightLayer.BLOCK, eyeBlockPos);
-		int skyLight = client.level.getBrightness(LightLayer.SKY, eyeBlockPos);
+        Vec3 feet = client.cameraEntity.position();
+        Vec3 eyes = new Vec3(feet.x, client.cameraEntity.getEyeY(), feet.z);
+        BlockPos eyeBlockPos = new BlockPos(eyes);
 
-		return new Vector2i(blockLight * 16, skyLight * 16);
-	}
+        int blockLight = client.level.getBrightness(LightLayer.BLOCK, eyeBlockPos);
+        int skyLight = client.level.getBrightness(LightLayer.SKY, eyeBlockPos);
 
-	private static float getNightVision() {
-		Entity cameraEntity = client.getCameraEntity();
+        return new Vector2i(blockLight * 16, skyLight * 16);
+    }
 
-		if (cameraEntity instanceof LivingEntity) {
-			LivingEntity livingEntity = (LivingEntity) cameraEntity;
+    private static float getNightVision() {
+        Entity cameraEntity = client.getCameraEntity();
 
-			try {
-				// See MixinGameRenderer#iris$safecheckNightvisionStrength.
-				//
-				// We modify the behavior of getNightVisionScale so that it's safe for us to call it even on entities
-				// that don't have the effect, allowing us to pick up modified night vision strength values from mods
-				// like Origins.
-				//
-				// See: https://github.com/apace100/apoli/blob/320b0ef547fbbf703de7154f60909d30366f6500/src/main/java/io/github/apace100/apoli/mixin/GameRendererMixin.java#L153
-				float nightVisionStrength =
-						GameRenderer.getNightVisionScale(livingEntity, CapturedRenderingState.INSTANCE.getTickDelta());
+        if (cameraEntity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) cameraEntity;
 
-				if (nightVisionStrength > 0) {
-					// Just protecting against potential weird mod behavior
-					return Math.clamp(0.0F, 1.0F, nightVisionStrength);
-				}
-			} catch (NullPointerException e) {
-				// If our injection didn't get applied, a NullPointerException will occur from calling that method if
-				// the entity doesn't currently have night vision. This isn't pretty but it's functional.
-				return 0.0F;
-			}
-		}
+            try {
+                // See MixinGameRenderer#iris$safecheckNightvisionStrength.
+                //
+                // We modify the behavior of getNightVisionScale so that it's safe for us to call it even on entities
+                // that don't have the effect, allowing us to pick up modified night vision strength values from mods
+                // like Origins.
+                //
+                // See: https://github.com/apace100/apoli/blob/320b0ef547fbbf703de7154f60909d30366f6500/src/main/java/io/github/apace100/apoli/mixin/GameRendererMixin.java#L153
+                float nightVisionStrength =
+                        GameRenderer.getNightVisionScale(livingEntity, CapturedRenderingState.INSTANCE.getTickDelta());
 
-		// Conduit power gives the player a sort-of night vision effect when underwater.
-		// This lets existing shaderpacks be compatible with conduit power automatically.
-		//
-		// Yes, this should be the player entity, to match LightmapTextureManager.
-		if (client.player != null && client.player.hasEffect(MobEffects.CONDUIT_POWER)) {
-			float underwaterVisibility = client.player.getWaterVision();
+                if (nightVisionStrength > 0) {
+                    // Just protecting against potential weird mod behavior
+                    return Math.clamp(0.0F, 1.0F, nightVisionStrength);
+                }
+            } catch (NullPointerException e) {
+                // If our injection didn't get applied, a NullPointerException will occur from calling that method if
+                // the entity doesn't currently have night vision. This isn't pretty but it's functional.
+                return 0.0F;
+            }
+        }
 
-			if (underwaterVisibility > 0.0f) {
-				// Just protecting against potential weird mod behavior
-				return Math.clamp(0.0F, 1.0F, underwaterVisibility);
-			}
-		}
+        // Conduit power gives the player a sort-of night vision effect when underwater.
+        // This lets existing shaderpacks be compatible with conduit power automatically.
+        //
+        // Yes, this should be the player entity, to match LightmapTextureManager.
+        if (client.player != null && client.player.hasEffect(MobEffects.CONDUIT_POWER)) {
+            float underwaterVisibility = client.player.getWaterVision();
 
-		return 0.0F;
-	}
+            if (underwaterVisibility > 0.0f) {
+                // Just protecting against potential weird mod behavior
+                return Math.clamp(0.0F, 1.0F, underwaterVisibility);
+            }
+        }
 
-	static int isEyeInWater() {
-		// Note: With certain utility / cheat mods, this method will return air even when the player is submerged when
-		// the "No Overlay" feature is enabled.
-		//
-		// I'm not sure what the best way to deal with this is, but the current approach seems to be an acceptable one -
-		// after all, disabling the overlay results in the intended effect of it not really looking like you're
-		// underwater on most shaderpacks. For now, I will leave this as-is, but it is something to keep in mind.
-		FluidState submergedFluid = client.gameRenderer.getMainCamera().getFluidInCamera();
+        return 0.0F;
+    }
 
-		if (submergedFluid.is(FluidTags.WATER)) {
-			return 1;
-		} else if (submergedFluid.is(FluidTags.LAVA)) {
-			return 2;
-		} else {
-			return 0;
-		}
-	}
+    static int isEyeInWater() {
+        // Note: With certain utility / cheat mods, this method will return air even when the player is submerged when
+        // the "No Overlay" feature is enabled.
+        //
+        // I'm not sure what the best way to deal with this is, but the current approach seems to be an acceptable one -
+        // after all, disabling the overlay results in the intended effect of it not really looking like you're
+        // underwater on most shaderpacks. For now, I will leave this as-is, but it is something to keep in mind.
+        FluidState submergedFluid = client.gameRenderer.getMainCamera().getFluidInCamera();
 
-	static {
-		GbufferPrograms.init();
-	}
+        if (submergedFluid.is(FluidTags.WATER)) {
+            return 1;
+        } else if (submergedFluid.is(FluidTags.LAVA)) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
 }

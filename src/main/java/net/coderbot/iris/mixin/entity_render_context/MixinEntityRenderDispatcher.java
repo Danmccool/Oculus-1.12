@@ -23,27 +23,27 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
  */
 @Mixin(EntityRenderDispatcher.class)
 public class MixinEntityRenderDispatcher {
-	// Inject after MatrixStack#push since at this point we know that most cancellation checks have already passed.
-	@ModifyVariable(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V", shift = At.Shift.AFTER),
-			allow = 1, require = 1)
-	private MultiBufferSource iris$beginEntityRender(MultiBufferSource bufferSource, Entity entity) {
-		if (!(bufferSource instanceof Groupable)) {
-			// Fully batched entity rendering is not being used, do not use this wrapper!!!
-			return bufferSource;
-		}
+    // Inject after MatrixStack#push since at this point we know that most cancellation checks have already passed.
+    @ModifyVariable(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V", shift = At.Shift.AFTER),
+            allow = 1, require = 1)
+    private MultiBufferSource iris$beginEntityRender(MultiBufferSource bufferSource, Entity entity) {
+        if (!(bufferSource instanceof Groupable)) {
+            // Fully batched entity rendering is not being used, do not use this wrapper!!!
+            return bufferSource;
+        }
 
-		ResourceLocation entityId = Registry.ENTITY_TYPE.getKey(entity.getType());
+        ResourceLocation entityId = Registry.ENTITY_TYPE.getKey(entity.getType());
 
-		Object2IntFunction<NamespacedId> entityIds = BlockRenderingSettings.INSTANCE.getEntityIds();
+        Object2IntFunction<NamespacedId> entityIds = BlockRenderingSettings.INSTANCE.getEntityIds();
 
-		if (entityIds == null) {
-			return bufferSource;
-		}
+        if (entityIds == null) {
+            return bufferSource;
+        }
 
-		int intId = entityIds.applyAsInt(new NamespacedId(entityId.getNamespace(), entityId.getPath()));
-		RenderStateShard phase = EntityRenderStateShard.forId(intId);
+        int intId = entityIds.applyAsInt(new NamespacedId(entityId.getNamespace(), entityId.getPath()));
+        RenderStateShard phase = EntityRenderStateShard.forId(intId);
 
-		return type ->
-				bufferSource.getBuffer(OuterWrappedRenderType.wrapExactlyOnce("iris:is_entity", type, phase));
-	}
+        return type ->
+                bufferSource.getBuffer(OuterWrappedRenderType.wrapExactlyOnce("iris:is_entity", type, phase));
+    }
 }

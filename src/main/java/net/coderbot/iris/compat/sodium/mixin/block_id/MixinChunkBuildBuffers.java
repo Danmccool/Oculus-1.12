@@ -1,13 +1,5 @@
 package net.coderbot.iris.compat.sodium.mixin.block_id;
 
-import net.minecraft.block.state.IBlockState;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.jellysquid.mods.sodium.client.model.vertex.VertexSink;
 import me.jellysquid.mods.sodium.client.model.vertex.buffer.VertexBufferView;
@@ -18,6 +10,13 @@ import net.coderbot.iris.block_rendering.BlockRenderingSettings;
 import net.coderbot.iris.compat.sodium.impl.block_context.BlockContextHolder;
 import net.coderbot.iris.compat.sodium.impl.block_context.ChunkBuildBuffersExt;
 import net.coderbot.iris.compat.sodium.impl.block_context.ContextAwareVertexWriter;
+import net.minecraft.block.state.IBlockState;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Associates the block context holder with the chunk build buffers, allowing {@link MixinChunkRenderRebuildTask} to pass
@@ -25,48 +24,48 @@ import net.coderbot.iris.compat.sodium.impl.block_context.ContextAwareVertexWrit
  */
 @Mixin(ChunkBuildBuffers.class)
 public class MixinChunkBuildBuffers implements ChunkBuildBuffersExt {
-	@Unique
-	private BlockContextHolder contextHolder;
+    @Unique
+    private BlockContextHolder contextHolder;
 
-	@Inject(method = "<init>", at = @At("RETURN"), remap = false)
-	private void iris$onConstruct(ChunkVertexType vertexType, BlockRenderPassManager renderPassManager, CallbackInfo ci) {
-		Object2IntMap<IBlockState> blockStateIds = BlockRenderingSettings.INSTANCE.getBlockStateIds();
+    @Inject(method = "<init>", at = @At("RETURN"), remap = false)
+    private void iris$onConstruct(ChunkVertexType vertexType, BlockRenderPassManager renderPassManager, CallbackInfo ci) {
+        Object2IntMap<IBlockState> blockStateIds = BlockRenderingSettings.INSTANCE.getBlockStateIds();
 
-		if (blockStateIds != null) {
-			this.contextHolder = new BlockContextHolder(blockStateIds);
-		} else {
-			this.contextHolder = new BlockContextHolder();
-		}
-	}
+        if (blockStateIds != null) {
+            this.contextHolder = new BlockContextHolder(blockStateIds);
+        } else {
+            this.contextHolder = new BlockContextHolder();
+        }
+    }
 
-	@Redirect(method = "init", remap = false, at = @At(value = "INVOKE",
-			target = "me/jellysquid/mods/sodium/client/model/vertex/type/ChunkVertexType.createBufferWriter(" +
-						"Lme/jellysquid/mods/sodium/client/model/vertex/buffer/VertexBufferView;" +
-						"Z" +
-					")Lme/jellysquid/mods/sodium/client/model/vertex/VertexSink;", remap = false))
-	private VertexSink iris$redirectWriterCreation(ChunkVertexType vertexType,
-												   VertexBufferView buffer, boolean direct) {
-		VertexSink sink = vertexType.createBufferWriter(buffer, direct);
+    @Redirect(method = "init", remap = false, at = @At(value = "INVOKE",
+            target = "me/jellysquid/mods/sodium/client/model/vertex/type/ChunkVertexType.createBufferWriter(" +
+                    "Lme/jellysquid/mods/sodium/client/model/vertex/buffer/VertexBufferView;" +
+                    "Z" +
+                    ")Lme/jellysquid/mods/sodium/client/model/vertex/VertexSink;", remap = false))
+    private VertexSink iris$redirectWriterCreation(ChunkVertexType vertexType,
+                                                   VertexBufferView buffer, boolean direct) {
+        VertexSink sink = vertexType.createBufferWriter(buffer, direct);
 
-		if (sink instanceof ContextAwareVertexWriter) {
-			((ContextAwareVertexWriter) sink).iris$setContextHolder(contextHolder);
-		}
+        if (sink instanceof ContextAwareVertexWriter) {
+            ((ContextAwareVertexWriter) sink).iris$setContextHolder(contextHolder);
+        }
 
-		return sink;
-	}
+        return sink;
+    }
 
-	@Override
-	public void iris$setLocalPos(int localPosX, int localPosY, int localPosZ) {
-		this.contextHolder.setLocalPos(localPosX, localPosY, localPosZ);
-	}
+    @Override
+    public void iris$setLocalPos(int localPosX, int localPosY, int localPosZ) {
+        this.contextHolder.setLocalPos(localPosX, localPosY, localPosZ);
+    }
 
-	@Override
-	public void iris$setMaterialId(BlockState state, short renderType) {
-		this.contextHolder.set(state, renderType);
-	}
+    @Override
+    public void iris$setMaterialId(IBlockState state, short renderType) {
+        this.contextHolder.set(state, renderType);
+    }
 
-	@Override
-	public void iris$resetBlockContext() {
-		this.contextHolder.reset();
-	}
+    @Override
+    public void iris$resetBlockContext() {
+        this.contextHolder.reset();
+    }
 }

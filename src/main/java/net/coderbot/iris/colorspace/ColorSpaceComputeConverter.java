@@ -8,12 +8,11 @@ import net.coderbot.iris.gl.texture.InternalTextureFormat;
 import net.coderbot.iris.shaderpack.StringPair;
 import net.coderbot.iris.shaderpack.preprocessor.JcppProcessor;
 import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL43C;
+import org.lwjgl.opengl.GL42;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +23,7 @@ public class ColorSpaceComputeConverter implements ColorSpaceConverter {
     private ComputeProgram program;
 
     private int target;
+
     public ColorSpaceComputeConverter(int width, int height, ColorSpace colorSpace) {
         rebuildProgram(width, height, colorSpace);
     }
@@ -63,8 +63,9 @@ public class ColorSpaceComputeConverter implements ColorSpaceConverter {
 
         this.target = targetImage;
         program.use();
+
         IrisRenderSystem.dispatchCompute(width / 8, height / 8, 1);
-        IrisRenderSystem.memoryBarrier(GL43C.GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL43C.GL_TEXTURE_FETCH_BARRIER_BIT);
+        IrisRenderSystem.memoryBarrier(GL42.GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL42.GL_TEXTURE_FETCH_BARRIER_BIT);
         ComputeProgram.unbind();
     }
 }

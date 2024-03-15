@@ -1,10 +1,9 @@
 package net.coderbot.batchedentityrendering.impl;
 
-import java.nio.ByteBuffer;
-
 import com.mojang.blaze3d.vertex.BufferBuilder;
-
 import net.minecraft.client.renderer.RenderType;
+
+import java.nio.ByteBuffer;
 
 public class BufferSegment {
     private final ByteBuffer slice;

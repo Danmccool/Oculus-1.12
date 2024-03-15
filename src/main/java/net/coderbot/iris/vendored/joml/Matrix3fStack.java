@@ -34,7 +34,7 @@ import java.io.ObjectOutput;
  * {@link Matrix3fStack}/{@link Matrix3f} itself. This affects all operations in {@link Matrix3f} that take another
  * {@link Matrix3f} as parameter. If a {@link Matrix3fStack} is used as argument to those methods, the effective
  * argument will always be the <i>current</i> matrix of the matrix stack.
- * 
+ *
  * @author Kai Burjack
  */
 public class Matrix3fStack extends Matrix3f {
@@ -55,10 +55,9 @@ public class Matrix3fStack extends Matrix3f {
      * Create a new {@link Matrix3fStack} of the given size.
      * <p>
      * Initially the stack pointer is at zero and the current matrix is set to identity.
-     * 
-     * @param stackSize
-     *            the size of the stack. This must be at least 1, in which case the {@link Matrix3fStack} simply only consists of <code>this</code>
-     *            {@link Matrix3f}
+     *
+     * @param stackSize the size of the stack. This must be at least 1, in which case the {@link Matrix3fStack} simply only consists of <code>this</code>
+     *                  {@link Matrix3f}
      */
     public Matrix3fStack(int stackSize) {
         if (stackSize < 1) {
@@ -74,7 +73,7 @@ public class Matrix3fStack extends Matrix3f {
     /**
      * Do not invoke manually! Only meant for serialization.
      * <p>
-     * Invoking this constructor from client code will result in an inconsistent state of the 
+     * Invoking this constructor from client code will result in an inconsistent state of the
      * created {@link Matrix3fStack} instance.
      */
     public Matrix3fStack() {
@@ -83,7 +82,7 @@ public class Matrix3fStack extends Matrix3f {
 
     /**
      * Set the stack pointer to zero and set the current/bottom matrix to {@link #identity() identity}.
-     * 
+     *
      * @return this
      */
     public Matrix3fStack clear() {
@@ -94,7 +93,7 @@ public class Matrix3fStack extends Matrix3f {
 
     /**
      * Increment the stack pointer by one and set the values of the new current matrix to the one directly below it.
-     * 
+     *
      * @return this
      */
     public Matrix3fStack pushMatrix() {
@@ -109,7 +108,7 @@ public class Matrix3fStack extends Matrix3f {
      * Decrement the stack pointer by one.
      * <p>
      * This will effectively dispose of the current matrix.
-     * 
+     *
      * @return this
      */
     public Matrix3fStack popMatrix() {
@@ -132,7 +131,7 @@ public class Matrix3fStack extends Matrix3f {
 
     /*
      * Contract between Matrix3f and Matrix3fStack:
-     * 
+     *
      * - Matrix3f.equals(Matrix3fStack) is true iff all the 9 matrix elements are equal
      * - Matrix3fStack.equals(Matrix3f) is true iff all the 9 matrix elements are equal
      * - Matrix3fStack.equals(Matrix3fStack) is true iff all 9 matrix elements are equal AND the matrix arrays as well as the stack pointer are equal

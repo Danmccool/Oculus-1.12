@@ -36,9 +36,9 @@ import java.text.NumberFormat;
  * Contains the definition of a 3x2 matrix of floats, and associated functions to transform
  * it. The matrix is column-major to match OpenGL's interpretation, and it looks like this:
  * <p>
- *      m00  m10  m20<br>
- *      m01  m11  m21<br>
- * 
+ * m00  m10  m20<br>
+ * m01  m11  m21<br>
+ *
  * @author Kai Burjack
  */
 public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
@@ -59,9 +59,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Create a new {@link Matrix3x2f} and make it a copy of the given matrix.
-     * 
-     * @param mat
-     *          the {@link Matrix3x2fc} to copy the values from
+     *
+     * @param mat the {@link Matrix3x2fc} to copy the values from
      */
     public Matrix3x2f(Matrix3x2fc mat) {
         if (mat instanceof Matrix3x2f) {
@@ -75,8 +74,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Create a new {@link Matrix3x2f} by setting its left 2x2 submatrix to the values of the given {@link Matrix2fc}
      * and the rest to identity.
      *
-     * @param mat
-     *          the {@link Matrix2fc}
+     * @param mat the {@link Matrix2fc}
      */
     public Matrix3x2f(Matrix2fc mat) {
         if (mat instanceof Matrix2f) {
@@ -87,21 +85,15 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     }
 
     /**
-     * Create a new 3x2 matrix using the supplied float values. The order of the parameter is column-major, 
+     * Create a new 3x2 matrix using the supplied float values. The order of the parameter is column-major,
      * so the first two parameters specify the two elements of the first column.
-     * 
-     * @param m00
-     *          the value of m00
-     * @param m01
-     *          the value of m01
-     * @param m10
-     *          the value of m10
-     * @param m11
-     *          the value of m11
-     * @param m20
-     *          the value of m20
-     * @param m21
-     *          the value of m21
+     *
+     * @param m00 the value of m00
+     * @param m01 the value of m01
+     * @param m10 the value of m10
+     * @param m11 the value of m11
+     * @param m20 the value of m20
+     * @param m21 the value of m21
      */
     public Matrix3x2f(float m00, float m01,
                       float m10, float m11,
@@ -122,9 +114,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * That FloatBuffer is expected to hold the values in column-major order.
      * <p>
      * The buffer's position will not be changed by this method.
-     * 
-     * @param buffer
-     *          the {@link FloatBuffer} to read the matrix values from
+     *
+     * @param buffer the {@link FloatBuffer} to read the matrix values from
      */
     public Matrix3x2f(FloatBuffer buffer) {
         MemUtil.INSTANCE.get(this, buffer.position(), buffer);
@@ -134,82 +125,86 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     public float m00() {
         return m00;
     }
+
     public float m01() {
         return m01;
     }
+
     public float m10() {
         return m10;
     }
+
     public float m11() {
         return m11;
     }
+
     public float m20() {
         return m20;
     }
+
     public float m21() {
         return m21;
     }
 
     /**
      * Set the value of the matrix element at column 0 and row 0.
-     * 
-     * @param m00
-     *          the new value
+     *
+     * @param m00 the new value
      * @return this
      */
     Matrix3x2f _m00(float m00) {
         this.m00 = m00;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 0 and row 1.
-     * 
-     * @param m01
-     *          the new value
+     *
+     * @param m01 the new value
      * @return this
      */
     Matrix3x2f _m01(float m01) {
         this.m01 = m01;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 1 and row 0.
-     * 
-     * @param m10
-     *          the new value
+     *
+     * @param m10 the new value
      * @return this
      */
     Matrix3x2f _m10(float m10) {
         this.m10 = m10;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 1 and row 1.
-     * 
-     * @param m11
-     *          the new value
+     *
+     * @param m11 the new value
      * @return this
      */
     Matrix3x2f _m11(float m11) {
         this.m11 = m11;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 2 and row 0.
-     * 
-     * @param m20
-     *          the new value
+     *
+     * @param m20 the new value
      * @return this
      */
     Matrix3x2f _m20(float m20) {
         this.m20 = m20;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 2 and row 1.
-     * 
-     * @param m21
-     *          the new value
+     *
+     * @param m21 the new value
      * @return this
      */
     Matrix3x2f _m21(float m21) {
@@ -219,9 +214,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Set the elements of this matrix to the ones in <code>m</code>.
-     * 
-     * @param m
-     *          the matrix to copy the elements from
+     *
+     * @param m the matrix to copy the elements from
      * @return this
      */
     public Matrix3x2f set(Matrix3x2fc m) {
@@ -232,6 +226,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
         }
         return this;
     }
+
     private void setMatrix3x2fc(Matrix3x2fc mat) {
         m00 = mat.m00();
         m01 = mat.m01();
@@ -244,8 +239,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Set the left 2x2 submatrix of this {@link Matrix3x2f} to the given {@link Matrix2fc} and don't change the other elements.
      *
-     * @param m
-     *          the 2x2 matrix
+     * @param m the 2x2 matrix
      * @return this
      */
     public Matrix3x2f set(Matrix2fc m) {
@@ -256,6 +250,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
         }
         return this;
     }
+
     private void setMatrix2fc(Matrix2fc mat) {
         m00 = mat.m00();
         m01 = mat.m01();
@@ -271,9 +266,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
-     * 
-     * @param right
-     *          the right operand of the matrix multiplication
+     *
+     * @param right the right operand of the matrix multiplication
      * @return this
      */
     public Matrix3x2f mul(Matrix3x2fc right) {
@@ -288,11 +282,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
-     * 
-     * @param right
-     *          the right operand of the matrix multiplication
-     * @param dest
-     *          will hold the result
+     *
+     * @param right the right operand of the matrix multiplication
+     * @param dest  will hold the result
      * @return dest
      */
     public Matrix3x2f mul(Matrix3x2fc right, Matrix3x2f dest) {
@@ -319,12 +311,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * vector <code>v</code> with the new matrix by using <code>L * M * v</code>, the
      * transformation of <code>this</code> matrix will be applied first!
      *
-     * @param left
-     *          the left operand of the matrix multiplication
+     * @param left the left operand of the matrix multiplication
      * @return this
      */
     public Matrix3x2f mulLocal(Matrix3x2fc left) {
-       return mulLocal(left, this);
+        return mulLocal(left, this);
     }
 
     public Matrix3x2f mulLocal(Matrix3x2fc left, Matrix3x2f dest) {
@@ -348,23 +339,17 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * m00, m10, m20<br>
      * m01, m11, m21<br>
-     * 
-     * @param m00
-     *          the new value of m00
-     * @param m01
-     *          the new value of m01
-     * @param m10
-     *          the new value of m10
-     * @param m11
-     *          the new value of m11
-     * @param m20
-     *          the new value of m20
-     * @param m21
-     *          the new value of m21
+     *
+     * @param m00 the new value of m00
+     * @param m01 the new value of m01
+     * @param m10 the new value of m10
+     * @param m11 the new value of m11
+     * @param m20 the new value of m20
+     * @param m21 the new value of m21
      * @return this
      */
-    public Matrix3x2f set(float m00, float m01, 
-                          float m10, float m11, 
+    public Matrix3x2f set(float m00, float m01,
+                          float m10, float m11,
                           float m20, float m21) {
         this.m00 = m00;
         this.m01 = m01;
@@ -380,21 +365,20 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * 0, 2, 4<br>
      * 1, 3, 5<br>
-     * 
+     * <p>
      * This method only uses the first 6 values, all others are ignored.
-     * 
-     * @param m
-     *          the array to read the matrix values from
+     *
+     * @param m the array to read the matrix values from
      * @return this
      */
-    public Matrix3x2f set(float m[]) {
+    public Matrix3x2f set(float[] m) {
         MemUtil.INSTANCE.copy(m, 0, this);
         return this;
     }
 
     /**
      * Return the determinant of this matrix.
-     * 
+     *
      * @return the determinant
      */
     public float determinant() {
@@ -413,18 +397,17 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Invert the <code>this</code> matrix by assuming a third row in this matrix of <code>(0, 0, 1)</code>
      * and store the result in <code>dest</code>.
-     * 
-     * @param dest
-     *             will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     public Matrix3x2f invert(Matrix3x2f dest) {
         // client must make sure that matrix is invertible
         float s = 1.0f / (m00 * m11 - m01 * m10);
-        float nm00 =  m11 * s;
+        float nm00 = m11 * s;
         float nm01 = -m01 * s;
         float nm10 = -m10 * s;
-        float nm11 =  m00 * s;
+        float nm11 = m00 * s;
         float nm20 = (m10 * m21 - m20 * m11) * s;
         float nm21 = (m20 * m01 - m00 * m21) * s;
         dest.m00 = nm00;
@@ -444,14 +427,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to apply a translation via to an already existing transformation
      * matrix, use {@link #translate(float, float) translate()} instead.
-     * 
-     * @see #translate(float, float)
-     * 
-     * @param x
-     *          the units to translate in x
-     * @param y
-     *          the units to translate in y
+     *
+     * @param x the units to translate in x
+     * @param y the units to translate in y
      * @return this
+     * @see #translate(float, float)
      */
     public Matrix3x2f translation(float x, float y) {
         m00 = 1.0f;
@@ -471,12 +451,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to apply a translation via to an already existing transformation
      * matrix, use {@link #translate(Vector2fc) translate()} instead.
-     * 
-     * @see #translate(Vector2fc)
-     * 
-     * @param offset
-     *          the translation
+     *
+     * @param offset the translation
      * @return this
+     * @see #translate(Vector2fc)
      */
     public Matrix3x2f translation(Vector2fc offset) {
         return translation(offset.x(), offset.y());
@@ -487,15 +465,12 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * To build a translation matrix instead, use {@link #translation(float, float)}.
      * To apply a translation to another matrix, use {@link #translate(float, float)}.
-     * 
+     *
+     * @param x the offset to translate in x
+     * @param y the offset to translate in y
+     * @return this
      * @see #translation(float, float)
      * @see #translate(float, float)
-     * 
-     * @param x
-     *          the offset to translate in x
-     * @param y
-     *          the offset to translate in y
-     * @return this
      */
     public Matrix3x2f setTranslation(float x, float y) {
         m20 = x;
@@ -508,13 +483,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * To build a translation matrix instead, use {@link #translation(Vector2fc)}.
      * To apply a translation to another matrix, use {@link #translate(Vector2fc)}.
-     * 
+     *
+     * @param offset the new translation to set
+     * @return this
      * @see #translation(Vector2fc)
      * @see #translate(Vector2fc)
-     * 
-     * @param offset
-     *          the new translation to set
-     * @return this
      */
     public Matrix3x2f setTranslation(Vector2f offset) {
         return setTranslation(offset.x, offset.y);
@@ -531,16 +504,12 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without post-multiplying
      * it, use {@link #translation(float, float)}.
-     * 
-     * @see #translation(float, float)
-     * 
-     * @param x
-     *          the offset to translate in x
-     * @param y
-     *          the offset to translate in y
-     * @param dest
-     *          will hold the result
+     *
+     * @param x    the offset to translate in x
+     * @param y    the offset to translate in y
+     * @param dest will hold the result
      * @return dest
+     * @see #translation(float, float)
      */
     public Matrix3x2f translate(float x, float y, Matrix3x2f dest) {
         float rm20 = x;
@@ -564,14 +533,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without post-multiplying
      * it, use {@link #translation(float, float)}.
-     * 
-     * @see #translation(float, float)
-     * 
-     * @param x
-     *          the offset to translate in x
-     * @param y
-     *          the offset to translate in y
+     *
+     * @param x the offset to translate in x
+     * @param y the offset to translate in y
      * @return this
+     * @see #translation(float, float)
      */
     public Matrix3x2f translate(float x, float y) {
         return translate(x, y, this);
@@ -588,14 +554,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without post-multiplying
      * it, use {@link #translation(float, float)}.
-     * 
-     * @see #translation(Vector2fc)
-     * 
-     * @param offset
-     *          the offset to translate
-     * @param dest
-     *          will hold the result
+     *
+     * @param offset the offset to translate
+     * @param dest   will hold the result
      * @return dest
+     * @see #translation(Vector2fc)
      */
     public Matrix3x2f translate(Vector2fc offset, Matrix3x2f dest) {
         return translate(offset.x(), offset.y(), dest);
@@ -611,12 +574,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without post-multiplying
      * it, use {@link #translation(float, float)}.
-     * 
-     * @see #translation(Vector2fc)
-     * 
-     * @param offset
-     *          the offset to translate
+     *
+     * @param offset the offset to translate
      * @return this
+     * @see #translation(Vector2fc)
      */
     public Matrix3x2f translate(Vector2fc offset) {
         return translate(offset.x(), offset.y(), this);
@@ -633,12 +594,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without pre-multiplying
      * it, use {@link #translation(Vector2fc)}.
-     * 
-     * @see #translation(Vector2fc)
-     * 
-     * @param offset
-     *          the number of units in x and y by which to translate
+     *
+     * @param offset the number of units in x and y by which to translate
      * @return this
+     * @see #translation(Vector2fc)
      */
     public Matrix3x2f translateLocal(Vector2fc offset) {
         return translateLocal(offset.x(), offset.y());
@@ -655,14 +614,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without pre-multiplying
      * it, use {@link #translation(Vector2fc)}.
-     * 
-     * @see #translation(Vector2fc)
-     * 
-     * @param offset
-     *          the number of units in x and y by which to translate
-     * @param dest
-     *          will hold the result
+     *
+     * @param offset the number of units in x and y by which to translate
+     * @param dest   will hold the result
      * @return dest
+     * @see #translation(Vector2fc)
      */
     public Matrix3x2f translateLocal(Vector2fc offset, Matrix3x2f dest) {
         return translateLocal(offset.x(), offset.y(), dest);
@@ -679,16 +635,12 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without pre-multiplying
      * it, use {@link #translation(float, float)}.
-     * 
-     * @see #translation(float, float)
-     * 
-     * @param x
-     *          the offset to translate in x
-     * @param y
-     *          the offset to translate in y
-     * @param dest
-     *          will hold the result
+     *
+     * @param x    the offset to translate in x
+     * @param y    the offset to translate in y
+     * @param dest will hold the result
      * @return dest
+     * @see #translation(float, float)
      */
     public Matrix3x2f translateLocal(float x, float y, Matrix3x2f dest) {
         dest.m00 = m00;
@@ -711,14 +663,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to set the matrix to a translation transformation without pre-multiplying
      * it, use {@link #translation(float, float)}.
-     * 
-     * @see #translation(float, float)
-     * 
-     * @param x
-     *          the offset to translate in x
-     * @param y
-     *          the offset to translate in y
+     *
+     * @param x the offset to translate in x
+     * @param y the offset to translate in y
      * @return this
+     * @see #translation(float, float)
      */
     public Matrix3x2f translateLocal(float x, float y) {
         return translateLocal(x, y, this);
@@ -728,7 +677,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Return a string representation of this matrix.
      * <p>
      * This method creates a new {@link DecimalFormat} on every invocation with the format string "<code>0.000E0;-</code>".
-     * 
+     *
      * @return the string representation
      */
     public String toString() {
@@ -754,14 +703,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Return a string representation of this matrix by formatting the matrix elements with the given {@link NumberFormat}.
-     * 
-     * @param formatter
-     *          the {@link NumberFormat} used to format the matrix values with
+     *
+     * @param formatter the {@link NumberFormat} used to format the matrix values with
      * @return the string representation
      */
     public String toString(NumberFormat formatter) {
         return Runtime.format(m00, formatter) + " " + Runtime.format(m10, formatter) + " " + Runtime.format(m20, formatter) + "\n"
-             + Runtime.format(m01, formatter) + " " + Runtime.format(m11, formatter) + " " + Runtime.format(m21, formatter) + "\n";
+                + Runtime.format(m01, formatter) + " " + Runtime.format(m11, formatter) + " " + Runtime.format(m21, formatter) + "\n";
     }
 
     /**
@@ -770,12 +718,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * This is the reverse method of {@link #set(Matrix3x2fc)} and allows to obtain
      * intermediate calculation results when chaining multiple transformations.
-     * 
-     * @see #set(Matrix3x2fc)
-     * 
-     * @param dest
-     *          the destination matrix
+     *
+     * @param dest the destination matrix
      * @return dest
+     * @see #set(Matrix3x2fc)
      */
     public Matrix3x2f get(Matrix3x2f dest) {
         return dest.set(this);
@@ -791,12 +737,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * In order to specify the offset into the FloatBuffer at which
      * the matrix is stored, use {@link #get(int, FloatBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get(int, FloatBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, FloatBuffer)
      */
     public FloatBuffer get(FloatBuffer buffer) {
         return get(buffer.position(), buffer);
@@ -807,11 +751,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given FloatBuffer.
-     * 
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     public FloatBuffer get(int index, FloatBuffer buffer) {
@@ -828,12 +770,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * In order to specify the offset into the ByteBuffer at which
      * the matrix is stored, use {@link #get(int, ByteBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get(int, ByteBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, ByteBuffer)
      */
     public ByteBuffer get(ByteBuffer buffer) {
         return get(buffer.position(), buffer);
@@ -844,11 +784,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given ByteBuffer.
-     * 
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     public ByteBuffer get(int index, ByteBuffer buffer) {
@@ -865,12 +803,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * In order to specify the offset into the FloatBuffer at which
      * the matrix is stored, use {@link #get3x3(int, FloatBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get3x3(int, FloatBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get3x3(int, FloatBuffer)
      */
     public FloatBuffer get3x3(FloatBuffer buffer) {
         MemUtil.INSTANCE.put3x3(this, 0, buffer);
@@ -882,11 +818,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given FloatBuffer.
-     * 
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     public FloatBuffer get3x3(int index, FloatBuffer buffer) {
@@ -903,12 +837,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * In order to specify the offset into the ByteBuffer at which
      * the matrix is stored, use {@link #get3x3(int, ByteBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get3x3(int, ByteBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get3x3(int, ByteBuffer)
      */
     public ByteBuffer get3x3(ByteBuffer buffer) {
         MemUtil.INSTANCE.put3x3(this, 0, buffer);
@@ -920,11 +852,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given ByteBuffer.
-     * 
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     public ByteBuffer get3x3(int index, ByteBuffer buffer) {
@@ -941,12 +871,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * In order to specify the offset into the FloatBuffer at which
      * the matrix is stored, use {@link #get4x4(int, FloatBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get4x4(int, FloatBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get4x4(int, FloatBuffer)
      */
     public FloatBuffer get4x4(FloatBuffer buffer) {
         MemUtil.INSTANCE.put4x4(this, 0, buffer);
@@ -958,11 +886,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given FloatBuffer.
-     * 
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     public FloatBuffer get4x4(int index, FloatBuffer buffer) {
@@ -979,12 +905,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * In order to specify the offset into the ByteBuffer at which
      * the matrix is stored, use {@link #get4x4(int, ByteBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get4x4(int, ByteBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get4x4(int, ByteBuffer)
      */
     public ByteBuffer get4x4(ByteBuffer buffer) {
         MemUtil.INSTANCE.put4x4(this, 0, buffer);
@@ -996,11 +920,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given ByteBuffer.
-     * 
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     public ByteBuffer get4x4(int index, ByteBuffer buffer) {
@@ -1011,11 +933,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Store this matrix into the supplied float array in column-major order at the given offset.
-     * 
-     * @param arr
-     *          the array to write the matrix values into
-     * @param offset
-     *          the offset into the array
+     *
+     * @param arr    the array to write the matrix values into
+     * @param offset the offset into the array
      * @return the passed in array
      */
     public float[] get(float[] arr, int offset) {
@@ -1027,12 +947,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Store this matrix into the supplied float array in column-major order.
      * <p>
      * In order to specify an explicit offset into the array, use the method {@link #get(float[], int)}.
-     * 
-     * @see #get(float[], int)
-     * 
-     * @param arr
-     *          the array to write the matrix values into
+     *
+     * @param arr the array to write the matrix values into
      * @return the passed in array
+     * @see #get(float[], int)
      */
     public float[] get(float[] arr) {
         return get(arr, 0);
@@ -1040,11 +958,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Store this matrix as an equivalent 3x3 matrix in column-major order into the supplied float array at the given offset.
-     * 
-     * @param arr
-     *          the array to write the matrix values into
-     * @param offset
-     *          the offset into the array
+     *
+     * @param arr    the array to write the matrix values into
+     * @param offset the offset into the array
      * @return the passed in array
      */
     public float[] get3x3(float[] arr, int offset) {
@@ -1056,12 +972,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Store this matrix as an equivalent 3x3 matrix in column-major order into the supplied float array.
      * <p>
      * In order to specify an explicit offset into the array, use the method {@link #get3x3(float[], int)}.
-     * 
-     * @see #get3x3(float[], int)
-     * 
-     * @param arr
-     *          the array to write the matrix values into
+     *
+     * @param arr the array to write the matrix values into
      * @return the passed in array
+     * @see #get3x3(float[], int)
      */
     public float[] get3x3(float[] arr) {
         return get3x3(arr, 0);
@@ -1069,11 +983,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Store this matrix as an equivalent 4x4 matrix in column-major order into the supplied float array at the given offset.
-     * 
-     * @param arr
-     *          the array to write the matrix values into
-     * @param offset
-     *          the offset into the array
+     *
+     * @param arr    the array to write the matrix values into
+     * @param offset the offset into the array
      * @return the passed in array
      */
     public float[] get4x4(float[] arr, int offset) {
@@ -1085,12 +997,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Store this matrix as an equivalent 4x4 matrix in column-major order into the supplied float array.
      * <p>
      * In order to specify an explicit offset into the array, use the method {@link #get4x4(float[], int)}.
-     * 
-     * @see #get4x4(float[], int)
-     * 
-     * @param arr
-     *          the array to write the matrix values into
+     *
+     * @param arr the array to write the matrix values into
      * @return the passed in array
+     * @see #get4x4(float[], int)
      */
     public float[] get4x4(float[] arr) {
         return get4x4(arr, 0);
@@ -1104,9 +1014,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * The FloatBuffer is expected to contain the values in column-major order.
      * <p>
      * The position of the FloatBuffer will not be changed by this method.
-     * 
-     * @param buffer
-     *              the FloatBuffer to read the matrix values from in column-major order
+     *
+     * @param buffer the FloatBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix3x2f set(FloatBuffer buffer) {
@@ -1121,9 +1030,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * The ByteBuffer is expected to contain the values in column-major order.
      * <p>
      * The position of the ByteBuffer will not be changed by this method.
-     * 
-     * @param buffer
-     *              the ByteBuffer to read the matrix values from in column-major order
+     *
+     * @param buffer the ByteBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix3x2f set(ByteBuffer buffer) {
@@ -1138,11 +1046,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * The FloatBuffer is expected to contain the values in column-major order.
      * <p>
      * The position of the FloatBuffer will not be changed by this method.
-     * 
-     * @param index
-     *              the absolute position into the FloatBuffer
-     * @param buffer
-     *              the FloatBuffer to read the matrix values from in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer the FloatBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix3x2f set(int index, FloatBuffer buffer) {
@@ -1157,11 +1063,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * The ByteBuffer is expected to contain the values in column-major order.
      * <p>
      * The position of the ByteBuffer will not be changed by this method.
-     * 
-     * @param index
-     *              the absolute position into the ByteBuffer
-     * @param buffer
-     *              the ByteBuffer to read the matrix values from in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer the ByteBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix3x2f set(int index, ByteBuffer buffer) {
@@ -1172,7 +1076,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Set all values within this matrix to zero.
-     * 
+     *
      * @return this
      */
     public Matrix3x2f zero() {
@@ -1182,7 +1086,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Set this matrix to the identity.
-     * 
+     *
      * @return this
      */
     public Matrix3x2f identity() {
@@ -1196,13 +1100,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>S</code> the scaling matrix,
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the scaling will be applied first!
-     * 
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param dest
-     *            will hold the result
+     *
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param dest will hold the result
      * @return dest
      */
     public Matrix3x2f scale(float x, float y, Matrix3x2f dest) {
@@ -1221,11 +1122,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>S</code> the scaling matrix,
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the scaling will be applied first!
-     * 
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
+     *
+     * @param x the factor of the x component
+     * @param y the factor of the y component
      * @return this
      */
     public Matrix3x2f scale(float x, float y) {
@@ -1238,9 +1137,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>S</code> the scaling matrix,
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the scaling will be applied first!
-     * 
-     * @param xy
-     *            the factors of the x and y component, respectively
+     *
+     * @param xy the factors of the x and y component, respectively
      * @return this
      */
     public Matrix3x2f scale(Vector2fc xy) {
@@ -1254,11 +1152,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>S</code> the scaling matrix,
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the scaling will be applied first!
-     * 
-     * @param xy
-     *            the factors of the x and y component, respectively
-     * @param dest
-     *            will hold the result
+     *
+     * @param xy   the factors of the x and y component, respectively
+     * @param dest will hold the result
      * @return dest
      */
     public Matrix3x2f scale(Vector2fc xy, Matrix3x2f dest) {
@@ -1272,14 +1168,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>S</code> the scaling matrix,
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the scaling will be applied first!
-     * 
-     * @see #scale(float, float, Matrix3x2f)
-     * 
-     * @param xy
-     *            the factor for the two components
-     * @param dest
-     *            will hold the result
+     *
+     * @param xy   the factor for the two components
+     * @param dest will hold the result
      * @return dest
+     * @see #scale(float, float, Matrix3x2f)
      */
     public Matrix3x2f scale(float xy, Matrix3x2f dest) {
         return scale(xy, xy, dest);
@@ -1291,12 +1184,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>S</code> the scaling matrix,
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the scaling will be applied first!
-     * 
-     * @see #scale(float, float)
-     * 
-     * @param xy
-     *            the factor for the two components
+     *
+     * @param xy the factor for the two components
      * @return this
+     * @see #scale(float, float)
      */
     public Matrix3x2f scale(float xy) {
         return scale(xy, xy);
@@ -1319,11 +1210,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>S * M</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>S * M * v</code>, the
      * scaling will be applied last!
-     * 
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
+     *
+     * @param x the factor of the x component
+     * @param y the factor of the y component
      * @return this
      */
     public Matrix3x2f scaleLocal(float x, float y) {
@@ -1341,9 +1230,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>S * M</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>S * M * v</code>, the
      * scaling will be applied last!
-     * 
-     * @param xy
-     *            the factor of the x and y component
+     *
+     * @param xy the factor of the x and y component
      * @return this
      */
     public Matrix3x2f scaleLocal(float xy) {
@@ -1360,17 +1248,12 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * , the scaling will be applied first!
      * <p>
      * This method is equivalent to calling: <code>translate(ox, oy, dest).scale(sx, sy).translate(-ox, -oy)</code>
-     * 
-     * @param sx
-     *            the scaling factor of the x component
-     * @param sy
-     *            the scaling factor of the y component
-     * @param ox
-     *            the x coordinate of the scaling origin
-     * @param oy
-     *            the y coordinate of the scaling origin
-     * @param dest
-     *            will hold the result
+     *
+     * @param sx   the scaling factor of the x component
+     * @param sy   the scaling factor of the y component
+     * @param ox   the x coordinate of the scaling origin
+     * @param oy   the y coordinate of the scaling origin
+     * @param dest will hold the result
      * @return dest
      */
     public Matrix3x2f scaleAround(float sx, float sy, float ox, float oy, Matrix3x2f dest) {
@@ -1395,15 +1278,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * scaling will be applied first!
      * <p>
      * This method is equivalent to calling: <code>translate(ox, oy).scale(sx, sy).translate(-ox, -oy)</code>
-     * 
-     * @param sx
-     *            the scaling factor of the x component
-     * @param sy
-     *            the scaling factor of the y component
-     * @param ox
-     *            the x coordinate of the scaling origin
-     * @param oy
-     *            the y coordinate of the scaling origin
+     *
+     * @param sx the scaling factor of the x component
+     * @param sy the scaling factor of the y component
+     * @param ox the x coordinate of the scaling origin
+     * @param oy the y coordinate of the scaling origin
      * @return this
      */
     public Matrix3x2f scaleAround(float sx, float sy, float ox, float oy) {
@@ -1421,15 +1300,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * scaling will be applied first!
      * <p>
      * This method is equivalent to calling: <code>translate(ox, oy, dest).scale(factor).translate(-ox, -oy)</code>
-     * 
-     * @param factor
-     *            the scaling factor for all three axes
-     * @param ox
-     *            the x coordinate of the scaling origin
-     * @param oy
-     *            the y coordinate of the scaling origin
-     * @param dest
-     *            will hold the result
+     *
+     * @param factor the scaling factor for all three axes
+     * @param ox     the x coordinate of the scaling origin
+     * @param oy     the y coordinate of the scaling origin
+     * @param dest   will hold the result
      * @return this
      */
     public Matrix3x2f scaleAround(float factor, float ox, float oy, Matrix3x2f dest) {
@@ -1446,13 +1321,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * scaling will be applied first!
      * <p>
      * This method is equivalent to calling: <code>translate(ox, oy).scale(factor).translate(-ox, -oy)</code>
-     * 
-     * @param factor
-     *            the scaling factor for all axes
-     * @param ox
-     *            the x coordinate of the scaling origin
-     * @param oy
-     *            the y coordinate of the scaling origin
+     *
+     * @param factor the scaling factor for all axes
+     * @param ox     the x coordinate of the scaling origin
+     * @param oy     the y coordinate of the scaling origin
      * @return this
      */
     public Matrix3x2f scaleAround(float factor, float ox, float oy) {
@@ -1483,19 +1355,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * scaling will be applied last!
      * <p>
      * This method is equivalent to calling: <code>new Matrix3x2f().translate(ox, oy).scale(sx, sy).translate(-ox, -oy).mul(this, this)</code>
-     * 
-     * @param sx
-     *            the scaling factor of the x component
-     * @param sy
-     *            the scaling factor of the y component
-     * @param sz
-     *            the scaling factor of the z component
-     * @param ox
-     *            the x coordinate of the scaling origin
-     * @param oy
-     *            the y coordinate of the scaling origin
-     * @param oz
-     *            the z coordinate of the scaling origin
+     *
+     * @param sx the scaling factor of the x component
+     * @param sy the scaling factor of the y component
+     * @param sz the scaling factor of the z component
+     * @param ox the x coordinate of the scaling origin
+     * @param oy the y coordinate of the scaling origin
+     * @param oz the z coordinate of the scaling origin
      * @return this
      */
     public Matrix3x2f scaleAroundLocal(float sx, float sy, float sz, float ox, float oy, float oz) {
@@ -1512,13 +1378,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * scaling will be applied last!
      * <p>
      * This method is equivalent to calling: <code>new Matrix3x2f().translate(ox, oy).scale(factor).translate(-ox, -oy).mul(this, this)</code>
-     * 
-     * @param factor
-     *            the scaling factor for all three axes
-     * @param ox
-     *            the x coordinate of the scaling origin
-     * @param oy
-     *            the y coordinate of the scaling origin
+     *
+     * @param factor the scaling factor for all three axes
+     * @param ox     the x coordinate of the scaling origin
+     * @param oy     the y coordinate of the scaling origin
      * @return this
      */
     public Matrix3x2f scaleAroundLocal(float factor, float ox, float oy) {
@@ -1532,12 +1395,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * matrix to obtain an additional scaling.
      * <p>
      * In order to post-multiply a scaling transformation directly to a matrix, use {@link #scale(float) scale()} instead.
-     * 
-     * @see #scale(float)
-     * 
-     * @param factor
-     *             the scale factor in x and y
+     *
+     * @param factor the scale factor in x and y
      * @return this
+     * @see #scale(float)
      */
     public Matrix3x2f scaling(float factor) {
         return scaling(factor, factor);
@@ -1545,11 +1406,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Set this matrix to be a simple scale matrix.
-     * 
-     * @param x
-     *             the scale in x
-     * @param y
-     *             the scale in y
+     *
+     * @param x the scale in x
+     * @param y the scale in y
      * @return this
      */
     public Matrix3x2f scaling(float x, float y) {
@@ -1570,12 +1429,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * <p>
      * In order to apply the rotation transformation to an existing transformation,
      * use {@link #rotate(float) rotate()} instead.
-     * 
-     * @see #rotate(float)
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
+     * @see #rotate(float)
      */
     public Matrix3x2f rotation(float angle) {
         float cos = Math.cos(angle);
@@ -1592,12 +1449,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Transform/multiply the given vector by this matrix by assuming a third row in this matrix of <code>(0, 0, 1)</code>
      * and store the result in that vector.
-     * 
-     * @see Vector3f#mul(Matrix3x2fc)
-     * 
-     * @param v
-     *          the vector to transform and to hold the final result
+     *
+     * @param v the vector to transform and to hold the final result
      * @return v
+     * @see Vector3f#mul(Matrix3x2fc)
      */
     public Vector3f transform(Vector3f v) {
         return v.mul(this);
@@ -1606,14 +1461,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Transform/multiply the given vector by this matrix by assuming a third row in this matrix of <code>(0, 0, 1)</code>
      * and store the result in <code>dest</code>.
-     * 
-     * @see Vector3f#mul(Matrix3x2fc, Vector3f)
-     * 
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will contain the result
+     *
+     * @param v    the vector to transform
+     * @param dest will contain the result
      * @return dest
+     * @see Vector3f#mul(Matrix3x2fc, Vector3f)
      */
     public Vector3f transform(Vector3f v, Vector3f dest) {
         return v.mul(this, dest);
@@ -1621,19 +1473,15 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Transform/multiply the given vector <code>(x, y, z)</code> by this matrix and store the result in <code>dest</code>.
-     * 
-     * @param x
-     *          the x component of the vector to transform
-     * @param y
-     *          the y component of the vector to transform
-     * @param z
-     *          the z component of the vector to transform
-     * @param dest
-     *          will contain the result
+     *
+     * @param x    the x component of the vector to transform
+     * @param y    the y component of the vector to transform
+     * @param z    the z component of the vector to transform
+     * @param dest will contain the result
      * @return dest
      */
     public Vector3f transform(float x, float y, float z, Vector3f dest) {
-       return dest.set(m00 * x + m10 * y + m20 * z, m01 * x + m11 * y + m21 * z, z);
+        return dest.set(m00 * x + m10 * y + m20 * z, m01 * x + m11 * y + m21 * z, z);
     }
 
     /**
@@ -1644,17 +1492,15 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * will represent a position/location in 2D-space rather than a direction.
      * <p>
      * In order to store the result in another vector, use {@link #transformPosition(Vector2fc, Vector2f)}.
-     * 
+     *
+     * @param v the vector to transform and to hold the final result
+     * @return v
      * @see #transformPosition(Vector2fc, Vector2f)
      * @see #transform(Vector3f)
-     * 
-     * @param v
-     *          the vector to transform and to hold the final result
-     * @return v
      */
     public Vector2f transformPosition(Vector2f v) {
         v.set(m00 * v.x + m10 * v.y + m20,
-              m01 * v.x + m11 * v.y + m21);
+                m01 * v.x + m11 * v.y + m21);
         return v;
     }
 
@@ -1666,19 +1512,16 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * will represent a position/location in 2D-space rather than a direction.
      * <p>
      * In order to store the result in the same vector, use {@link #transformPosition(Vector2f)}.
-     * 
+     *
+     * @param v    the vector to transform
+     * @param dest will hold the result
+     * @return dest
      * @see #transformPosition(Vector2f)
      * @see #transform(Vector3f, Vector3f)
-     * 
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
-     * @return dest
      */
     public Vector2f transformPosition(Vector2fc v, Vector2f dest) {
         dest.set(m00 * v.x() + m10 * v.y() + m20,
-                 m01 * v.x() + m11 * v.y() + m21);
+                m01 * v.x() + m11 * v.y() + m21);
         return dest;
     }
 
@@ -1690,17 +1533,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * will represent a position/location in 2D-space rather than a direction.
      * <p>
      * In order to store the result in the same vector, use {@link #transformPosition(Vector2f)}.
-     * 
+     *
+     * @param x    the x component of the vector to transform
+     * @param y    the y component of the vector to transform
+     * @param dest will hold the result
+     * @return dest
      * @see #transformPosition(Vector2f)
      * @see #transform(Vector3f, Vector3f)
-     * 
-     * @param x
-     *          the x component of the vector to transform
-     * @param y
-     *          the y component of the vector to transform
-     * @param dest
-     *          will hold the result
-     * @return dest
      */
     public Vector2f transformPosition(float x, float y, Vector2f dest) {
         return dest.set(m00 * x + m10 * y + m20, m01 * x + m11 * y + m21);
@@ -1715,16 +1554,14 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * not take the translation part of the matrix into account.
      * <p>
      * In order to store the result in another vector, use {@link #transformDirection(Vector2fc, Vector2f)}.
-     * 
-     * @see #transformDirection(Vector2fc, Vector2f)
-     * 
-     * @param v
-     *          the vector to transform and to hold the final result
+     *
+     * @param v the vector to transform and to hold the final result
      * @return v
+     * @see #transformDirection(Vector2fc, Vector2f)
      */
     public Vector2f transformDirection(Vector2f v) {
         v.set(m00 * v.x + m10 * v.y,
-              m01 * v.x + m11 * v.y);
+                m01 * v.x + m11 * v.y);
         return v;
     }
 
@@ -1737,18 +1574,15 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * not take the translation part of the matrix into account.
      * <p>
      * In order to store the result in the same vector, use {@link #transformDirection(Vector2f)}.
-     * 
-     * @see #transformDirection(Vector2f)
-     * 
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     *
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
+     * @see #transformDirection(Vector2f)
      */
     public Vector2f transformDirection(Vector2fc v, Vector2f dest) {
         dest.set(m00 * v.x() + m10 * v.y(),
-                 m01 * v.x() + m11 * v.y());
+                m01 * v.x() + m11 * v.y());
         return dest;
     }
 
@@ -1761,16 +1595,12 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * not take the translation part of the matrix into account.
      * <p>
      * In order to store the result in the same vector, use {@link #transformDirection(Vector2f)}.
-     * 
-     * @see #transformDirection(Vector2f)
-     * 
-     * @param x
-     *          the x component of the vector to transform
-     * @param y
-     *          the y component of the vector to transform
-     * @param dest
-     *          will hold the result
+     *
+     * @param x    the x component of the vector to transform
+     * @param y    the y component of the vector to transform
+     * @param dest will hold the result
      * @return dest
+     * @see #transformDirection(Vector2f)
      */
     public Vector2f transformDirection(float x, float y, Vector2f dest) {
         return dest.set(m00 * x + m10 * y, m01 * x + m11 * y);
@@ -1801,9 +1631,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>
      * , the rotation will be applied first!
-     * 
-     * @param ang
-     *            the angle in radians
+     *
+     * @param ang the angle in radians
      * @return this
      */
     public Matrix3x2f rotate(float ang) {
@@ -1816,11 +1645,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>R</code> the rotation matrix,
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the rotation will be applied first!
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     public Matrix3x2f rotate(float ang, Matrix3x2f dest) {
@@ -1853,14 +1680,11 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * transformation, use {@link #rotation(float) rotation()}.
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @see #rotation(float)
-     * 
-     * @param ang
-     *            the angle in radians to rotate
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians to rotate
+     * @param dest will hold the result
      * @return dest
+     * @see #rotation(float)
      */
     public Matrix3x2f rotateLocal(float ang, Matrix3x2f dest) {
         float sin = Math.sin(ang);
@@ -1892,12 +1716,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * transformation, use {@link #rotation(float) rotation()}.
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @see #rotation(float)
-     * 
-     * @param ang
-     *            the angle in radians to rotate
+     *
+     * @param ang the angle in radians to rotate
      * @return this
+     * @see #rotation(float)
      */
     public Matrix3x2f rotateLocal(float ang) {
         return rotateLocal(ang, this);
@@ -1912,17 +1734,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>R</code> the rotation matrix,
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the rotation will be applied first!
-     * 
+     *
+     * @param ang the angle in radians
+     * @param x   the x component of the rotation center
+     * @param y   the y component of the rotation center
+     * @return this
      * @see #translate(float, float)
      * @see #rotate(float)
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param x
-     *            the x component of the rotation center
-     * @param y
-     *            the y component of the rotation center
-     * @return this
      */
     public Matrix3x2f rotateAbout(float ang, float x, float y) {
         return rotateAbout(ang, x, y, this);
@@ -1937,19 +1755,14 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>R</code> the rotation matrix,
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the rotation will be applied first!
-     * 
+     *
+     * @param ang  the angle in radians
+     * @param x    the x component of the rotation center
+     * @param y    the y component of the rotation center
+     * @param dest will hold the result
+     * @return dest
      * @see #translate(float, float, Matrix3x2f)
      * @see #rotate(float, Matrix3x2f)
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param x
-     *            the x component of the rotation center
-     * @param y
-     *            the y component of the rotation center
-     * @param dest
-     *            will hold the result
-     * @return dest
      */
     public Matrix3x2f rotateAbout(float ang, float x, float y, Matrix3x2f dest) {
         float tm20 = m00 * x + m10 * y + m20;
@@ -1974,13 +1787,10 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>R</code> the rotation matrix,
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the rotation will be applied first!
-     * 
-     * @param fromDir
-     *            the normalized direction which should be rotate to point along <code>toDir</code>
-     * @param toDir
-     *            the normalized destination direction
-     * @param dest
-     *            will hold the result
+     *
+     * @param fromDir the normalized direction which should be rotate to point along <code>toDir</code>
+     * @param toDir   the normalized destination direction
+     * @param dest    will hold the result
      * @return dest
      */
     public Matrix3x2f rotateTo(Vector2fc fromDir, Vector2fc toDir, Matrix3x2f dest) {
@@ -2008,11 +1818,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * If <code>M</code> is <code>this</code> matrix and <code>R</code> the rotation matrix,
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the rotation will be applied first!
-     * 
-     * @param fromDir
-     *            the normalized direction which should be rotate to point along <code>toDir</code>
-     * @param toDir
-     *            the normalized destination direction
+     *
+     * @param fromDir the normalized direction which should be rotate to point along <code>toDir</code>
+     * @param toDir   the normalized destination direction
      * @return this
      */
     public Matrix3x2f rotateTo(Vector2fc fromDir, Vector2fc toDir) {
@@ -2027,20 +1835,14 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>M * O</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * O * v</code>, the
      * orthographic projection transformation will be applied first!
-     * 
-     * @see #setView(float, float, float, float)
-     * 
-     * @param left
-     *            the distance from the center to the left view edge
-     * @param right
-     *            the distance from the center to the right view edge
-     * @param bottom
-     *            the distance from the center to the bottom view edge
-     * @param top
-     *            the distance from the center to the top view edge
-     * @param dest
-     *            will hold the result
+     *
+     * @param left   the distance from the center to the left view edge
+     * @param right  the distance from the center to the right view edge
+     * @param bottom the distance from the center to the bottom view edge
+     * @param top    the distance from the center to the top view edge
+     * @param dest   will hold the result
      * @return dest
+     * @see #setView(float, float, float, float)
      */
     public Matrix3x2f view(float left, float right, float bottom, float top, Matrix3x2f dest) {
         float rm00 = 2.0f / (right - left);
@@ -2064,18 +1866,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * then the new matrix will be <code>M * O</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * O * v</code>, the
      * orthographic projection transformation will be applied first!
-     * 
-     * @see #setView(float, float, float, float)
-     * 
-     * @param left
-     *            the distance from the center to the left view edge
-     * @param right
-     *            the distance from the center to the right view edge
-     * @param bottom
-     *            the distance from the center to the bottom view edge
-     * @param top
-     *            the distance from the center to the top view edge
+     *
+     * @param left   the distance from the center to the left view edge
+     * @param right  the distance from the center to the right view edge
+     * @param bottom the distance from the center to the bottom view edge
+     * @param top    the distance from the center to the top view edge
      * @return this
+     * @see #setView(float, float, float, float)
      */
     public Matrix3x2f view(float left, float right, float bottom, float top) {
         return view(left, right, bottom, top, this);
@@ -2084,18 +1881,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Set this matrix to define a "view" transformation that maps the given <code>(left, bottom)</code> and
      * <code>(right, top)</code> corners to <code>(-1, -1)</code> and <code>(1, 1)</code> respectively.
-     * 
-     * @see #view(float, float, float, float)
-     * 
-     * @param left
-     *            the distance from the center to the left view edge
-     * @param right
-     *            the distance from the center to the right view edge
-     * @param bottom
-     *            the distance from the center to the bottom view edge
-     * @param top
-     *            the distance from the center to the top view edge
+     *
+     * @param left   the distance from the center to the left view edge
+     * @param right  the distance from the center to the right view edge
+     * @param bottom the distance from the center to the bottom view edge
+     * @param top    the distance from the center to the top view edge
      * @return this
+     * @see #view(float, float, float, float)
      */
     public Matrix3x2f setView(float left, float right, float bottom, float top) {
         m00 = 2.0f / (right - left);
@@ -2116,9 +1908,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Matrix3x2f inv = new Matrix3x2f(this).invert();
      * inv.transform(origin.set(0, 0));
      * </pre>
-     * 
-     * @param origin
-     *          will hold the position transformed to the origin
+     *
+     * @param origin will hold the position transformed to the origin
      * @return origin
      */
     public Vector2f origin(Vector2f origin) {
@@ -2131,27 +1922,26 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Obtain the extents of the view transformation of <code>this</code> matrix and store it in <code>area</code>.
      * This can be used to determine which region of the screen (i.e. the NDC space) is covered by the view.
-     * 
-     * @param area
-     *          will hold the view area as <code>[minX, minY, maxX, maxY]</code>
+     *
+     * @param area will hold the view area as <code>[minX, minY, maxX, maxY]</code>
      * @return area
      */
     public float[] viewArea(float[] area) {
         float s = 1.0f / (m00 * m11 - m01 * m10);
-        float rm00 =  m11 * s;
+        float rm00 = m11 * s;
         float rm01 = -m01 * s;
         float rm10 = -m10 * s;
-        float rm11 =  m00 * s;
+        float rm11 = m00 * s;
         float rm20 = (m10 * m21 - m20 * m11) * s;
         float rm21 = (m20 * m01 - m00 * m21) * s;
         float nxnyX = -rm00 - rm10;
         float nxnyY = -rm01 - rm11;
-        float pxnyX =  rm00 - rm10;
-        float pxnyY =  rm01 - rm11;
+        float pxnyX = rm00 - rm10;
+        float pxnyY = rm01 - rm11;
         float nxpyX = -rm00 + rm10;
         float nxpyY = -rm01 + rm11;
-        float pxpyX =  rm00 + rm10;
-        float pxpyY =  rm01 + rm11;
+        float pxpyX = rm00 + rm10;
+        float pxpyY = rm01 + rm11;
         float minX = nxnyX;
         minX = minX < nxpyX ? minX : nxpyX;
         minX = minX < pxnyX ? minX : pxnyX;
@@ -2178,13 +1968,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     public Vector2f positiveX(Vector2f dir) {
         float s = m00 * m11 - m01 * m10;
         s = 1.0f / s;
-        dir.x =  m11 * s;
+        dir.x = m11 * s;
         dir.y = -m01 * s;
         return dir.normalize(dir);
     }
 
     public Vector2f normalizedPositiveX(Vector2f dir) {
-        dir.x =  m11;
+        dir.x = m11;
         dir.y = -m01;
         return dir;
     }
@@ -2193,13 +1983,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
         float s = m00 * m11 - m01 * m10;
         s = 1.0f / s;
         dir.x = -m10 * s;
-        dir.y =  m00 * s;
+        dir.y = m00 * s;
         return dir.normalize(dir);
     }
 
     public Vector2f normalizedPositiveY(Vector2f dir) {
         dir.x = -m10;
-        dir.y =  m00;
+        dir.y = m00;
         return dir;
     }
 
@@ -2207,35 +1997,30 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * Unproject the given window coordinates <code>(winX, winY)</code> by <code>this</code> matrix using the specified viewport.
      * <p>
      * This method first converts the given window coordinates to normalized device coordinates in the range <code>[-1..1]</code>
-     * and then transforms those NDC coordinates by the inverse of <code>this</code> matrix.  
+     * and then transforms those NDC coordinates by the inverse of <code>this</code> matrix.
      * <p>
      * As a necessary computation step for unprojecting, this method computes the inverse of <code>this</code> matrix.
      * In order to avoid computing the matrix inverse with every invocation, the inverse of <code>this</code> matrix can be built
      * once outside using {@link #invert(Matrix3x2f)} and then the method {@link #unprojectInv(float, float, int[], Vector2f) unprojectInv()} can be invoked on it.
-     * 
+     *
+     * @param winX     the x-coordinate in window coordinates (pixels)
+     * @param winY     the y-coordinate in window coordinates (pixels)
+     * @param viewport the viewport described by <code>[x, y, width, height]</code>
+     * @param dest     will hold the unprojected position
+     * @return dest
      * @see #unprojectInv(float, float, int[], Vector2f)
      * @see #invert(Matrix3x2f)
-     * 
-     * @param winX
-     *          the x-coordinate in window coordinates (pixels)
-     * @param winY
-     *          the y-coordinate in window coordinates (pixels)
-     * @param viewport
-     *          the viewport described by <code>[x, y, width, height]</code>
-     * @param dest
-     *          will hold the unprojected position
-     * @return dest
      */
     public Vector2f unproject(float winX, float winY, int[] viewport, Vector2f dest) {
         float s = 1.0f / (m00 * m11 - m01 * m10);
-        float im00 =  m11 * s;
+        float im00 = m11 * s;
         float im01 = -m01 * s;
         float im10 = -m10 * s;
-        float im11 =  m00 * s;
+        float im11 = m00 * s;
         float im20 = (m10 * m21 - m20 * m11) * s;
         float im21 = (m20 * m01 - m00 * m21) * s;
-        float ndcX = (winX-viewport[0])/viewport[2]*2.0f-1.0f;
-        float ndcY = (winY-viewport[1])/viewport[3]*2.0f-1.0f;
+        float ndcX = (winX - viewport[0]) / viewport[2] * 2.0f - 1.0f;
+        float ndcY = (winY - viewport[1]) / viewport[3] * 2.0f - 1.0f;
         dest.x = im00 * ndcX + im10 * ndcY + im20;
         dest.y = im01 * ndcX + im11 * ndcY + im21;
         return dest;
@@ -2244,25 +2029,20 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Unproject the given window coordinates <code>(winX, winY)</code> by <code>this</code> matrix using the specified viewport.
      * <p>
-     * This method differs from {@link #unproject(float, float, int[], Vector2f) unproject()} 
+     * This method differs from {@link #unproject(float, float, int[], Vector2f) unproject()}
      * in that it assumes that <code>this</code> is already the inverse matrix of the original projection matrix.
      * It exists to avoid recomputing the matrix inverse with every invocation.
-     * 
-     * @see #unproject(float, float, int[], Vector2f)
-     * 
-     * @param winX
-     *          the x-coordinate in window coordinates (pixels)
-     * @param winY
-     *          the y-coordinate in window coordinates (pixels)
-     * @param viewport
-     *          the viewport described by <code>[x, y, width, height]</code>
-     * @param dest
-     *          will hold the unprojected position
+     *
+     * @param winX     the x-coordinate in window coordinates (pixels)
+     * @param winY     the y-coordinate in window coordinates (pixels)
+     * @param viewport the viewport described by <code>[x, y, width, height]</code>
+     * @param dest     will hold the unprojected position
      * @return dest
+     * @see #unproject(float, float, int[], Vector2f)
      */
     public Vector2f unprojectInv(float winX, float winY, int[] viewport, Vector2f dest) {
-        float ndcX = (winX-viewport[0])/viewport[2]*2.0f-1.0f;
-        float ndcY = (winY-viewport[1])/viewport[3]*2.0f-1.0f;
+        float ndcX = (winX - viewport[0]) / viewport[2] * 2.0f - 1.0f;
+        float ndcY = (winY - viewport[1]) / viewport[3] * 2.0f - 1.0f;
         dest.x = m00 * ndcX + m10 * ndcY + m20;
         dest.y = m01 * ndcX + m11 * ndcY + m21;
         return dest;
@@ -2270,9 +2050,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Apply shearing to this matrix by shearing along the X axis using the Y axis factor <code>yFactor</code>.
-     * 
-     * @param yFactor
-     *          the factor for the Y component to shear along the X axis
+     *
+     * @param yFactor the factor for the Y component to shear along the X axis
      * @return this
      */
     public Matrix3x2f shearX(float yFactor) {
@@ -2282,11 +2061,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Apply shearing to this matrix by shearing along the X axis using the Y axis factor <code>yFactor</code>,
      * and store the result in <code>dest</code>.
-     * 
-     * @param yFactor
-     *          the factor for the Y component to shear along the X axis
-     * @param dest
-     *          will hold the result
+     *
+     * @param yFactor the factor for the Y component to shear along the X axis
+     * @param dest    will hold the result
      * @return dest
      */
     public Matrix3x2f shearX(float yFactor, Matrix3x2f dest) {
@@ -2303,9 +2080,8 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
 
     /**
      * Apply shearing to this matrix by shearing along the Y axis using the X axis factor <code>xFactor</code>.
-     * 
-     * @param xFactor
-     *          the factor for the X component to shear along the Y axis
+     *
+     * @param xFactor the factor for the X component to shear along the Y axis
      * @return this
      */
     public Matrix3x2f shearY(float xFactor) {
@@ -2315,11 +2091,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
     /**
      * Apply shearing to this matrix by shearing along the Y axis using the X axis factor <code>xFactor</code>,
      * and store the result in <code>dest</code>.
-     * 
-     * @param xFactor
-     *          the factor for the X component to shear along the Y axis
-     * @param dest
-     *          will hold the result
+     *
+     * @param xFactor the factor for the X component to shear along the Y axis
+     * @param dest    will hold the result
      * @return dest
      */
     public Matrix3x2f shearY(float xFactor, Matrix3x2f dest) {
@@ -2341,22 +2115,21 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
      * That means, given the maximum extents of the coordinate system between <code>[-1..+1]</code> in all dimensions,
      * this method returns one corner and the length and direction of the two base axis vectors in the coordinate
      * system before this transformation is applied, which transforms into the corner coordinates <code>[-1, +1]</code>.
-     * 
-     * @param corner
-     *          will hold one corner of the span
-     * @param xDir
-     *          will hold the direction and length of the span along the positive X axis
-     * @param yDir
-     *          will hold the direction and length of the span along the positive Y axis
+     *
+     * @param corner will hold one corner of the span
+     * @param xDir   will hold the direction and length of the span along the positive X axis
+     * @param yDir   will hold the direction and length of the span along the positive Y axis
      * @return this
      */
     public Matrix3x2f span(Vector2f corner, Vector2f xDir, Vector2f yDir) {
         float s = 1.0f / (m00 * m11 - m01 * m10);
-        float nm00 =  m11 * s, nm01 = -m01 * s, nm10 = -m10 * s, nm11 =  m00 * s;
+        float nm00 = m11 * s, nm01 = -m01 * s, nm10 = -m10 * s, nm11 = m00 * s;
         corner.x = -nm00 - nm10 + (m10 * m21 - m20 * m11) * s;
         corner.y = -nm01 - nm11 + (m20 * m01 - m00 * m21) * s;
-        xDir.x = 2.0f * nm00; xDir.y = 2.0f * nm01;
-        yDir.x = 2.0f * nm10; yDir.y = 2.0f * nm11;
+        xDir.x = 2.0f * nm00;
+        xDir.y = 2.0f * nm01;
+        yDir.x = 2.0f * nm10;
+        yDir.y = 2.0f * nm11;
         return this;
     }
 
@@ -2366,25 +2139,33 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
         float nyX = +m01, nyY = +m11, nyW = 1.0f + m21;
         float pyX = -m01, pyY = -m11, pyW = 1.0f - m21;
         return nxX * x + nxY * y + nxW >= 0 && pxX * x + pxY * y + pxW >= 0 &&
-               nyX * x + nyY * y + nyW >= 0 && pyX * x + pyY * y + pyW >= 0;
+                nyX * x + nyY * y + nyW >= 0 && pyX * x + pyY * y + pyW >= 0;
     }
 
     public boolean testCircle(float x, float y, float r) {
         float invl;
         float nxX = +m00, nxY = +m10, nxW = 1.0f + m20;
         invl = Math.invsqrt(nxX * nxX + nxY * nxY);
-        nxX *= invl; nxY *= invl; nxW *= invl;
+        nxX *= invl;
+        nxY *= invl;
+        nxW *= invl;
         float pxX = -m00, pxY = -m10, pxW = 1.0f - m20;
         invl = Math.invsqrt(pxX * pxX + pxY * pxY);
-        pxX *= invl; pxY *= invl; pxW *= invl;
+        pxX *= invl;
+        pxY *= invl;
+        pxW *= invl;
         float nyX = +m01, nyY = +m11, nyW = 1.0f + m21;
         invl = Math.invsqrt(nyX * nyX + nyY * nyY);
-        nyX *= invl; nyY *= invl; nyW *= invl;
+        nyX *= invl;
+        nyY *= invl;
+        nyW *= invl;
         float pyX = -m01, pyY = -m11, pyW = 1.0f - m21;
         invl = Math.invsqrt(pyX * pyX + pyY * pyY);
-        pyX *= invl; pyY *= invl; pyW *= invl;
+        pyX *= invl;
+        pyY *= invl;
+        pyW *= invl;
         return nxX * x + nxY * y + nxW >= -r && pxX * x + pxY * y + pxW >= -r &&
-               nyX * x + nyY * y + nyW >= -r && pyX * x + pyY * y + pyW >= -r;
+                nyX * x + nyY * y + nyW >= -r && pyX * x + pyY * y + pyW >= -r;
     }
 
     public boolean testAar(float minX, float minY, float maxX, float maxY) {
@@ -2397,9 +2178,9 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
          * It does not distinguish between partially inside and fully inside, though, so the test with the 'p' vertex is omitted.
          */
         return nxX * (nxX < 0 ? minX : maxX) + nxY * (nxY < 0 ? minY : maxY) >= -nxW &&
-               pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) >= -pxW &&
-               nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) >= -nyW &&
-               pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) >= -pyW;
+                pxX * (pxX < 0 ? minX : maxX) + pxY * (pxY < 0 ? minY : maxY) >= -pxW &&
+                nyX * (nyX < 0 ? minX : maxX) + nyY * (nyY < 0 ? minY : maxY) >= -nyW &&
+                pyX * (pyX < 0 ? minX : maxX) + pyY * (pyY < 0 ? minY : maxY) >= -pyW;
     }
 
     public int hashCode() {
@@ -2432,9 +2213,7 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
             return false;
         if (Float.floatToIntBits(m20) != Float.floatToIntBits(other.m20))
             return false;
-        if (Float.floatToIntBits(m21) != Float.floatToIntBits(other.m21))
-            return false;
-        return true;
+        return Float.floatToIntBits(m21) == Float.floatToIntBits(other.m21);
     }
 
     public boolean equals(Matrix3x2fc m, float delta) {
@@ -2454,15 +2233,13 @@ public class Matrix3x2f implements Matrix3x2fc, Externalizable, Cloneable {
             return false;
         if (!Runtime.equals(m20, m.m20(), delta))
             return false;
-        if (!Runtime.equals(m21, m.m21(), delta))
-            return false;
-        return true;
+        return Runtime.equals(m21, m.m21(), delta);
     }
 
     public boolean isFinite() {
         return Math.isFinite(m00) && Math.isFinite(m01) &&
-               Math.isFinite(m10) && Math.isFinite(m11) &&
-               Math.isFinite(m20) && Math.isFinite(m21);
+                Math.isFinite(m10) && Math.isFinite(m11) &&
+                Math.isFinite(m20) && Math.isFinite(m21);
     }
 
     public Object clone() throws CloneNotSupportedException {

@@ -1,5 +1,9 @@
 package net.coderbot.batchedentityrendering.mixin;
 
+import net.coderbot.batchedentityrendering.impl.*;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.OutlineBufferSource;
+import net.minecraft.client.renderer.RenderBuffers;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,116 +12,103 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.coderbot.batchedentityrendering.impl.DrawCallTrackingRenderBuffers;
-import net.coderbot.batchedentityrendering.impl.FullyBufferedMultiBufferSource;
-import net.coderbot.batchedentityrendering.impl.MemoryTrackingBuffer;
-import net.coderbot.batchedentityrendering.impl.MemoryTrackingRenderBuffers;
-import net.coderbot.batchedentityrendering.impl.RenderBuffersExt;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.OutlineBufferSource;
-import net.minecraft.client.renderer.RenderBuffers;
-
 @Mixin(RenderBuffers.class)
 public class MixinRenderBuffers implements RenderBuffersExt, MemoryTrackingRenderBuffers, DrawCallTrackingRenderBuffers {
-	@Unique
-	private final FullyBufferedMultiBufferSource buffered = new FullyBufferedMultiBufferSource();
+    @Unique
+    private final FullyBufferedMultiBufferSource buffered = new FullyBufferedMultiBufferSource();
+    @Unique
+    private final OutlineBufferSource outlineBufferSource = new OutlineBufferSource(buffered);
+    @Unique
+    private int begins = 0;
+    @Unique
+    private int maxBegins = 0;
+    @Shadow
+    @Final
+    private MultiBufferSource.BufferSource bufferSource;
 
-	@Unique
-	private int begins = 0;
+    @Inject(method = "bufferSource", at = @At("HEAD"), cancellable = true)
+    private void batchedentityrendering$replaceBufferSource(CallbackInfoReturnable<MultiBufferSource.BufferSource> cir) {
+        if (begins == 0) {
+            return;
+        }
 
-	@Unique
-	private int maxBegins = 0;
+        cir.setReturnValue(buffered);
+    }
 
-	@Unique
-	private final OutlineBufferSource outlineBufferSource = new OutlineBufferSource(buffered);
+    @Inject(method = "crumblingBufferSource", at = @At("HEAD"), cancellable = true)
+    private void batchedentityrendering$replaceCrumblingBufferSource(CallbackInfoReturnable<MultiBufferSource.BufferSource> cir) {
+        if (begins == 0) {
+            return;
+        }
 
-	@Shadow
-	@Final
-	private MultiBufferSource.BufferSource bufferSource;
+        // NB: We can return the same MultiBufferSource here as long as the block entity and its breaking animation
+        // use different render layers. This seems like a sound assumption to make. This only works with our fully
+        // buffered vertex consumer provider - vanilla's bufferSource cannot be used here since it would try to return the
+        // same buffer for the block entity and its breaking animation in many cases.
+        //
+        // If anything goes wrong here, Vanilla *will* catch the "duplicate delegates" error, so
+        // this shouldn't cause silent bugs.
 
-	@Inject(method = "bufferSource", at = @At("HEAD"), cancellable = true)
-	private void batchedentityrendering$replaceBufferSource(CallbackInfoReturnable<MultiBufferSource.BufferSource> cir) {
-		if (begins == 0) {
-			return;
-		}
+        // Prevent vanilla from explicitly flushing the wrapper at the wrong time.
+        cir.setReturnValue(buffered.getUnflushableWrapper());
+    }
 
-		cir.setReturnValue(buffered);
-	}
+    @Inject(method = "outlineBufferSource", at = @At("HEAD"), cancellable = true)
+    private void batchedentityrendering$replaceOutlineBufferSource(CallbackInfoReturnable<OutlineBufferSource> provider) {
+        if (begins == 0) {
+            return;
+        }
 
-	@Inject(method = "crumblingBufferSource", at = @At("HEAD"), cancellable = true)
-	private void batchedentityrendering$replaceCrumblingBufferSource(CallbackInfoReturnable<MultiBufferSource.BufferSource> cir) {
-		if (begins == 0) {
-			return;
-		}
+        provider.setReturnValue(outlineBufferSource);
+    }
 
-		// NB: We can return the same MultiBufferSource here as long as the block entity and its breaking animation
-		// use different render layers. This seems like a sound assumption to make. This only works with our fully
-		// buffered vertex consumer provider - vanilla's bufferSource cannot be used here since it would try to return the
-		// same buffer for the block entity and its breaking animation in many cases.
-		//
-		// If anything goes wrong here, Vanilla *will* catch the "duplicate delegates" error, so
-		// this shouldn't cause silent bugs.
+    @Override
+    public void beginLevelRendering() {
+        if (begins == 0) {
+            buffered.assertWrapStackEmpty();
+        }
 
-		// Prevent vanilla from explicitly flushing the wrapper at the wrong time.
-		cir.setReturnValue(buffered.getUnflushableWrapper());
-	}
+        begins += 1;
 
-	@Inject(method = "outlineBufferSource", at = @At("HEAD"), cancellable = true)
-	private void batchedentityrendering$replaceOutlineBufferSource(CallbackInfoReturnable<OutlineBufferSource> provider) {
-		if (begins == 0) {
-			return;
-		}
+        maxBegins = Math.max(begins, maxBegins);
+    }
 
-		provider.setReturnValue(outlineBufferSource);
-	}
+    @Override
+    public void endLevelRendering() {
+        begins -= 1;
 
-	@Override
-	public void beginLevelRendering() {
-		if (begins == 0) {
-			buffered.assertWrapStackEmpty();
-		}
+        if (begins == 0) {
+            buffered.assertWrapStackEmpty();
+        }
+    }
 
-		begins += 1;
+    @Override
+    public int getEntityBufferAllocatedSize() {
+        return ((MemoryTrackingBuffer) buffered).getAllocatedSize();
+    }
 
-		maxBegins = Math.max(begins, maxBegins);
-	}
+    @Override
+    public int getMiscBufferAllocatedSize() {
+        return ((MemoryTrackingBuffer) bufferSource).getAllocatedSize();
+    }
 
-	@Override
-	public void endLevelRendering() {
-		begins -= 1;
+    @Override
+    public int getMaxBegins() {
+        return maxBegins;
+    }
 
-		if (begins == 0) {
-			buffered.assertWrapStackEmpty();
-		}
-	}
+    @Override
+    public int getDrawCalls() {
+        return buffered.getDrawCalls();
+    }
 
-	@Override
-	public int getEntityBufferAllocatedSize() {
-		return ((MemoryTrackingBuffer) buffered).getAllocatedSize();
-	}
+    @Override
+    public int getRenderTypes() {
+        return buffered.getRenderTypes();
+    }
 
-	@Override
-	public int getMiscBufferAllocatedSize() {
-		return ((MemoryTrackingBuffer) bufferSource).getAllocatedSize();
-	}
-
-	@Override
-	public int getMaxBegins() {
-		return maxBegins;
-	}
-
-	@Override
-	public int getDrawCalls() {
-		return buffered.getDrawCalls();
-	}
-
-	@Override
-	public int getRenderTypes() {
-		return buffered.getRenderTypes();
-	}
-
-	@Override
-	public void resetDrawCounts() {
-		buffered.resetDrawCalls();
-	}
+    @Override
+    public void resetDrawCounts() {
+        buffered.resetDrawCalls();
+    }
 }

@@ -1,23 +1,18 @@
 package net.coderbot.iris.compat.sodium.impl.options;
 
-import net.minecraft.client.GraphicsStatus;
 
 public enum SupportedGraphicsMode {
-	FAST, FANCY;
+    FAST, FANCY;
 
-	public static SupportedGraphicsMode fromVanilla(GraphicsStatus vanilla) {
-		if (vanilla == GraphicsStatus.FAST) {
-			return FAST;
-		} else {
-			return FANCY;
-		}
-	}
+    public static SupportedGraphicsMode fromVanilla(boolean vanilla) {
+        if (vanilla) {
+            return FANCY;
+        } else {
+            return FAST;
+        }
+    }
 
-	public GraphicsStatus toVanilla() {
-		if (this == FAST) {
-			return GraphicsStatus.FAST;
-		} else {
-			return GraphicsStatus.FANCY;
-		}
-	}
+    public boolean toVanilla() {
+        return this != FAST;
+    }
 }

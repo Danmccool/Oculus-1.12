@@ -4,116 +4,117 @@ import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 
 public final class ParserOptions {
-	private final Char2ObjectMap<? extends OpResolver<? extends UnaryOp>> unaryOpResolvers;
-	private final Char2ObjectMap<? extends OpResolver<? extends BinaryOp>> binaryOpResolvers;
-	private final TokenRules tokenRules;
+    private final Char2ObjectMap<? extends OpResolver<? extends UnaryOp>> unaryOpResolvers;
+    private final Char2ObjectMap<? extends OpResolver<? extends BinaryOp>> binaryOpResolvers;
+    private final TokenRules tokenRules;
 
-	private ParserOptions(
-			Char2ObjectMap<? extends OpResolver<? extends UnaryOp>> unaryOpResolvers,
-			Char2ObjectMap<? extends OpResolver<? extends BinaryOp>> binaryOpResolvers,
-			TokenRules tokenRules) {
-		this.unaryOpResolvers = unaryOpResolvers;
-		this.binaryOpResolvers = binaryOpResolvers;
-		this.tokenRules = tokenRules;
-	}
+    private ParserOptions(
+            Char2ObjectMap<? extends OpResolver<? extends UnaryOp>> unaryOpResolvers,
+            Char2ObjectMap<? extends OpResolver<? extends BinaryOp>> binaryOpResolvers,
+            TokenRules tokenRules) {
+        this.unaryOpResolvers = unaryOpResolvers;
+        this.binaryOpResolvers = binaryOpResolvers;
+        this.tokenRules = tokenRules;
+    }
 
-	TokenRules getTokenRules() {
-		return this.tokenRules;
-	}
+    TokenRules getTokenRules() {
+        return this.tokenRules;
+    }
 
-	OpResolver<? extends UnaryOp> getUnaryOpResolver(char c) {
-		return this.unaryOpResolvers.get(c);
-	}
+    OpResolver<? extends UnaryOp> getUnaryOpResolver(char c) {
+        return this.unaryOpResolvers.get(c);
+    }
 
-	OpResolver<? extends BinaryOp> getBinaryOpResolver(char c) {
-		return this.binaryOpResolvers.get(c);
-	}
+    OpResolver<? extends BinaryOp> getBinaryOpResolver(char c) {
+        return this.binaryOpResolvers.get(c);
+    }
 
-	public static class Builder {
-		private final Char2ObjectMap<OpResolver.Builder<UnaryOp>> unaryOpResolvers = new Char2ObjectOpenHashMap<>();
-		private final Char2ObjectMap<OpResolver.Builder<BinaryOp>> binaryOpResolvers = new Char2ObjectOpenHashMap<>();
-		private TokenRules tokenRules = TokenRules.DEFAULT;
+    /**
+     * Defines a set of rules that allows the tokenizer to identify tokens within a string.
+     */
+    public interface TokenRules {
+        TokenRules DEFAULT = new TokenRules() {
+        };
 
-		public void addUnaryOp(String s, UnaryOp op) {
-			char first = s.charAt(0);
-			String trailing = s.substring(1);
+        static boolean isNumber(final char c) {
+            return c >= '0' && c <= '9';
+        }
 
-			this.unaryOpResolvers.computeIfAbsent(first, (c) -> new OpResolver.Builder<>()).multiChar(trailing, op);
-		}
+        static boolean isLowerCaseLetter(final char c) {
+            return c >= 'a' && c <= 'z';
+        }
 
-		public void addBinaryOp(String s, BinaryOp op) {
-			char first = s.charAt(0);
-			String trailing = s.substring(1);
+        static boolean isUpperCaseLetter(final char c) {
+            return c >= 'A' && c <= 'Z';
+        }
 
-			this.binaryOpResolvers.computeIfAbsent(first, (c) -> new OpResolver.Builder<>()).multiChar(trailing, op);
-		}
+        static boolean isLetter(final char c) {
+            return isLowerCaseLetter(c) || isUpperCaseLetter(c);
+        }
 
-		public void setTokenRules(TokenRules tokenRules) {
-			this.tokenRules = tokenRules;
-		}
+        default boolean isIdStart(final char c) {
+            return isLetter(c) || c == '_';
+        }
 
-		private static <T> Char2ObjectMap<? extends OpResolver<? extends T>> buildOpResolvers(
-				Char2ObjectMap<OpResolver.Builder<T>> ops) {
-			Char2ObjectMap<OpResolver<T>> result = new Char2ObjectOpenHashMap<>();
+        default boolean isIdPart(final char c) {
+            return this.isIdStart(c) || isNumber(c);
+        }
 
-			ops.char2ObjectEntrySet().forEach(
-					entry -> result.put(entry.getCharKey(), entry.getValue().build()));
+        default boolean isNumberStart(final char c) {
+            return isNumber(c) || c == '.';
+        }
 
-			return result;
-		}
+        default boolean isNumberPart(final char c) {
+            return this.isNumberStart(c) || isLetter(c);
+        }
 
-		public ParserOptions build() {
-			return new ParserOptions(
-					buildOpResolvers(this.unaryOpResolvers),
-					buildOpResolvers(this.binaryOpResolvers),
-					this.tokenRules);
-		}
-	}
+        default boolean isAccessStart(final char c) {
+            return this.isIdStart(c) || isNumber(c);
+        }
 
-	/**
-	 * Defines a set of rules that allows the tokenizer to identify tokens within a string.
-	 */
-	public interface TokenRules {
-		TokenRules DEFAULT = new TokenRules() {};
+        default boolean isAccessPart(final char c) {
+            return this.isAccessStart(c);
+        }
+    }
 
-		static boolean isNumber(final char c) {
-			return c >= '0' && c <= '9';
-		}
+    public static class Builder {
+        private final Char2ObjectMap<OpResolver.Builder<UnaryOp>> unaryOpResolvers = new Char2ObjectOpenHashMap<>();
+        private final Char2ObjectMap<OpResolver.Builder<BinaryOp>> binaryOpResolvers = new Char2ObjectOpenHashMap<>();
+        private TokenRules tokenRules = TokenRules.DEFAULT;
 
-		static boolean isLowerCaseLetter(final char c) {
-			return c >= 'a' && c <= 'z';
-		}
+        private static <T> Char2ObjectMap<? extends OpResolver<? extends T>> buildOpResolvers(
+                Char2ObjectMap<OpResolver.Builder<T>> ops) {
+            Char2ObjectMap<OpResolver<T>> result = new Char2ObjectOpenHashMap<>();
 
-		static boolean isUpperCaseLetter(final char c) {
-			return c >= 'A' && c <= 'Z';
-		}
+            ops.char2ObjectEntrySet().forEach(
+                    entry -> result.put(entry.getCharKey(), entry.getValue().build()));
 
-		static boolean isLetter(final char c) {
-			return isLowerCaseLetter(c) || isUpperCaseLetter(c);
-		}
+            return result;
+        }
 
-		default boolean isIdStart(final char c) {
-			return isLetter(c) || c == '_';
-		}
+        public void addUnaryOp(String s, UnaryOp op) {
+            char first = s.charAt(0);
+            String trailing = s.substring(1);
 
-		default boolean isIdPart(final char c) {
-			return this.isIdStart(c) || isNumber(c);
-		}
+            this.unaryOpResolvers.computeIfAbsent(first, (c) -> new OpResolver.Builder<>()).multiChar(trailing, op);
+        }
 
-		default boolean isNumberStart(final char c) {
-			return isNumber(c) || c == '.';
-		}
+        public void addBinaryOp(String s, BinaryOp op) {
+            char first = s.charAt(0);
+            String trailing = s.substring(1);
 
-		default boolean isNumberPart(final char c) {
-			return this.isNumberStart(c) || isLetter(c);
-		}
+            this.binaryOpResolvers.computeIfAbsent(first, (c) -> new OpResolver.Builder<>()).multiChar(trailing, op);
+        }
 
-		default boolean isAccessStart(final char c) {
-			return this.isIdStart(c) || isNumber(c);
-		}
+        public void setTokenRules(TokenRules tokenRules) {
+            this.tokenRules = tokenRules;
+        }
 
-		default boolean isAccessPart(final char c) {
-			return this.isAccessStart(c);
-		}
-	}
+        public ParserOptions build() {
+            return new ParserOptions(
+                    buildOpResolvers(this.unaryOpResolvers),
+                    buildOpResolvers(this.binaryOpResolvers),
+                    this.tokenRules);
+        }
+    }
 }

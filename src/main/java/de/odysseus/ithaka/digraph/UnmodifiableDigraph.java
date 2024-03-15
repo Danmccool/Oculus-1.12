@@ -25,47 +25,47 @@ import java.util.OptionalInt;
  * @param <V> vertex type
  */
 public class UnmodifiableDigraph<V> extends DigraphAdapter<V> {
-	public UnmodifiableDigraph(Digraph<V> digraph) {
-		super(digraph);
-	}
+    public UnmodifiableDigraph(Digraph<V> digraph) {
+        super(digraph);
+    }
 
-	/**
-	 * @throws UnsupportedOperationException unmodifiable
-	 */
-	@Override
-	public final boolean add(V vertex) {
-		throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
-	}
+    /**
+     * @throws UnsupportedOperationException unmodifiable
+     */
+    @Override
+    public final boolean add(V vertex) {
+        throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
+    }
 
-	/**
-	 * @throws UnsupportedOperationException unmodifiable
-	 */
-	@Override
-	public final OptionalInt put(V source, V target, int edge) {
-		throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
-	}
+    /**
+     * @throws UnsupportedOperationException unmodifiable
+     */
+    @Override
+    public final OptionalInt put(V source, V target, int edge) {
+        throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
+    }
 
-	/**
-	 * @throws UnsupportedOperationException unmodifiable
-	 */
-	@Override
-	public final boolean remove(V vertex) {
-		throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
-	}
+    /**
+     * @throws UnsupportedOperationException unmodifiable
+     */
+    @Override
+    public final boolean remove(V vertex) {
+        throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
+    }
 
-	/**
-	 * @throws UnsupportedOperationException unmodifiable
-	 */
-	@Override
-	public final OptionalInt remove(V source, V target) {
-		throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
-	}
+    /**
+     * @throws UnsupportedOperationException unmodifiable
+     */
+    @Override
+    public final OptionalInt remove(V source, V target) {
+        throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
+    }
 
-	/**
-	 * @throws UnsupportedOperationException unmodifiable
-	 */
-	@Override
-	public final void removeAll(Collection<V> vertices) {
-		throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
-	}
+    /**
+     * @throws UnsupportedOperationException unmodifiable
+     */
+    @Override
+    public final void removeAll(Collection<V> vertices) {
+        throw new UnsupportedOperationException("This de.odysseus.ithaka.digraph is readonly!");
+    }
 }

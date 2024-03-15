@@ -67,8 +67,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Create a new {@link Vector3d} and initialize all three components with the given value.
      *
-     * @param d
-     *          the value of all three components
+     * @param d the value of all three components
      */
     public Vector3d(double d) {
         this.x = d;
@@ -78,13 +77,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Create a new {@link Vector3d} with the given component values.
-     * 
-     * @param x
-     *          the value of x
-     * @param y
-     *          the value of y
-     * @param z
-     *          the value of z
+     *
+     * @param x the value of x
+     * @param y the value of y
+     * @param z the value of z
      */
     public Vector3d(double x, double y, double z) {
         this.x = x;
@@ -94,9 +90,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Create a new {@link Vector3d} whose values will be copied from the given vector.
-     * 
-     * @param v
-     *          provides the initial values for the new vector
+     *
+     * @param v provides the initial values for the new vector
      */
     public Vector3d(Vector3fc v) {
         this.x = v.x();
@@ -106,9 +101,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Create a new {@link Vector3d} whose values will be copied from the given vector.
-     * 
-     * @param v
-     *          provides the initial values for the new vector
+     *
+     * @param v provides the initial values for the new vector
      */
     public Vector3d(Vector3ic v) {
         this.x = v.x();
@@ -120,10 +114,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Create a new {@link Vector3d} with the first two components from the
      * given <code>v</code> and the given <code>z</code>
      *
-     * @param v
-     *          the {@link Vector2fc} to copy the values from
-     * @param z
-     *          the z component
+     * @param v the {@link Vector2fc} to copy the values from
+     * @param z the z component
      */
     public Vector3d(Vector2fc v, double z) {
         this.x = v.x();
@@ -135,10 +127,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Create a new {@link Vector3d} with the first two components from the
      * given <code>v</code> and the given <code>z</code>
      *
-     * @param v
-     *          the {@link Vector2ic} to copy the values from
-     * @param z
-     *          the z component
+     * @param v the {@link Vector2ic} to copy the values from
+     * @param z the z component
      */
     public Vector3d(Vector2ic v, double z) {
         this.x = v.x();
@@ -148,9 +138,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Create a new {@link Vector3d} whose values will be copied from the given vector.
-     * 
-     * @param v
-     *          provides the initial values for the new vector
+     *
+     * @param v provides the initial values for the new vector
      */
     public Vector3d(Vector3dc v) {
         this.x = v.x();
@@ -162,10 +151,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Create a new {@link Vector3d} with the first two components from the
      * given <code>v</code> and the given <code>z</code>
      *
-     * @param v
-     *          the {@link Vector2d} to copy the values from
-     * @param z
-     *          the z component
+     * @param v the {@link Vector2d} to copy the values from
+     * @param z the z component
      */
     public Vector3d(Vector2dc v, double z) {
         this.x = v.x();
@@ -176,9 +163,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Create a new {@link Vector3d} and initialize its three components from the first
      * three elements of the given array.
-     * 
-     * @param xyz
-     *          the array containing at least three elements
+     *
+     * @param xyz the array containing at least three elements
      */
     public Vector3d(double[] xyz) {
         this.x = xyz[0];
@@ -189,9 +175,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Create a new {@link Vector3d} and initialize its three components from the first
      * three elements of the given array.
-     * 
-     * @param xyz
-     *          the array containing at least three elements
+     *
+     * @param xyz the array containing at least three elements
      */
     public Vector3d(float[] xyz) {
         this.x = xyz[0];
@@ -260,6 +245,64 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         MemUtil.INSTANCE.get(this, index, buffer);
     }
 
+    /**
+     * Get the length squared of a 3-dimensional double-precision vector.
+     *
+     * @param x The vector's x component
+     * @param y The vector's y component
+     * @param z The vector's z component
+     * @return the length squared of the given vector
+     * @author F. Neurath
+     */
+    public static double lengthSquared(double x, double y, double z) {
+        return Math.fma(x, x, Math.fma(y, y, z * z));
+    }
+
+    /**
+     * Get the length of a 3-dimensional double-precision vector.
+     *
+     * @param x The vector's x component
+     * @param y The vector's y component
+     * @param z The vector's z component
+     * @return the length of the given vector
+     * @author F. Neurath
+     */
+    public static double length(double x, double y, double z) {
+        return Math.sqrt(Math.fma(x, x, Math.fma(y, y, z * z)));
+    }
+
+    /**
+     * Return the distance between <code>(x1, y1, z1)</code> and <code>(x2, y2, z2)</code>.
+     *
+     * @param x1 the x component of the first vector
+     * @param y1 the y component of the first vector
+     * @param z1 the z component of the first vector
+     * @param x2 the x component of the second vector
+     * @param y2 the y component of the second vector
+     * @param z2 the z component of the second vector
+     * @return the euclidean distance
+     */
+    public static double distance(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return Math.sqrt(distanceSquared(x1, y1, z1, x2, y2, z2));
+    }
+
+    /**
+     * Return the squared distance between <code>(x1, y1, z1)</code> and <code>(x2, y2, z2)</code>.
+     *
+     * @param x1 the x component of the first vector
+     * @param y1 the y component of the first vector
+     * @param z1 the z component of the first vector
+     * @param x2 the x component of the second vector
+     * @param y2 the y component of the second vector
+     * @param z2 the z component of the second vector
+     * @return the euclidean distance squared
+     */
+    public static double distanceSquared(double x1, double y1, double z1, double x2, double y2, double z2) {
+        double dx = x1 - x2;
+        double dy = y1 - y2;
+        double dz = z1 - z2;
+        return Math.fma(dx, dx, Math.fma(dy, dy, dz * dz));
+    }
 
     public double x() {
         return this.x;
@@ -275,9 +318,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set the x, y and z components to match the supplied vector.
-     * 
-     * @param v
-     *          the vector to set this vector's components from
+     *
+     * @param v the vector to set this vector's components from
      * @return this
      */
     public Vector3d set(Vector3dc v) {
@@ -289,9 +331,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set the x, y and z components to match the supplied vector.
-     * 
-     * @param v
-     *          the vector to set this vector's components from
+     *
+     * @param v the vector to set this vector's components from
      * @return this
      */
     public Vector3d set(Vector3ic v) {
@@ -305,10 +346,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Set the first two components from the given <code>v</code>
      * and the z component from the given <code>z</code>
      *
-     * @param v
-     *          the {@link Vector2dc} to copy the values from
-     * @param z
-     *          the z component
+     * @param v the {@link Vector2dc} to copy the values from
+     * @param z the z component
      * @return this
      */
     public Vector3d set(Vector2dc v, double z) {
@@ -322,10 +361,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Set the first two components from the given <code>v</code>
      * and the z component from the given <code>z</code>
      *
-     * @param v
-     *          the {@link Vector2ic} to copy the values from
-     * @param z
-     *          the z component
+     * @param v the {@link Vector2ic} to copy the values from
+     * @param z the z component
      * @return this
      */
     public Vector3d set(Vector2ic v, double z) {
@@ -337,9 +374,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set the x, y and z components to match the supplied vector.
-     * 
-     * @param v
-     *          the vector to set this vector's components from
+     *
+     * @param v the vector to set this vector's components from
      * @return this
      */
     public Vector3d set(Vector3fc v) {
@@ -353,10 +389,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Set the first two components from the given <code>v</code>
      * and the z component from the given <code>z</code>
      *
-     * @param v
-     *          the {@link Vector2fc} to copy the values from
-     * @param z
-     *          the z component
+     * @param v the {@link Vector2fc} to copy the values from
+     * @param z the z component
      * @return this
      */
     public Vector3d set(Vector2fc v, double z) {
@@ -369,8 +403,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Set the x, y, and z components to the supplied value.
      *
-     * @param d
-     *          the value of all three components
+     * @param d the value of all three components
      * @return this
      */
     public Vector3d set(double d) {
@@ -382,13 +415,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set the x, y and z components to the supplied values.
-     * 
-     * @param x
-     *          the x component
-     * @param y
-     *          the y component
-     * @param z
-     *          the z component
+     *
+     * @param x the x component
+     * @param y the y component
+     * @param z the z component
      * @return this
      */
     public Vector3d set(double x, double y, double z) {
@@ -400,9 +430,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set the three components of this vector to the first three elements of the given array.
-     * 
-     * @param xyz
-     *          the array containing at least three elements
+     *
+     * @param xyz the array containing at least three elements
      * @return this
      */
     public Vector3d set(double[] xyz) {
@@ -414,9 +443,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set the three components of this vector to the first three elements of the given array.
-     * 
-     * @param xyz
-     *          the array containing at least three elements
+     *
+     * @param xyz the array containing at least three elements
      * @return this
      */
     public Vector3d set(float[] xyz) {
@@ -425,7 +453,6 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         this.z = xyz[2];
         return this;
     }
-
 
     /**
      * Read this vector from the supplied {@link ByteBuffer} at the current
@@ -437,8 +464,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * the vector is read, use {@link #set(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer
-     *          values will be read in <code>x, y, z</code> order
+     * @param buffer values will be read in <code>x, y, z</code> order
      * @return this
      * @see #set(int, ByteBuffer)
      */
@@ -453,10 +479,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          values will be read in <code>x, y, z</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer values will be read in <code>x, y, z</code> order
      * @return this
      */
     public Vector3d set(int index, ByteBuffer buffer) {
@@ -474,8 +498,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * the vector is read, use {@link #set(int, DoubleBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @param buffer 
-     *          values will be read in <code>x, y, z</code> order
+     * @param buffer values will be read in <code>x, y, z</code> order
      * @return this
      * @see #set(int, DoubleBuffer)
      */
@@ -490,10 +513,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * <p>
      * This method will not increment the position of the given DoubleBuffer.
      *
-     * @param index
-     *          the absolute position into the DoubleBuffer
-     * @param buffer
-     *          values will be read in <code>x, y, z</code> order
+     * @param index  the absolute position into the DoubleBuffer
+     * @param buffer values will be read in <code>x, y, z</code> order
      * @return this
      */
     public Vector3d set(int index, DoubleBuffer buffer) {
@@ -501,14 +522,11 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         return this;
     }
 
-
     /**
      * Set the value of the specified component of this vector.
      *
-     * @param component
-     *          the component whose value to set, within <code>[0..2]</code>
-     * @param value
-     *          the value to set
+     * @param component the component whose value to set, within <code>[0..2]</code>
+     * @param value     the value to set
      * @return this
      * @throws IllegalArgumentException if <code>component</code> is not within <code>[0..2]</code>
      */
@@ -528,7 +546,6 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         }
         return this;
     }
-
 
     public ByteBuffer get(ByteBuffer buffer) {
         MemUtil.INSTANCE.put(this, buffer.position(), buffer);
@@ -570,12 +587,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         return buffer;
     }
 
-
     /**
      * Subtract the supplied vector from this one.
-     * 
-     * @param v
-     *          the vector to subtract from this
+     *
+     * @param v the vector to subtract from this
      * @return this
      */
     public Vector3d sub(Vector3dc v) {
@@ -594,9 +609,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Subtract the supplied vector from this one.
-     * 
-     * @param v
-     *          the vector to subtract from this
+     *
+     * @param v the vector to subtract from this
      * @return this
      */
     public Vector3d sub(Vector3fc v) {
@@ -615,13 +629,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Subtract <code>(x, y, z)</code> from this vector.
-     * 
-     * @param x
-     *          the x component to subtract
-     * @param y
-     *          the y component to subtract
-     * @param z
-     *          the z component to subtract
+     *
+     * @param x the x component to subtract
+     * @param y the y component to subtract
+     * @param z the z component to subtract
      * @return this
      */
     public Vector3d sub(double x, double y, double z) {
@@ -640,9 +651,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Add the supplied vector to this one.
-     * 
-     * @param v
-     *          the vector to add
+     *
+     * @param v the vector to add
      * @return this
      */
     public Vector3d add(Vector3dc v) {
@@ -661,9 +671,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Add the supplied vector to this one.
-     * 
-     * @param v
-     *          the vector to add
+     *
+     * @param v the vector to add
      * @return this
      */
     public Vector3d add(Vector3fc v) {
@@ -682,13 +691,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Increment the components of this vector by the given values.
-     * 
-     * @param x
-     *          the x component to add
-     * @param y
-     *          the y component to add
-     * @param z
-     *          the z component to add
+     *
+     * @param x the x component to add
+     * @param y the y component to add
+     * @param z the z component to add
      * @return this
      */
     public Vector3d add(double x, double y, double z) {
@@ -707,11 +713,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector3d fma(Vector3dc a, Vector3dc b) {
@@ -723,11 +727,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector3d fma(double a, Vector3dc b) {
@@ -739,11 +741,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector3d fma(Vector3fc a, Vector3fc b) {
@@ -762,11 +762,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Add the component-wise multiplication of <code>a * b</code> to this vector.
-     * 
-     * @param a
-     *          the first multiplicand
-     * @param b
-     *          the second multiplicand
+     *
+     * @param a the first multiplicand
+     * @param b the second multiplicand
      * @return this
      */
     public Vector3d fma(double a, Vector3fc b) {
@@ -807,11 +805,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Add the component-wise multiplication of <code>this * a</code> to <code>b</code>
      * and store the result in <code>this</code>.
-     * 
-     * @param a
-     *          the multiplicand
-     * @param b
-     *          the addend
+     *
+     * @param a the multiplicand
+     * @param b the addend
      * @return this
      */
     public Vector3d mulAdd(Vector3dc a, Vector3dc b) {
@@ -824,11 +820,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Add the component-wise multiplication of <code>this * a</code> to <code>b</code>
      * and store the result in <code>this</code>.
-     * 
-     * @param a
-     *          the multiplicand
-     * @param b
-     *          the addend
+     *
+     * @param a the multiplicand
+     * @param b the addend
      * @return this
      */
     public Vector3d mulAdd(double a, Vector3dc b) {
@@ -861,9 +855,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply this Vector3d component-wise by another Vector3dc.
-     * 
-     * @param v
-     *          the vector to multiply by
+     *
+     * @param v the vector to multiply by
      * @return this
      */
     public Vector3d mul(Vector3dc v) {
@@ -875,9 +868,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply this Vector3d component-wise by another Vector3fc.
-     * 
-     * @param v
-     *          the vector to multiply by
+     *
+     * @param v the vector to multiply by
      * @return this
      */
     public Vector3d mul(Vector3fc v) {
@@ -903,9 +895,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Divide this Vector3d component-wise by another Vector3dc.
-     * 
-     * @param v
-     *          the vector to divide by
+     *
+     * @param v the vector to divide by
      * @return this
      */
     public Vector3d div(Vector3d v) {
@@ -917,9 +908,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Divide this Vector3d component-wise by another Vector3fc.
-     * 
-     * @param v
-     *          the vector to divide by
+     *
+     * @param v the vector to divide by
      * @return this
      */
     public Vector3d div(Vector3fc v) {
@@ -969,9 +959,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given matrix <code>mat</code> this Vector3d, perform perspective division.
      * <p>
      * This method uses <code>w=1.0</code> as the fourth vector component.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulProject(Matrix4dc mat) {
@@ -1000,9 +989,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given matrix <code>mat</code> with this Vector3d, perform perspective division.
      * <p>
      * This method uses <code>w=1.0</code> as the fourth vector component.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulProject(Matrix4fc mat) {
@@ -1018,9 +1006,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply the given matrix <code>mat</code> with this Vector3d.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mul(Matrix3fc mat) {
@@ -1035,9 +1022,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply the given matrix <code>mat</code> with this Vector3d.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mul(Matrix3dc mat) {
@@ -1083,9 +1069,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Multiply the given matrix with this Vector3d by assuming a third row in the matrix of <code>(0, 0, 1)</code>
      * and store the result in <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix
+     *
+     * @param mat the matrix
      * @return this
      */
     public Vector3d mul(Matrix3x2dc mat) {
@@ -1108,9 +1093,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Multiply the given matrix with this Vector3d by assuming a third row in the matrix of <code>(0, 0, 1)</code>
      * and store the result in <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix
+     *
+     * @param mat the matrix
      * @return this
      */
     public Vector3d mul(Matrix3x2fc mat) {
@@ -1132,9 +1116,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply the transpose of the given matrix with this Vector3d and store the result in <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix
+     *
+     * @param mat the matrix
      * @return this
      */
     public Vector3d mulTranspose(Matrix3dc mat) {
@@ -1159,9 +1142,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply the transpose of the given matrix with  this Vector3d and store the result in <code>this</code>.
-     * 
-     * @param mat
-     *          the matrix
+     *
+     * @param mat the matrix
      * @return this
      */
     public Vector3d mulTranspose(Matrix3fc mat) {
@@ -1188,9 +1170,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulPosition(Matrix4fc mat) {
@@ -1207,9 +1188,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulPosition(Matrix4dc mat) {
@@ -1226,9 +1206,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x3 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulPosition(Matrix4x3dc mat) {
@@ -1245,9 +1224,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x3 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulPosition(Matrix4x3fc mat) {
@@ -1304,9 +1282,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the transpose of the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix whose transpose to multiply this vector by
+     *
+     * @param mat the matrix whose transpose to multiply this vector by
      * @return this
      */
     public Vector3d mulTransposePosition(Matrix4dc mat) {
@@ -1333,9 +1310,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the transpose of the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix whose transpose to multiply this vector by
+     *
+     * @param mat the matrix whose transpose to multiply this vector by
      * @return this
      */
     public Vector3d mulTransposePosition(Matrix4fc mat) {
@@ -1363,9 +1339,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * of the resulting 4D vector.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return the <i>w</i> component of the resulting 4D vector after multiplication
      */
     public double mulPositionW(Matrix4fc mat) {
@@ -1395,9 +1370,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * of the resulting 4D vector.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>1.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return the <i>w</i> component of the resulting 4D vector after multiplication
      */
     public double mulPositionW(Matrix4dc mat) {
@@ -1426,9 +1400,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulDirection(Matrix4fc mat) {
@@ -1445,9 +1418,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulDirection(Matrix4dc mat) {
@@ -1464,9 +1436,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x3 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulDirection(Matrix4x3dc mat) {
@@ -1483,9 +1454,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the given 4x3 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix to multiply this vector by
+     *
+     * @param mat the matrix to multiply this vector by
      * @return this
      */
     public Vector3d mulDirection(Matrix4x3fc mat) {
@@ -1542,9 +1512,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the transpose of the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix whose transpose to multiply this vector by
+     *
+     * @param mat the matrix whose transpose to multiply this vector by
      * @return this
      */
     public Vector3d mulTransposeDirection(Matrix4dc mat) {
@@ -1571,9 +1540,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Multiply the transpose of the given 4x4 matrix <code>mat</code> with <code>this</code>.
      * <p>
      * This method assumes the <code>w</code> component of <code>this</code> to be <code>0.0</code>.
-     * 
-     * @param mat
-     *          the matrix whose transpose to multiply this vector by
+     *
+     * @param mat the matrix whose transpose to multiply this vector by
      * @return this
      */
     public Vector3d mulTransposeDirection(Matrix4fc mat) {
@@ -1598,9 +1566,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply this Vector3d by the given scalar value.
-     * 
-     * @param scalar
-     *          the scalar to multiply this vector by
+     *
+     * @param scalar the scalar to multiply this vector by
      * @return this
      */
     public Vector3d mul(double scalar) {
@@ -1619,13 +1586,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Multiply the components of this Vector3d by the given scalar values and store the result in <code>this</code>.
-     * 
-     * @param x
-     *          the x component to multiply this vector by
-     * @param y
-     *          the y component to multiply this vector by
-     * @param z
-     *          the z component to multiply this vector by
+     *
+     * @param x the x component to multiply this vector by
+     * @param y the y component to multiply this vector by
+     * @param z the z component to multiply this vector by
      * @return this
      */
     public Vector3d mul(double x, double y, double z) {
@@ -1644,12 +1608,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Rotate this vector by the given quaternion <code>quat</code> and store the result in <code>this</code>.
-     * 
-     * @see Quaterniond#transform(Vector3d)
-     * 
-     * @param quat
-     *          the quaternion to rotate this vector
+     *
+     * @param quat the quaternion to rotate this vector
      * @return this
+     * @see Quaterniond#transform(Vector3d)
      */
     public Vector3d rotate(Quaterniondc quat) {
         return quat.transform(this, this);
@@ -1669,15 +1631,11 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Rotate this vector the specified radians around the given rotation axis.
-     * 
-     * @param angle
-     *          the angle in radians
-     * @param x
-     *          the x component of the rotation axis
-     * @param y
-     *          the y component of the rotation axis
-     * @param z
-     *          the z component of the rotation axis
+     *
+     * @param angle the angle in radians
+     * @param x     the x component of the rotation axis
+     * @param y     the y component of the rotation axis
+     * @param z     the z component of the rotation axis
      * @return this
      */
     public Vector3d rotateAxis(double angle, double x, double y, double z) {
@@ -1708,8 +1666,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         double w2 = qw * qw, x2 = qx * qx, y2 = qy * qy, z2 = qz * qz, zw = qz * qw;
         double xy = qx * qy, xz = qx * qz, yw = qy * qw, yz = qy * qz, xw = qx * qw;
         double nx = (w2 + x2 - z2 - y2) * x + (-zw + xy - zw + xy) * y + (yw + xz + xz + yw) * z;
-        double ny = (xy + zw + zw + xy) * x + ( y2 - z2 + w2 - x2) * y + (yz + yz - xw - xw) * z;
-        double nz = (xz - yw + xz - yw) * x + ( yz + yz + xw + xw) * y + (z2 - y2 - x2 + w2) * z;
+        double ny = (xy + zw + zw + xy) * x + (y2 - z2 + w2 - x2) * y + (yz + yz - xw - xw) * z;
+        double nz = (xz - yw + xz - yw) * x + (yz + yz + xw + xw) * y + (z2 - y2 - x2 + w2) * z;
         dest.x = nx;
         dest.y = ny;
         dest.z = nz;
@@ -1718,9 +1676,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Rotate this vector the specified radians around the X axis.
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
      */
     public Vector3d rotateX(double angle) {
@@ -1744,14 +1701,13 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Rotate this vector the specified radians around the Y axis.
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
      */
     public Vector3d rotateY(double angle) {
         double sin = Math.sin(angle), cos = Math.cosFromSin(sin, angle);
-        double x =  this.x * cos + this.z * sin;
+        double x = this.x * cos + this.z * sin;
         double z = -this.x * sin + this.z * cos;
         this.x = x;
         this.z = z;
@@ -1760,7 +1716,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     public Vector3d rotateY(double angle, Vector3d dest) {
         double sin = Math.sin(angle), cos = Math.cosFromSin(sin, angle);
-        double x =  this.x * cos + this.z * sin;
+        double x = this.x * cos + this.z * sin;
         double z = -this.x * sin + this.z * cos;
         dest.x = x;
         dest.y = this.y;
@@ -1770,9 +1726,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Rotate this vector the specified radians around the Z axis.
-     * 
-     * @param angle
-     *          the angle in radians
+     *
+     * @param angle the angle in radians
      * @return this
      */
     public Vector3d rotateZ(double angle) {
@@ -1796,9 +1751,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Divide this Vector3d by the given scalar value.
-     * 
-     * @param scalar
-     *          the scalar to divide this vector by
+     *
+     * @param scalar the scalar to divide this vector by
      * @return this
      */
     public Vector3d div(double scalar) {
@@ -1819,13 +1773,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Divide the components of this Vector3d by the given scalar values and store the result in <code>this</code>.
-     * 
-     * @param x
-     *          the x component to divide this vector by
-     * @param y
-     *          the y component to divide this vector by
-     * @param z
-     *          the z component to divide this vector by
+     *
+     * @param x the x component to divide this vector by
+     * @param y the y component to divide this vector by
+     * @param z the z component to divide this vector by
      * @return this
      */
     public Vector3d div(double x, double y, double z) {
@@ -1846,43 +1797,13 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         return Math.fma(x, x, Math.fma(y, y, z * z));
     }
 
-    /**
-     * Get the length squared of a 3-dimensional double-precision vector.
-     *
-     * @param x The vector's x component
-     * @param y The vector's y component
-     * @param z The vector's z component
-     *
-     * @return the length squared of the given vector
-     *
-     * @author F. Neurath
-     */
-    public static double lengthSquared(double x, double y, double z) {
-        return Math.fma(x, x, Math.fma(y, y, z * z));
-    }
-
     public double length() {
         return Math.sqrt(Math.fma(x, x, Math.fma(y, y, z * z)));
     }
 
     /**
-     * Get the length of a 3-dimensional double-precision vector.
-     *
-     * @param x The vector's x component
-     * @param y The vector's y component
-     * @param z The vector's z component
-     *
-     * @return the length of the given vector
-     *
-     * @author F. Neurath
-     */
-    public static double length(double x, double y, double z) {
-        return Math.sqrt(Math.fma(x, x, Math.fma(y, y, z * z)));
-    }
-
-    /**
      * Normalize this vector.
-     * 
+     *
      * @return this
      */
     public Vector3d normalize() {
@@ -1903,9 +1824,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Scale this vector to have the given length.
-     * 
-     * @param length
-     *          the desired length
+     *
+     * @param length the desired length
      * @return this
      */
     public Vector3d normalize(double length) {
@@ -1926,9 +1846,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set this vector to be the cross product of this and v2.
-     * 
-     * @param v
-     *          the other vector
+     *
+     * @param v the other vector
      * @return this
      */
     public Vector3d cross(Vector3dc v) {
@@ -1943,13 +1862,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set this vector to be the cross product of itself and <code>(x, y, z)</code>.
-     * 
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
+     *
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
      * @return this
      */
     public Vector3d cross(double x, double y, double z) {
@@ -2010,51 +1926,6 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         return Math.fma(dx, dx, Math.fma(dy, dy, dz * dz));
     }
 
-    /**
-     * Return the distance between <code>(x1, y1, z1)</code> and <code>(x2, y2, z2)</code>.
-     *
-     * @param x1
-     *          the x component of the first vector
-     * @param y1
-     *          the y component of the first vector
-     * @param z1
-     *          the z component of the first vector
-     * @param x2
-     *          the x component of the second vector
-     * @param y2
-     *          the y component of the second vector
-     * @param z2
-     *          the z component of the second vector
-     * @return the euclidean distance
-     */
-    public static double distance(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return Math.sqrt(distanceSquared(x1, y1, z1, x2, y2, z2));
-    }
-
-    /**
-     * Return the squared distance between <code>(x1, y1, z1)</code> and <code>(x2, y2, z2)</code>.
-     *
-     * @param x1
-     *          the x component of the first vector
-     * @param y1
-     *          the y component of the first vector
-     * @param z1
-     *          the z component of the first vector
-     * @param x2
-     *          the x component of the second vector
-     * @param y2
-     *          the y component of the second vector
-     * @param z2
-     *          the z component of the second vector
-     * @return the euclidean distance squared
-     */
-    public static double distanceSquared(double x1, double y1, double z1, double x2, double y2, double z2) {
-        double dx = x1 - x2;
-        double dy = y1 - y2;
-        double dz = z1 - z2;
-        return Math.fma(dx, dx, Math.fma(dy, dy, dz * dz));
-    }
-
     public double dot(Vector3dc v) {
         return Math.fma(this.x, v.x(), Math.fma(this.y, v.y(), this.z * v.z()));
     }
@@ -2083,8 +1954,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
         double y = v.y();
         double z = v.z();
         return Math.atan2(
-        (this.y * z - this.z * y) * n.x() + (this.z * x - this.x * z) * n.y() + (this.x * y - this.y * x) * n.z(),
-        this.x * x + this.y * y + this.z * z);
+                (this.y * z - this.z * y) * n.x() + (this.z * x - this.x * z) * n.y() + (this.x * y - this.y * x) * n.z(),
+                this.x * x + this.y * y + this.z * z);
     }
 
     public double angleSigned(double x, double y, double z, double nx, double ny, double nz) {
@@ -2096,8 +1967,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Set the components of this vector to be the component-wise minimum of this and the other vector.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return this
      */
     public Vector3d min(Vector3dc v) {
@@ -2117,8 +1987,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
     /**
      * Set the components of this vector to be the component-wise maximum of this and the other vector.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return this
      */
     public Vector3d max(Vector3dc v) {
@@ -2137,7 +2006,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set all components to zero.
-     * 
+     *
      * @return this
      */
     public Vector3d zero() {
@@ -2151,7 +2020,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Return a string representation of this vector.
      * <p>
      * This method creates a new {@link DecimalFormat} on every invocation with the format string "<code>0.000E0;-</code>".
-     * 
+     *
      * @return the string representation
      */
     public String toString() {
@@ -2160,9 +2029,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Return a string representation of this vector by formatting the vector components with the given {@link NumberFormat}.
-     * 
-     * @param formatter
-     *          the {@link NumberFormat} used to format the vector components with
+     *
+     * @param formatter the {@link NumberFormat} used to format the vector components with
      * @return the string representation
      */
     public String toString(NumberFormat formatter) {
@@ -2184,7 +2052,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Negate this vector.
-     * 
+     *
      * @return this
      */
     public Vector3d negate() {
@@ -2203,7 +2071,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Set <code>this</code> vector's components to their respective absolute values.
-     * 
+     *
      * @return this
      */
     public Vector3d absolute() {
@@ -2245,9 +2113,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
             return false;
         if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
             return false;
-        if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
-            return false;
-        return true;
+        return Double.doubleToLongBits(z) == Double.doubleToLongBits(other.z);
     }
 
     public boolean equals(Vector3dc v, double delta) {
@@ -2261,9 +2127,7 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
             return false;
         if (!Runtime.equals(y, v.y(), delta))
             return false;
-        if (!Runtime.equals(z, v.z(), delta))
-            return false;
-        return true;
+        return Runtime.equals(z, v.z(), delta);
     }
 
     public boolean equals(double x, double y, double z) {
@@ -2271,16 +2135,13 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
             return false;
         if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(y))
             return false;
-        if (Double.doubleToLongBits(this.z) != Double.doubleToLongBits(z))
-            return false;
-        return true;
+        return Double.doubleToLongBits(this.z) == Double.doubleToLongBits(z);
     }
 
     /**
      * Reflect this vector about the given normal vector.
-     * 
-     * @param normal
-     *          the vector to reflect about
+     *
+     * @param normal the vector to reflect about
      * @return this
      */
     public Vector3d reflect(Vector3dc normal) {
@@ -2296,13 +2157,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Reflect this vector about the given normal vector.
-     * 
-     * @param x
-     *          the x component of the normal
-     * @param y
-     *          the y component of the normal
-     * @param z
-     *          the z component of the normal
+     *
+     * @param x the x component of the normal
+     * @param y the y component of the normal
+     * @param z the z component of the normal
      * @return this
      */
     public Vector3d reflect(double x, double y, double z) {
@@ -2334,9 +2192,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Compute the half vector between this and the other vector.
-     * 
-     * @param other
-     *          the other vector
+     *
+     * @param other the other vector
      * @return this
      */
     public Vector3d half(Vector3dc other) {
@@ -2345,13 +2202,10 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     /**
      * Compute the half vector between this and the vector <code>(x, y, z)</code>.
-     * 
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
+     *
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
      * @return this
      */
     public Vector3d half(double x, double y, double z) {
@@ -2390,11 +2244,9 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * <p>
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
-     * 
-     * @param other
-     *          the other vector
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
+     *
+     * @param other the other vector
+     * @param t     the interpolation factor between 0.0 and 1.0
      * @return this
      */
     public Vector3d lerp(Vector3dc other, double t) {
@@ -2413,14 +2265,14 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
 
     public double get(int component) throws IllegalArgumentException {
         switch (component) {
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        default:
-            throw new IllegalArgumentException();
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -2494,9 +2346,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * Transform <code>this</code> vector so that it is orthogonal to the given vector <code>v</code> and normalize the result.
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram–Schmidt process</a>
-     * 
-     * @param v
-     *          the reference vector which the result should be orthogonal to
+     *
+     * @param v the reference vector which the result should be orthogonal to
      * @return this
      */
     public Vector3d orthogonalize(Vector3dc v) {
@@ -2513,9 +2364,8 @@ public class Vector3d implements Externalizable, Cloneable, Vector3dc {
      * The vector <code>v</code> is assumed to be a {@link #normalize() unit} vector.
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram–Schmidt process</a>
-     * 
-     * @param v
-     *          the reference unit vector which the result should be orthogonal to
+     *
+     * @param v the reference unit vector which the result should be orthogonal to
      * @return this
      */
     public Vector3d orthogonalizeUnit(Vector3dc v) {

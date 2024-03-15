@@ -37,8 +37,8 @@ import java.text.NumberFormat;
  * Contains the definition of a 2x2 matrix of floats, and associated functions to transform
  * it. The matrix is column-major to match OpenGL's interpretation, and it looks like this:
  * <p>
- *      m00  m10<br>
- *      m01  m11<br>
+ * m00  m10<br>
+ * m01  m11<br>
  *
  * @author Joseph Burton
  */
@@ -60,8 +60,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Create a new {@link Matrix2f} and make it a copy of the given matrix.
      *
-     * @param mat
-     *          the {@link Matrix2fc} to copy the values from
+     * @param mat the {@link Matrix2fc} to copy the values from
      */
     public Matrix2f(Matrix2fc mat) {
         if (mat instanceof Matrix2f) {
@@ -74,8 +73,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Create a new {@link Matrix2f} and make it a copy of the upper left 2x2 of the given {@link Matrix3fc}.
      *
-     * @param mat
-     *          the {@link Matrix3fc} to copy the values from
+     * @param mat the {@link Matrix3fc} to copy the values from
      */
     public Matrix2f(Matrix3fc mat) {
         if (mat instanceof Matrix3f) {
@@ -89,14 +87,10 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * Create a new 2x2 matrix using the supplied float values. The order of the parameter is column-major,
      * so the first two parameters specify the two elements of the first column.
      *
-     * @param m00
-     *          the value of m00
-     * @param m01
-     *          the value of m01
-     * @param m10
-     *          the value of m10
-     * @param m11
-     *          the value of m11
+     * @param m00 the value of m00
+     * @param m01 the value of m01
+     * @param m10 the value of m10
+     * @param m11 the value of m11
      */
     public Matrix2f(float m00, float m01,
                     float m10, float m11) {
@@ -115,8 +109,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * <p>
      * The buffer's position will not be changed by this method.
      *
-     * @param buffer
-     *          the {@link FloatBuffer} to read the matrix values from
+     * @param buffer the {@link FloatBuffer} to read the matrix values from
      */
     public Matrix2f(FloatBuffer buffer) {
         MemUtil.INSTANCE.get(this, buffer.position(), buffer);
@@ -126,10 +119,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Create a new {@link Matrix2f} and initialize its two columns using the supplied vectors.
      *
-     * @param col0
-     *          the first column
-     * @param col1
-     *          the second column
+     * @param col0 the first column
+     * @param col1 the second column
      */
     public Matrix2f(Vector2fc col0, Vector2fc col1) {
         m00 = col0.x();
@@ -141,12 +132,15 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     public float m00() {
         return m00;
     }
+
     public float m01() {
         return m01;
     }
+
     public float m10() {
         return m10;
     }
+
     public float m11() {
         return m11;
     }
@@ -154,41 +148,40 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the value of the matrix element at column 0 and row 0.
      *
-     * @param m00
-     *          the new value
+     * @param m00 the new value
      * @return this
      */
     public Matrix2f m00(float m00) {
         this.m00 = m00;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 0 and row 1.
      *
-     * @param m01
-     *          the new value
+     * @param m01 the new value
      * @return this
      */
     public Matrix2f m01(float m01) {
         this.m01 = m01;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 1 and row 0.
      *
-     * @param m10
-     *          the new value
+     * @param m10 the new value
      * @return this
      */
     public Matrix2f m10(float m10) {
         this.m10 = m10;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 1 and row 1.
      *
-     * @param m11
-     *          the new value
+     * @param m11 the new value
      * @return this
      */
     public Matrix2f m11(float m11) {
@@ -199,41 +192,40 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the value of the matrix element at column 0 and row 0.
      *
-     * @param m00
-     *          the new value
+     * @param m00 the new value
      * @return this
      */
     Matrix2f _m00(float m00) {
         this.m00 = m00;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 0 and row 1.
      *
-     * @param m01
-     *          the new value
+     * @param m01 the new value
      * @return this
      */
     Matrix2f _m01(float m01) {
         this.m01 = m01;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 1 and row 0.
      *
-     * @param m10
-     *          the new value
+     * @param m10 the new value
      * @return this
      */
     Matrix2f _m10(float m10) {
         this.m10 = m10;
         return this;
     }
+
     /**
      * Set the value of the matrix element at column 1 and row 1.
      *
-     * @param m11
-     *          the new value
+     * @param m11 the new value
      * @return this
      */
     Matrix2f _m11(float m11) {
@@ -244,8 +236,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the elements of this matrix to the ones in <code>m</code>.
      *
-     * @param m
-     *          the matrix to copy the elements from
+     * @param m the matrix to copy the elements from
      * @return this
      */
     public Matrix2f set(Matrix2fc m) {
@@ -256,6 +247,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
         }
         return this;
     }
+
     private void setMatrix2fc(Matrix2fc mat) {
         m00 = mat.m00();
         m01 = mat.m01();
@@ -266,8 +258,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the elements of this matrix to the left 2x2 submatrix of <code>m</code>.
      *
-     * @param m
-     *          the matrix to copy the elements from
+     * @param m the matrix to copy the elements from
      * @return this
      */
     public Matrix2f set(Matrix3x2fc m) {
@@ -278,6 +269,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
         }
         return this;
     }
+
     private void setMatrix3x2fc(Matrix3x2fc mat) {
         m00 = mat.m00();
         m01 = mat.m01();
@@ -288,8 +280,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the elements of this matrix to the upper left 2x2 of the given {@link Matrix3fc}.
      *
-     * @param m
-     *          the {@link Matrix3fc} to copy the values from
+     * @param m the {@link Matrix3fc} to copy the values from
      * @return this
      */
     public Matrix2f set(Matrix3fc m) {
@@ -300,6 +291,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
         }
         return this;
     }
+
     private void setMatrix3fc(Matrix3fc mat) {
         m00 = mat.m00();
         m01 = mat.m01();
@@ -315,8 +307,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
      *
-     * @param right
-     *          the right operand of the matrix multiplication
+     * @param right the right operand of the matrix multiplication
      * @return this
      */
     public Matrix2f mul(Matrix2fc right) {
@@ -343,8 +334,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>L * M * v</code>, the
      * transformation of <code>this</code> matrix will be applied first!
      *
-     * @param left
-     *          the left operand of the matrix multiplication
+     * @param left the left operand of the matrix multiplication
      * @return this
      */
     public Matrix2f mulLocal(Matrix2fc left) {
@@ -369,14 +359,10 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * m00, m10<br>
      * m01, m11<br>
      *
-     * @param m00
-     *          the new value of m00
-     * @param m01
-     *          the new value of m01
-     * @param m10
-     *          the new value of m10
-     * @param m11
-     *          the new value of m11
+     * @param m00 the new value of m00
+     * @param m01 the new value of m01
+     * @param m10 the new value of m10
+     * @param m11 the new value of m11
      * @return this
      */
     public Matrix2f set(float m00, float m01,
@@ -393,14 +379,13 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * <p>
      * 0, 2<br>
      * 1, 3<br>
-     *
+     * <p>
      * This method only uses the first 4 values, all others are ignored.
      *
-     * @param m
-     *          the array to read the matrix values from
+     * @param m the array to read the matrix values from
      * @return this
      */
-    public Matrix2f set(float m[]) {
+    public Matrix2f set(float[] m) {
         MemUtil.INSTANCE.copy(m, 0, this);
         return this;
     }
@@ -408,10 +393,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the two columns of this matrix to the supplied vectors, respectively.
      *
-     * @param col0
-     *          the first column
-     * @param col1
-     *          the second column
+     * @param col0 the first column
+     * @param col1 the second column
      * @return this
      */
     public Matrix2f set(Vector2fc col0, Vector2fc col1) {
@@ -459,7 +442,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
 
     public Matrix2f transpose(Matrix2f dest) {
         dest.set(m00, m10,
-                 m01, m11);
+                m01, m11);
         return dest;
     }
 
@@ -494,13 +477,12 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Return a string representation of this matrix by formatting the matrix elements with the given {@link NumberFormat}.
      *
-     * @param formatter
-     *          the {@link NumberFormat} used to format the matrix values with
+     * @param formatter the {@link NumberFormat} used to format the matrix values with
      * @return the string representation
      */
     public String toString(NumberFormat formatter) {
         return Runtime.format(m00, formatter) + " " + Runtime.format(m10, formatter) + "\n"
-             + Runtime.format(m01, formatter) + " " + Runtime.format(m11, formatter) + "\n";
+                + Runtime.format(m01, formatter) + " " + Runtime.format(m11, formatter) + "\n";
     }
 
     /**
@@ -510,11 +492,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * This is the reverse method of {@link #set(Matrix2fc)} and allows to obtain
      * intermediate calculation results when chaining multiple transformations.
      *
-     * @see #set(Matrix2fc)
-     *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
+     * @see #set(Matrix2fc)
      */
     public Matrix2f get(Matrix2f dest) {
         return dest.set(this);
@@ -588,8 +568,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * <p>
      * The position of the FloatBuffer will not be changed by this method.
      *
-     * @param buffer
-     *              the FloatBuffer to read the matrix values from in column-major order
+     * @param buffer the FloatBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix2f set(FloatBuffer buffer) {
@@ -605,8 +584,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * <p>
      * The position of the ByteBuffer will not be changed by this method.
      *
-     * @param buffer
-     *              the ByteBuffer to read the matrix values from in column-major order
+     * @param buffer the ByteBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix2f set(ByteBuffer buffer) {
@@ -621,11 +599,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * The FloatBuffer is expected to contain the values in column-major order.
      * <p>
      * The position of the FloatBuffer will not be changed by this method.
-     * 
-     * @param index
-     *              the absolute position into the FloatBuffer
-     * @param buffer
-     *              the FloatBuffer to read the matrix values from in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer the FloatBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix2f set(int index, FloatBuffer buffer) {
@@ -640,11 +616,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * The ByteBuffer is expected to contain the values in column-major order.
      * <p>
      * The position of the ByteBuffer will not be changed by this method.
-     * 
-     * @param index
-     *              the absolute position into the ByteBuffer
-     * @param buffer
-     *              the ByteBuffer to read the matrix values from in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer the ByteBuffer to read the matrix values from in column-major order
      * @return this
      */
     public Matrix2f set(int index, ByteBuffer buffer) {
@@ -686,8 +660,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>, the
      * scaling will be applied first!
      *
-     * @param xy
-     *            the factors of the x and y component, respectively
+     * @param xy the factors of the x and y component, respectively
      * @return this
      */
     public Matrix2f scale(Vector2fc xy) {
@@ -714,10 +687,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
+     * @param x the factor of the x component
+     * @param y the factor of the y component
      * @return this
      */
     public Matrix2f scale(float x, float y) {
@@ -736,11 +707,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @see #scale(float, float)
-     *
-     * @param xy
-     *            the factor for all components
+     * @param xy the factor for all components
      * @return this
+     * @see #scale(float, float)
      */
     public Matrix2f scale(float xy) {
         return scale(xy, xy);
@@ -763,10 +732,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>S * M * v</code>, the
      * scaling will be applied last!
      *
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
+     * @param x the factor of the x component
+     * @param y the factor of the y component
      * @return this
      */
     public Matrix2f scaleLocal(float x, float y) {
@@ -782,11 +749,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * In order to post-multiply a scaling transformation directly to a
      * matrix, use {@link #scale(float) scale()} instead.
      *
-     * @see #scale(float)
-     *
-     * @param factor
-     *             the scale factor in x and y
+     * @param factor the scale factor in x and y
      * @return this
+     * @see #scale(float)
      */
     public Matrix2f scaling(float factor) {
         MemUtil.INSTANCE.zero(this);
@@ -798,10 +763,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set this matrix to be a simple scale matrix.
      *
-     * @param x
-     *             the scale in x
-     * @param y
-     *             the scale in y
+     * @param x the scale in x
+     * @param y the scale in y
      * @return this
      */
     public Matrix2f scaling(float x, float y) {
@@ -820,11 +783,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * In order to post-multiply a scaling transformation directly to a
      * matrix use {@link #scale(Vector2fc) scale()} instead.
      *
-     * @see #scale(Vector2fc)
-     *
-     * @param xy
-     *             the scale in x and y respectively
+     * @param xy the scale in x and y respectively
      * @return this
+     * @see #scale(Vector2fc)
      */
     public Matrix2f scaling(Vector2fc xy) {
         return scaling(xy.x(), xy.y());
@@ -841,11 +802,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * In order to post-multiply a rotation transformation directly to a
      * matrix, use {@link #rotate(float) rotate()} instead.
      *
-     * @see #rotate(float)
-     *
-     * @param angle
-     *          the angle in radians
+     * @param angle the angle in radians
      * @return this
+     * @see #rotate(float)
      */
     public Matrix2f rotation(float angle) {
         float sin = Math.sin(angle);
@@ -868,7 +827,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
 
     public Vector2f transform(float x, float y, Vector2f dest) {
         dest.set(m00 * x + m10 * y,
-                 m01 * x + m11 * y);
+                m01 * x + m11 * y);
         return dest;
     }
 
@@ -883,7 +842,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
 
     public Vector2f transformTranspose(float x, float y, Vector2f dest) {
         dest.set(m00 * x + m01 * y,
-                 m10 * x + m11 * y);
+                m10 * x + m11 * y);
         return dest;
     }
 
@@ -913,8 +872,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions">http://en.wikipedia.org</a>
      *
-     * @param angle
-     *            the angle in radians
+     * @param angle the angle in radians
      * @return this
      */
     public Matrix2f rotate(float angle) {
@@ -952,11 +910,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions">http://en.wikipedia.org</a>
      *
-     * @see #rotation(float)
-     *
-     * @param angle
-     *            the angle in radians to rotate about the X axis
+     * @param angle the angle in radians to rotate about the X axis
      * @return this
+     * @see #rotation(float)
      */
     public Matrix2f rotateLocal(float angle) {
         return rotateLocal(angle, this);
@@ -980,16 +936,16 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
 
     public Vector2f getRow(int row, Vector2f dest) throws IndexOutOfBoundsException {
         switch (row) {
-        case 0:
-            dest.x = m00;
-            dest.y = m10;
-            break;
-        case 1:
-            dest.x = m01;
-            dest.y = m11;
-            break;
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                dest.x = m00;
+                dest.y = m10;
+                break;
+            case 1:
+                dest.x = m01;
+                dest.y = m11;
+                break;
+            default:
+                throw new IndexOutOfBoundsException();
         }
         return dest;
     }
@@ -997,10 +953,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the row at the given <code>row</code> index, starting with <code>0</code>.
      *
-     * @param row
-     *          the row index in <code>[0..1]</code>
-     * @param src
-     *          the row components to set
+     * @param row the row index in <code>[0..1]</code>
+     * @param src the row components to set
      * @return this
      * @throws IndexOutOfBoundsException if <code>row</code> is not in <code>[0..1]</code>
      */
@@ -1011,43 +965,40 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the row at the given <code>row</code> index, starting with <code>0</code>.
      *
-     * @param row
-     *          the row index in <code>[0..1]</code>
-     * @param x
-     *          the first element in the row
-     * @param y
-     *          the second element in the row
+     * @param row the row index in <code>[0..1]</code>
+     * @param x   the first element in the row
+     * @param y   the second element in the row
      * @return this
      * @throws IndexOutOfBoundsException if <code>row</code> is not in <code>[0..1]</code>
      */
     public Matrix2f setRow(int row, float x, float y) throws IndexOutOfBoundsException {
         switch (row) {
-        case 0:
-            this.m00 = x;
-            this.m10 = y;
-            break;
-        case 1:
-            this.m01 = x;
-            this.m11 = y;
-            break;
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                this.m00 = x;
+                this.m10 = y;
+                break;
+            case 1:
+                this.m01 = x;
+                this.m11 = y;
+                break;
+            default:
+                throw new IndexOutOfBoundsException();
         }
         return this;
     }
 
     public Vector2f getColumn(int column, Vector2f dest) throws IndexOutOfBoundsException {
         switch (column) {
-        case 0:
-            dest.x = m00;
-            dest.y = m01;
-            break;
-        case 1:
-            dest.x = m10;
-            dest.y = m11;
-            break;
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                dest.x = m00;
+                dest.y = m01;
+                break;
+            case 1:
+                dest.x = m10;
+                dest.y = m11;
+                break;
+            default:
+                throw new IndexOutOfBoundsException();
         }
         return dest;
     }
@@ -1055,10 +1006,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the column at the given <code>column</code> index, starting with <code>0</code>.
      *
-     * @param column
-     *          the column index in <code>[0..1]</code>
-     * @param src
-     *          the column components to set
+     * @param column the column index in <code>[0..1]</code>
+     * @param src    the column components to set
      * @return this
      * @throws IndexOutOfBoundsException if <code>column</code> is not in <code>[0..1]</code>
      */
@@ -1069,55 +1018,52 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the column at the given <code>column</code> index, starting with <code>0</code>.
      *
-     * @param column
-     *          the column index in <code>[0..1]</code>
-     * @param x
-     *          the first element in the column
-     * @param y
-     *          the second element in the column
+     * @param column the column index in <code>[0..1]</code>
+     * @param x      the first element in the column
+     * @param y      the second element in the column
      * @return this
      * @throws IndexOutOfBoundsException if <code>column</code> is not in <code>[0..1]</code>
      */
     public Matrix2f setColumn(int column, float x, float y) throws IndexOutOfBoundsException {
         switch (column) {
-        case 0:
-            this.m00 = x;
-            this.m01 = y;
-            break;
-        case 1:
-            this.m10 = x;
-            this.m11 = y;
-            break;
-        default:
-            throw new IndexOutOfBoundsException();
+            case 0:
+                this.m00 = x;
+                this.m01 = y;
+                break;
+            case 1:
+                this.m10 = x;
+                this.m11 = y;
+                break;
+            default:
+                throw new IndexOutOfBoundsException();
         }
         return this;
     }
 
     public float get(int column, int row) {
         switch (column) {
-        case 0:
-            switch (row) {
             case 0:
-                return m00;
+                switch (row) {
+                    case 0:
+                        return m00;
+                    case 1:
+                        return m01;
+                    default:
+                        break;
+                }
+                break;
             case 1:
-                return m01;
+                switch (row) {
+                    case 0:
+                        return m10;
+                    case 1:
+                        return m11;
+                    default:
+                        break;
+                }
+                break;
             default:
                 break;
-            }
-            break;
-        case 1:
-            switch (row) {
-            case 0:
-                return m10;
-            case 1:
-                return m11;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
         }
         throw new IndexOutOfBoundsException();
     }
@@ -1125,12 +1071,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Set the matrix element at the given column and row to the specified value.
      *
-     * @param column
-     *          the colum index in <code>[0..1]</code>
-     * @param row
-     *          the row index in <code>[0..1]</code>
-     * @param value
-     *          the value
+     * @param column the colum index in <code>[0..1]</code>
+     * @param row    the row index in <code>[0..1]</code>
+     * @param value  the value
      * @return this
      */
     public Matrix2f set(int column, int row, float value) {
@@ -1172,9 +1115,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * then this method <i>need not</i> be invoked, since in that case <code>this</code> itself is its normal matrix.
      * In this case, use {@link #set(Matrix2fc)} to set a given Matrix2f to this matrix.
      *
-     * @see #set(Matrix2fc)
-     *
      * @return this
+     * @see #set(Matrix2fc)
      */
     public Matrix2f normal() {
         return normal(this);
@@ -1187,11 +1129,9 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * then this method <i>need not</i> be invoked, since in that case <code>this</code> itself is its normal matrix.
      * In this case, use {@link #set(Matrix2fc)} to set a given Matrix2f to this matrix.
      *
-     * @see #set(Matrix2fc)
-     *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
+     * @see #set(Matrix2fc)
      */
     public Matrix2f normal(Matrix2f dest) {
         float det = m00 * m11 - m10 * m01;
@@ -1282,9 +1222,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
             return false;
         if (Float.floatToIntBits(m10) != Float.floatToIntBits(other.m10))
             return false;
-        if (Float.floatToIntBits(m11) != Float.floatToIntBits(other.m11))
-            return false;
-        return true;
+        return Float.floatToIntBits(m11) == Float.floatToIntBits(other.m11);
     }
 
     public boolean equals(Matrix2fc m, float delta) {
@@ -1300,16 +1238,13 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
             return false;
         if (!Runtime.equals(m10, m.m10(), delta))
             return false;
-        if (!Runtime.equals(m11, m.m11(), delta))
-            return false;
-        return true;
+        return Runtime.equals(m11, m.m11(), delta);
     }
 
     /**
      * Exchange the values of <code>this</code> matrix with the given <code>other</code> matrix.
      *
-     * @param other
-     *          the other matrix to exchange the values with
+     * @param other the other matrix to exchange the values with
      * @return this
      */
     public Matrix2f swap(Matrix2f other) {
@@ -1320,8 +1255,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Component-wise add <code>this</code> and <code>other</code>.
      *
-     * @param other
-     *          the other addend
+     * @param other the other addend
      * @return this
      */
     public Matrix2f add(Matrix2fc other) {
@@ -1339,8 +1273,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Component-wise subtract <code>subtrahend</code> from <code>this</code>.
      *
-     * @param subtrahend
-     *          the subtrahend
+     * @param subtrahend the subtrahend
      * @return this
      */
     public Matrix2f sub(Matrix2fc subtrahend) {
@@ -1358,8 +1291,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
     /**
      * Component-wise multiply <code>this</code> by <code>other</code>.
      *
-     * @param other
-     *          the other matrix
+     * @param other the other matrix
      * @return this
      */
     public Matrix2f mulComponentWise(Matrix2fc other) {
@@ -1381,10 +1313,8 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
      *
-     * @param other
-     *          the other matrix
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
+     * @param other the other matrix
+     * @param t     the interpolation factor between 0.0 and 1.0
      * @return this
      */
     public Matrix2f lerp(Matrix2fc other, float t) {
@@ -1401,7 +1331,7 @@ public class Matrix2f implements Externalizable, Cloneable, Matrix2fc {
 
     public boolean isFinite() {
         return Math.isFinite(m00) && Math.isFinite(m01) &&
-               Math.isFinite(m10) && Math.isFinite(m11);
+                Math.isFinite(m10) && Math.isFinite(m11);
     }
 
     public Object clone() throws CloneNotSupportedException {

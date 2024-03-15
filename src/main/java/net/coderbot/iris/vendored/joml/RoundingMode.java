@@ -25,11 +25,10 @@ package net.coderbot.iris.vendored.joml;
 
 /**
  * Rounding modes.
- * 
+ *
  * @author Kai Burjack
  */
 public class RoundingMode {
-    private RoundingMode() {}
     /**
      * Discards the fractional part.
      */
@@ -57,4 +56,6 @@ public class RoundingMode {
      * up.
      */
     public static final int HALF_UP = 5;
+    private RoundingMode() {
+    }
 }

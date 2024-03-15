@@ -21,10 +21,10 @@ package de.odysseus.ithaka.digraph;
  * @param <G> de.odysseus.ithaka.digraph type
  */
 public interface DigraphFactory<G extends Digraph<?>> {
-	/**
-	 * Create a de.odysseus.ithaka.digraph.
-	 *
-	 * @return de.odysseus.ithaka.digraph
-	 */
-	G create();
+    /**
+     * Create a de.odysseus.ithaka.digraph.
+     *
+     * @return de.odysseus.ithaka.digraph
+     */
+    G create();
 }

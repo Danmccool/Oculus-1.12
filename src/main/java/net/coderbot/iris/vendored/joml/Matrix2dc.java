@@ -72,10 +72,8 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
      *
-     * @param right
-     *          the right operand of the matrix multiplication
-     * @param dest
-     *          will hold the result
+     * @param right the right operand of the matrix multiplication
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2d mul(Matrix2dc right, Matrix2d dest);
@@ -88,10 +86,8 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
      *
-     * @param right
-     *          the right operand of the matrix multiplication
-     * @param dest
-     *          will hold the result
+     * @param right the right operand of the matrix multiplication
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2d mul(Matrix2fc right, Matrix2d dest);
@@ -104,10 +100,8 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>L * M * v</code>, the
      * transformation of <code>this</code> matrix will be applied first!
      *
-     * @param left
-     *          the left operand of the matrix multiplication
-     * @param dest
-     *          the destination matrix, which will hold the result
+     * @param left the left operand of the matrix multiplication
+     * @param dest the destination matrix, which will hold the result
      * @return dest
      */
     Matrix2d mulLocal(Matrix2dc left, Matrix2d dest);
@@ -122,8 +116,7 @@ public interface Matrix2dc {
     /**
      * Invert the <code>this</code> matrix and store the result in <code>dest</code>.
      *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d invert(Matrix2d dest);
@@ -131,8 +124,7 @@ public interface Matrix2dc {
     /**
      * Transpose <code>this</code> matrix and store the result in <code>dest</code>.
      *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d transpose(Matrix2d dest);
@@ -141,8 +133,7 @@ public interface Matrix2dc {
      * Get the current values of <code>this</code> matrix and store them into
      * <code>dest</code>.
      *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
      */
     Matrix2d get(Matrix2d dest);
@@ -152,11 +143,9 @@ public interface Matrix2dc {
      * the rotational component of <code>dest</code>. All other values of <code>dest</code> will
      * be set to 0.
      *
-     * @see Matrix3x2d#set(Matrix2dc)
-     *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
+     * @see Matrix3x2d#set(Matrix2dc)
      */
     Matrix3x2d get(Matrix3x2d dest);
 
@@ -165,11 +154,9 @@ public interface Matrix2dc {
      * the rotational component of <code>dest</code>. All other values of <code>dest</code> will
      * be set to identity.
      *
-     * @see Matrix3d#set(Matrix2dc)
-     *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
+     * @see Matrix3d#set(Matrix2dc)
      */
     Matrix3d get(Matrix3d dest);
 
@@ -194,11 +181,9 @@ public interface Matrix2dc {
      * the matrix is stored, use {@link #get(int, DoubleBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #get(int, DoubleBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, DoubleBuffer)
      */
     DoubleBuffer get(DoubleBuffer buffer);
 
@@ -208,10 +193,8 @@ public interface Matrix2dc {
      * <p>
      * This method will not increment the position of the given DoubleBuffer.
      *
-     * @param index
-     *            the absolute position into the DoubleBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the DoubleBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     DoubleBuffer get(int index, DoubleBuffer buffer);
@@ -226,11 +209,9 @@ public interface Matrix2dc {
      * the matrix is stored, use {@link #get(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #get(int, ByteBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, ByteBuffer)
      */
     ByteBuffer get(ByteBuffer buffer);
 
@@ -240,10 +221,8 @@ public interface Matrix2dc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer get(int index, ByteBuffer buffer);
@@ -258,11 +237,9 @@ public interface Matrix2dc {
      * the matrix is stored, use {@link #getTransposed(int, DoubleBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #getTransposed(int, DoubleBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #getTransposed(int, DoubleBuffer)
      */
     DoubleBuffer getTransposed(DoubleBuffer buffer);
 
@@ -272,10 +249,8 @@ public interface Matrix2dc {
      * <p>
      * This method will not increment the position of the given DoubleBuffer.
      *
-     * @param index
-     *            the absolute position into the DoubleBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the DoubleBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     DoubleBuffer getTransposed(int index, DoubleBuffer buffer);
@@ -290,11 +265,9 @@ public interface Matrix2dc {
      * the matrix is stored, use {@link #getTransposed(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #getTransposed(int, ByteBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #getTransposed(int, ByteBuffer)
      */
     ByteBuffer getTransposed(ByteBuffer buffer);
 
@@ -304,10 +277,8 @@ public interface Matrix2dc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer getTransposed(int index, ByteBuffer buffer);
@@ -316,10 +287,8 @@ public interface Matrix2dc {
     /**
      * Store this matrix into the supplied double array in column-major order at the given offset.
      *
-     * @param arr
-     *          the array to write the matrix values into
-     * @param offset
-     *          the offset into the array
+     * @param arr    the array to write the matrix values into
+     * @param offset the offset into the array
      * @return the passed in array
      */
     double[] get(double[] arr, int offset);
@@ -329,11 +298,9 @@ public interface Matrix2dc {
      * <p>
      * In order to specify an explicit offset into the array, use the method {@link #get(double[], int)}.
      *
-     * @see #get(double[], int)
-     *
-     * @param arr
-     *          the array to write the matrix values into
+     * @param arr the array to write the matrix values into
      * @return the passed in array
+     * @see #get(double[], int)
      */
     double[] get(double[] arr);
 
@@ -346,10 +313,8 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @param xy
-     *            the factors of the x and y component, respectively
-     * @param dest
-     *            will hold the result
+     * @param xy   the factors of the x and y component, respectively
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d scale(Vector2dc xy, Matrix2d dest);
@@ -363,12 +328,9 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param dest
-     *            will hold the result
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d scale(double x, double y, Matrix2d dest);
@@ -382,13 +344,10 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @see #scale(double, double, Matrix2d)
-     *
-     * @param xy
-     *            the factor for all components
-     * @param dest
-     *            will hold the result
+     * @param xy   the factor for all components
+     * @param dest will hold the result
      * @return dest
+     * @see #scale(double, double, Matrix2d)
      */
     Matrix2d scale(double xy, Matrix2d dest);
 
@@ -401,12 +360,9 @@ public interface Matrix2dc {
      * vector <code>v</code> with the new matrix by using <code>S * M * v</code>
      * , the scaling will be applied last!
      *
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param dest
-     *            will hold the result
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d scaleLocal(double x, double y, Matrix2d dest);
@@ -414,8 +370,7 @@ public interface Matrix2dc {
     /**
      * Transform the given vector by this matrix.
      *
-     * @param v
-     *          the vector to transform
+     * @param v the vector to transform
      * @return v
      */
     Vector2d transform(Vector2d v);
@@ -423,10 +378,8 @@ public interface Matrix2dc {
     /**
      * Transform the given vector by this matrix and store the result in <code>dest</code>.
      *
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2d transform(Vector2dc v, Vector2d dest);
@@ -434,12 +387,9 @@ public interface Matrix2dc {
     /**
      * Transform the vector <code>(x, y)</code> by this matrix and store the result in <code>dest</code>.
      *
-     * @param x
-     *          the x coordinate of the vector to transform
-     * @param y
-     *          the y coordinate of the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param x    the x coordinate of the vector to transform
+     * @param y    the y coordinate of the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2d transform(double x, double y, Vector2d dest);
@@ -447,8 +397,7 @@ public interface Matrix2dc {
     /**
      * Transform the given vector by the transpose of this matrix.
      *
-     * @param v
-     *          the vector to transform
+     * @param v the vector to transform
      * @return v
      */
     Vector2d transformTranspose(Vector2d v);
@@ -456,10 +405,8 @@ public interface Matrix2dc {
     /**
      * Transform the given vector by the transpose of this matrix and store the result in <code>dest</code>.
      *
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2d transformTranspose(Vector2dc v, Vector2d dest);
@@ -467,12 +414,9 @@ public interface Matrix2dc {
     /**
      * Transform the vector <code>(x, y)</code> by the transpose of this matrix and store the result in <code>dest</code>.
      *
-     * @param x
-     *          the x coordinate of the vector to transform
-     * @param y
-     *          the y coordinate of the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param x    the x coordinate of the vector to transform
+     * @param y    the y coordinate of the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2d transformTranspose(double x, double y, Vector2d dest);
@@ -490,10 +434,8 @@ public interface Matrix2dc {
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions">http://en.wikipedia.org</a>
      *
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d rotate(double ang, Matrix2d dest);
@@ -511,10 +453,8 @@ public interface Matrix2dc {
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions">http://en.wikipedia.org</a>
      *
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d rotateLocal(double ang, Matrix2d dest);
@@ -522,10 +462,8 @@ public interface Matrix2dc {
     /**
      * Get the row at the given <code>row</code> index, starting with <code>0</code>.
      *
-     * @param row
-     *          the row index in <code>[0..1]</code>
-     * @param dest
-     *          will hold the row components
+     * @param row  the row index in <code>[0..1]</code>
+     * @param dest will hold the row components
      * @return the passed in destination
      * @throws IndexOutOfBoundsException if <code>row</code> is not in <code>[0..1]</code>
      */
@@ -534,10 +472,8 @@ public interface Matrix2dc {
     /**
      * Get the column at the given <code>column</code> index, starting with <code>0</code>.
      *
-     * @param column
-     *          the column index in <code>[0..1]</code>
-     * @param dest
-     *          will hold the column components
+     * @param column the column index in <code>[0..1]</code>
+     * @param dest   will hold the column components
      * @return the passed in destination
      * @throws IndexOutOfBoundsException if <code>column</code> is not in <code>[0..1]</code>
      */
@@ -546,10 +482,8 @@ public interface Matrix2dc {
     /**
      * Get the matrix element value at the given column and row.
      *
-     * @param column
-     *          the colum index in <code>[0..1]</code>
-     * @param row
-     *          the row index in <code>[0..1]</code>
+     * @param column the colum index in <code>[0..1]</code>
+     * @param row    the row index in <code>[0..1]</code>
      * @return the element value
      */
     double get(int column, int row);
@@ -557,8 +491,7 @@ public interface Matrix2dc {
     /**
      * Compute a normal matrix from <code>this</code> matrix and store it into <code>dest</code>.
      *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2d normal(Matrix2d dest);
@@ -566,8 +499,7 @@ public interface Matrix2dc {
     /**
      * Get the scaling factors of <code>this</code> matrix for the three base axes.
      *
-     * @param dest
-     *          will hold the scaling factors for <code>x</code> and <code>y</code>
+     * @param dest will hold the scaling factors for <code>x</code> and <code>y</code>
      * @return dest
      */
     Vector2d getScale(Vector2d dest);
@@ -582,8 +514,7 @@ public interface Matrix2dc {
      * </pre>
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveX(Vector2d)} instead.
      *
-     * @param dest
-     *          will hold the direction of <code>+X</code>
+     * @param dest will hold the direction of <code>+X</code>
      * @return dest
      */
     Vector2d positiveX(Vector2d dest);
@@ -598,8 +529,7 @@ public interface Matrix2dc {
      * inv.transform(dir.set(1, 0));
      * </pre>
      *
-     * @param dest
-     *          will hold the direction of <code>+X</code>
+     * @param dest will hold the direction of <code>+X</code>
      * @return dest
      */
     Vector2d normalizedPositiveX(Vector2d dest);
@@ -614,8 +544,7 @@ public interface Matrix2dc {
      * </pre>
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveY(Vector2d)} instead.
      *
-     * @param dest
-     *          will hold the direction of <code>+Y</code>
+     * @param dest will hold the direction of <code>+Y</code>
      * @return dest
      */
     Vector2d positiveY(Vector2d dest);
@@ -630,8 +559,7 @@ public interface Matrix2dc {
      * inv.transform(dir.set(0, 1));
      * </pre>
      *
-     * @param dest
-     *          will hold the direction of <code>+Y</code>
+     * @param dest will hold the direction of <code>+Y</code>
      * @return dest
      */
     Vector2d normalizedPositiveY(Vector2d dest);
@@ -639,10 +567,8 @@ public interface Matrix2dc {
     /**
      * Component-wise add <code>this</code> and <code>other</code> and store the result in <code>dest</code>.
      *
-     * @param other
-     *          the other addend
-     * @param dest
-     *          will hold the result
+     * @param other the other addend
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2d add(Matrix2dc other, Matrix2d dest);
@@ -650,10 +576,8 @@ public interface Matrix2dc {
     /**
      * Component-wise subtract <code>subtrahend</code> from <code>this</code> and store the result in <code>dest</code>.
      *
-     * @param subtrahend
-     *          the subtrahend
-     * @param dest
-     *          will hold the result
+     * @param subtrahend the subtrahend
+     * @param dest       will hold the result
      * @return dest
      */
     Matrix2d sub(Matrix2dc subtrahend, Matrix2d dest);
@@ -661,10 +585,8 @@ public interface Matrix2dc {
     /**
      * Component-wise multiply <code>this</code> by <code>other</code> and store the result in <code>dest</code>.
      *
-     * @param other
-     *          the other matrix
-     * @param dest
-     *          will hold the result
+     * @param other the other matrix
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2d mulComponentWise(Matrix2dc other, Matrix2d dest);
@@ -676,12 +598,9 @@ public interface Matrix2dc {
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
      *
-     * @param other
-     *          the other matrix
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
-     * @param dest
-     *          will hold the result
+     * @param other the other matrix
+     * @param t     the interpolation factor between 0.0 and 1.0
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2d lerp(Matrix2dc other, double t, Matrix2d dest);
@@ -694,10 +613,8 @@ public interface Matrix2dc {
      * and their operations, such as {@link ArrayList#contains(Object)} or {@link HashSet#remove(Object)}, since those
      * data structures only use the {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
      *
-     * @param m
-     *          the other matrix
-     * @param delta
-     *          the allowed maximum difference
+     * @param m     the other matrix
+     * @param delta the allowed maximum difference
      * @return <code>true</code> whether all of the matrix elements are equal; <code>false</code> otherwise
      */
     boolean equals(Matrix2dc m, double delta);
@@ -708,7 +625,7 @@ public interface Matrix2dc {
      * {@link Double#isInfinite() infinity}.
      *
      * @return {@code true} if all components are finite floating-point values;
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     boolean isFinite();
 

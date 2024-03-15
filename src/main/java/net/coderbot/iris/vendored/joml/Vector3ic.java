@@ -30,7 +30,7 @@ import java.nio.IntBuffer;
 
 /**
  * Interface to a read-only view of a 3-dimensional vector of integers.
- * 
+ *
  * @author Kai Burjack
  */
 public interface Vector3ic {
@@ -61,11 +61,9 @@ public interface Vector3ic {
      * stored, use {@link #get(int, IntBuffer)}, taking the absolute position as
      * parameter.
      *
-     * @see #get(int, IntBuffer)
-     *
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z</code> order
+     * @param buffer will receive the values of this vector in <code>x, y, z</code> order
      * @return the passed in buffer
+     * @see #get(int, IntBuffer)
      */
     IntBuffer get(IntBuffer buffer);
 
@@ -75,10 +73,8 @@ public interface Vector3ic {
      * <p>
      * This method will not increment the position of the given IntBuffer.
      *
-     * @param index
-     *          the absolute position into the IntBuffer
-     * @param
-     *          buffer will receive the values of this vector in <code>x, y, z</code> order
+     * @param index  the absolute position into the IntBuffer
+     * @param buffer will receive the values of this vector in <code>x, y, z</code> order
      * @return the passed in buffer
      */
     IntBuffer get(int index, IntBuffer buffer);
@@ -93,11 +89,9 @@ public interface Vector3ic {
      * stored, use {@link #get(int, ByteBuffer)}, taking the absolute position
      * as parameter.
      *
-     * @see #get(int, ByteBuffer)
-     *
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z</code> order
+     * @param buffer will receive the values of this vector in <code>x, y, z</code> order
      * @return the passed in buffer
+     * @see #get(int, ByteBuffer)
      */
     ByteBuffer get(ByteBuffer buffer);
 
@@ -107,10 +101,8 @@ public interface Vector3ic {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this vector in <code>x, y, z</code> order
      * @return the passed in buffer
      */
     ByteBuffer get(int index, ByteBuffer buffer);
@@ -120,10 +112,8 @@ public interface Vector3ic {
      * Subtract the supplied vector from this one and store the result in
      * <code>dest</code>.
      *
-     * @param v
-     *          the vector to subtract
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to subtract
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i sub(Vector3ic v, Vector3i dest);
@@ -132,14 +122,10 @@ public interface Vector3ic {
      * Decrement the components of this vector by the given values and store the
      * result in <code>dest</code>.
      *
-     * @param x
-     *          the x component to subtract
-     * @param y
-     *          the y component to subtract
-     * @param z
-     *          the z component to subtract
-     * @param dest
-     *          will hold the result
+     * @param x    the x component to subtract
+     * @param y    the y component to subtract
+     * @param z    the z component to subtract
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i sub(int x, int y, int z, Vector3i dest);
@@ -148,10 +134,8 @@ public interface Vector3ic {
      * Add the supplied vector to this one and store the result in
      * <code>dest</code>.
      *
-     * @param v
-     *          the vector to add
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to add
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i add(Vector3ic v, Vector3i dest);
@@ -160,25 +144,19 @@ public interface Vector3ic {
      * Increment the components of this vector by the given values and store the
      * result in <code>dest</code>.
      *
-     * @param x
-     *          the x component to add
-     * @param y
-     *          the y component to add
-     * @param z
-     *          the z component to add
-     * @param dest
-     *          will hold the result
+     * @param x    the x component to add
+     * @param y    the y component to add
+     * @param z    the z component to add
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i add(int x, int y, int z, Vector3i dest);
 
     /**
      * Multiply the components of this vector by the given scalar and store the result in <code>dest</code>.
-     * 
-     * @param scalar
-     *        the value to multiply this vector's components by
-     * @param dest
-     *        will hold the result
+     *
+     * @param scalar the value to multiply this vector's components by
+     * @param dest   will hold the result
      * @return dest
      */
     Vector3i mul(int scalar, Vector3i dest);
@@ -187,10 +165,8 @@ public interface Vector3ic {
      * Multiply the supplied vector by this one and store the result in
      * <code>dest</code>.
      *
-     * @param v
-     *          the vector to multiply
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to multiply
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i mul(Vector3ic v, Vector3i dest);
@@ -199,14 +175,10 @@ public interface Vector3ic {
      * Multiply the components of this vector by the given values and store the
      * result in <code>dest</code>.
      *
-     * @param x
-     *          the x component to multiply
-     * @param y
-     *          the y component to multiply
-     * @param z
-     *          the z component to multiply
-     * @param dest
-     *          will hold the result
+     * @param x    the x component to multiply
+     * @param y    the y component to multiply
+     * @param z    the z component to multiply
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i mul(int x, int y, int z, Vector3i dest);
@@ -215,10 +187,8 @@ public interface Vector3ic {
      * Divide all components of this {@link Vector3i} by the given scalar value
      * and store the result in <code>dest</code>.
      *
-     * @param scalar
-     *          the scalar to divide by
-     * @param dest
-     *          will hold the result
+     * @param scalar the scalar to divide by
+     * @param dest   will hold the result
      * @return dest
      */
     Vector3i div(float scalar, Vector3i dest);
@@ -227,10 +197,8 @@ public interface Vector3ic {
      * Divide all components of this {@link Vector3i} by the given scalar value
      * and store the result in <code>dest</code>.
      *
-     * @param scalar
-     *          the scalar to divide by
-     * @param dest
-     *          will hold the result
+     * @param scalar the scalar to divide by
+     * @param dest   will hold the result
      * @return dest
      */
     Vector3i div(int scalar, Vector3i dest);
@@ -252,8 +220,7 @@ public interface Vector3ic {
     /**
      * Return the distance between this Vector and <code>v</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the distance
      */
     double distance(Vector3ic v);
@@ -261,12 +228,9 @@ public interface Vector3ic {
     /**
      * Return the distance between <code>this</code> vector and <code>(x, y, z)</code>.
      *
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
      * @return the euclidean distance
      */
     double distance(int x, int y, int z);
@@ -276,8 +240,7 @@ public interface Vector3ic {
      * Return the grid distance in between (aka 1-Norm, Minkowski or Manhattan distance)
      * <code>(x, y)</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the grid distance
      */
     long gridDistance(Vector3ic v);
@@ -286,12 +249,9 @@ public interface Vector3ic {
      * Return the grid distance in between (aka 1-Norm, Minkowski or Manhattan distance)
      * <code>(x, y)</code>.
      *
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the y component of the other vector
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the y component of the other vector
      * @return the grid distance
      */
     long gridDistance(int x, int y, int z);
@@ -299,8 +259,7 @@ public interface Vector3ic {
     /**
      * Return the square of the distance between this vector and <code>v</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the squared of the distance
      */
     long distanceSquared(Vector3ic v);
@@ -308,12 +267,9 @@ public interface Vector3ic {
     /**
      * Return the square of the distance between <code>this</code> vector and <code>(x, y, z)</code>.
      *
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
      * @return the square of the distance
      */
     long distanceSquared(int x, int y, int z);
@@ -321,8 +277,7 @@ public interface Vector3ic {
     /**
      * Negate this vector and store the result in <code>dest</code>.
      *
-     * @param dest
-     *          will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i negate(Vector3i dest);
@@ -330,10 +285,8 @@ public interface Vector3ic {
     /**
      * Set the components of <code>dest</code> to be the component-wise minimum of this and the other vector.
      *
-     * @param v
-     *          the other vector
-     * @param dest
-     *          will hold the result
+     * @param v    the other vector
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i min(Vector3ic v, Vector3i dest);
@@ -341,19 +294,16 @@ public interface Vector3ic {
     /**
      * Set the components of <code>dest</code> to be the component-wise maximum of this and the other vector.
      *
-     * @param v
-     *          the other vector
-     * @param dest
-     *          will hold the result
+     * @param v    the other vector
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i max(Vector3ic v, Vector3i dest);
 
     /**
      * Get the value of the specified component of this vector.
-     * 
-     * @param component
-     *          the component, within <code>[0..2]</code>
+     *
+     * @param component the component, within <code>[0..2]</code>
      * @return the value
      * @throws IllegalArgumentException if <code>component</code> is not within <code>[0..2]</code>
      */
@@ -361,14 +311,14 @@ public interface Vector3ic {
 
     /**
      * Determine the component with the biggest absolute value.
-     * 
+     *
      * @return the component index, within <code>[0..2]</code>
      */
     int maxComponent();
 
     /**
      * Determine the component with the smallest (towards zero) absolute value.
-     * 
+     *
      * @return the component index, within <code>[0..2]</code>
      */
     int minComponent();
@@ -376,9 +326,8 @@ public interface Vector3ic {
     /**
      * Compute the absolute of each of this vector's components
      * and store the result into <code>dest</code>.
-     * 
-     * @param dest
-     *          will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     Vector3i absolute(Vector3i dest);
@@ -387,12 +336,9 @@ public interface Vector3ic {
      * Compare the vector components of <code>this</code> vector with the given <code>(x, y, z)</code>
      * and return whether all of them are equal.
      *
-     * @param x
-     *          the x component to compare to
-     * @param y
-     *          the y component to compare to
-     * @param z
-     *          the z component to compare to
+     * @param x the x component to compare to
+     * @param y the y component to compare to
+     * @param z the z component to compare to
      * @return <code>true</code> if all the vector components are equal
      */
     boolean equals(int x, int y, int z);

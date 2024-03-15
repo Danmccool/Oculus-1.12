@@ -73,10 +73,8 @@ public interface Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
      *
-     * @param right
-     *          the right operand of the matrix multiplication
-     * @param dest
-     *          will hold the result
+     * @param right the right operand of the matrix multiplication
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2f mul(Matrix2fc right, Matrix2f dest);
@@ -89,10 +87,8 @@ public interface Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>L * M * v</code>, the
      * transformation of <code>this</code> matrix will be applied first!
      *
-     * @param left
-     *          the left operand of the matrix multiplication
-     * @param dest
-     *          the destination matrix, which will hold the result
+     * @param left the left operand of the matrix multiplication
+     * @param dest the destination matrix, which will hold the result
      * @return dest
      */
     Matrix2f mulLocal(Matrix2fc left, Matrix2f dest);
@@ -107,8 +103,7 @@ public interface Matrix2fc {
     /**
      * Invert the <code>this</code> matrix and store the result in <code>dest</code>.
      *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f invert(Matrix2f dest);
@@ -116,8 +111,7 @@ public interface Matrix2fc {
     /**
      * Transpose <code>this</code> matrix and store the result in <code>dest</code>.
      *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f transpose(Matrix2f dest);
@@ -126,8 +120,7 @@ public interface Matrix2fc {
      * Get the current values of <code>this</code> matrix and store them into
      * <code>dest</code>.
      *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
      */
     Matrix2f get(Matrix2f dest);
@@ -137,11 +130,9 @@ public interface Matrix2fc {
      * the rotational component of <code>dest</code>. All other values of <code>dest</code> will
      * be set to 0.
      *
-     * @see Matrix3x2f#set(Matrix2fc)
-     *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
+     * @see Matrix3x2f#set(Matrix2fc)
      */
     Matrix3x2f get(Matrix3x2f dest);
 
@@ -150,11 +141,9 @@ public interface Matrix2fc {
      * the rotational component of <code>dest</code>. All other values of <code>dest</code> will
      * be set to identity.
      *
-     * @see Matrix3f#set(Matrix2fc)
-     *
-     * @param dest
-     *          the destination matrix
+     * @param dest the destination matrix
      * @return the passed in destination
+     * @see Matrix3f#set(Matrix2fc)
      */
     Matrix3f get(Matrix3f dest);
 
@@ -179,11 +168,9 @@ public interface Matrix2fc {
      * the matrix is stored, use {@link #get(int, FloatBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #get(int, FloatBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, FloatBuffer)
      */
     FloatBuffer get(FloatBuffer buffer);
 
@@ -193,10 +180,8 @@ public interface Matrix2fc {
      * <p>
      * This method will not increment the position of the given FloatBuffer.
      *
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     FloatBuffer get(int index, FloatBuffer buffer);
@@ -211,11 +196,9 @@ public interface Matrix2fc {
      * the matrix is stored, use {@link #get(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #get(int, ByteBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, ByteBuffer)
      */
     ByteBuffer get(ByteBuffer buffer);
 
@@ -225,10 +208,8 @@ public interface Matrix2fc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer get(int index, ByteBuffer buffer);
@@ -243,11 +224,9 @@ public interface Matrix2fc {
      * the matrix is stored, use {@link #getTransposed(int, FloatBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #getTransposed(int, FloatBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #getTransposed(int, FloatBuffer)
      */
     FloatBuffer getTransposed(FloatBuffer buffer);
 
@@ -257,10 +236,8 @@ public interface Matrix2fc {
      * <p>
      * This method will not increment the position of the given FloatBuffer.
      *
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     FloatBuffer getTransposed(int index, FloatBuffer buffer);
@@ -275,11 +252,9 @@ public interface Matrix2fc {
      * the matrix is stored, use {@link #getTransposed(int, ByteBuffer)}, taking
      * the absolute position as parameter.
      *
-     * @see #getTransposed(int, ByteBuffer)
-     *
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #getTransposed(int, ByteBuffer)
      */
     ByteBuffer getTransposed(ByteBuffer buffer);
 
@@ -289,10 +264,8 @@ public interface Matrix2fc {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer getTransposed(int index, ByteBuffer buffer);
@@ -301,10 +274,8 @@ public interface Matrix2fc {
     /**
      * Store this matrix into the supplied float array in column-major order at the given offset.
      *
-     * @param arr
-     *          the array to write the matrix values into
-     * @param offset
-     *          the offset into the array
+     * @param arr    the array to write the matrix values into
+     * @param offset the offset into the array
      * @return the passed in array
      */
     float[] get(float[] arr, int offset);
@@ -314,11 +285,9 @@ public interface Matrix2fc {
      * <p>
      * In order to specify an explicit offset into the array, use the method {@link #get(float[], int)}.
      *
-     * @see #get(float[], int)
-     *
-     * @param arr
-     *          the array to write the matrix values into
+     * @param arr the array to write the matrix values into
      * @return the passed in array
+     * @see #get(float[], int)
      */
     float[] get(float[] arr);
 
@@ -331,10 +300,8 @@ public interface Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @param xy
-     *            the factors of the x and y component, respectively
-     * @param dest
-     *            will hold the result
+     * @param xy   the factors of the x and y component, respectively
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f scale(Vector2fc xy, Matrix2f dest);
@@ -348,12 +315,9 @@ public interface Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param dest
-     *            will hold the result
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f scale(float x, float y, Matrix2f dest);
@@ -367,13 +331,10 @@ public interface Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
      *
-     * @see #scale(float, float, Matrix2f)
-     *
-     * @param xy
-     *            the factor for all components
-     * @param dest
-     *            will hold the result
+     * @param xy   the factor for all components
+     * @param dest will hold the result
      * @return dest
+     * @see #scale(float, float, Matrix2f)
      */
     Matrix2f scale(float xy, Matrix2f dest);
 
@@ -386,12 +347,9 @@ public interface Matrix2fc {
      * vector <code>v</code> with the new matrix by using <code>S * M * v</code>
      * , the scaling will be applied last!
      *
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param dest
-     *            will hold the result
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f scaleLocal(float x, float y, Matrix2f dest);
@@ -399,8 +357,7 @@ public interface Matrix2fc {
     /**
      * Transform the given vector by this matrix.
      *
-     * @param v
-     *          the vector to transform
+     * @param v the vector to transform
      * @return v
      */
     Vector2f transform(Vector2f v);
@@ -408,10 +365,8 @@ public interface Matrix2fc {
     /**
      * Transform the given vector by this matrix and store the result in <code>dest</code>.
      *
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2f transform(Vector2fc v, Vector2f dest);
@@ -419,12 +374,9 @@ public interface Matrix2fc {
     /**
      * Transform the vector <code>(x, y)</code> by this matrix and store the result in <code>dest</code>.
      *
-     * @param x
-     *          the x coordinate of the vector to transform
-     * @param y
-     *          the y coordinate of the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param x    the x coordinate of the vector to transform
+     * @param y    the y coordinate of the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2f transform(float x, float y, Vector2f dest);
@@ -432,8 +384,7 @@ public interface Matrix2fc {
     /**
      * Transform the given vector by the transpose of this matrix.
      *
-     * @param v
-     *          the vector to transform
+     * @param v the vector to transform
      * @return v
      */
     Vector2f transformTranspose(Vector2f v);
@@ -441,10 +392,8 @@ public interface Matrix2fc {
     /**
      * Transform the given vector by the transpose of this matrix and store the result in <code>dest</code>.
      *
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2f transformTranspose(Vector2fc v, Vector2f dest);
@@ -452,12 +401,9 @@ public interface Matrix2fc {
     /**
      * Transform the vector <code>(x, y)</code> by the transpose of this matrix and store the result in <code>dest</code>.
      *
-     * @param x
-     *          the x coordinate of the vector to transform
-     * @param y
-     *          the y coordinate of the vector to transform
-     * @param dest
-     *          will hold the result
+     * @param x    the x coordinate of the vector to transform
+     * @param y    the y coordinate of the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector2f transformTranspose(float x, float y, Vector2f dest);
@@ -475,10 +421,8 @@ public interface Matrix2fc {
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions">http://en.wikipedia.org</a>
      *
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f rotate(float ang, Matrix2f dest);
@@ -496,10 +440,8 @@ public interface Matrix2fc {
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions">http://en.wikipedia.org</a>
      *
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f rotateLocal(float ang, Matrix2f dest);
@@ -507,10 +449,8 @@ public interface Matrix2fc {
     /**
      * Get the row at the given <code>row</code> index, starting with <code>0</code>.
      *
-     * @param row
-     *          the row index in <code>[0..1]</code>
-     * @param dest
-     *          will hold the row components
+     * @param row  the row index in <code>[0..1]</code>
+     * @param dest will hold the row components
      * @return the passed in destination
      * @throws IndexOutOfBoundsException if <code>row</code> is not in <code>[0..1]</code>
      */
@@ -519,10 +459,8 @@ public interface Matrix2fc {
     /**
      * Get the column at the given <code>column</code> index, starting with <code>0</code>.
      *
-     * @param column
-     *          the column index in <code>[0..1]</code>
-     * @param dest
-     *          will hold the column components
+     * @param column the column index in <code>[0..1]</code>
+     * @param dest   will hold the column components
      * @return the passed in destination
      * @throws IndexOutOfBoundsException if <code>column</code> is not in <code>[0..1]</code>
      */
@@ -531,10 +469,8 @@ public interface Matrix2fc {
     /**
      * Get the matrix element value at the given column and row.
      *
-     * @param column
-     *          the colum index in <code>[0..1]</code>
-     * @param row
-     *          the row index in <code>[0..1]</code>
+     * @param column the colum index in <code>[0..1]</code>
+     * @param row    the row index in <code>[0..1]</code>
      * @return the element value
      */
     float get(int column, int row);
@@ -542,8 +478,7 @@ public interface Matrix2fc {
     /**
      * Compute a normal matrix from <code>this</code> matrix and store it into <code>dest</code>.
      *
-     * @param dest
-     *             will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Matrix2f normal(Matrix2f dest);
@@ -551,8 +486,7 @@ public interface Matrix2fc {
     /**
      * Get the scaling factors of <code>this</code> matrix for the three base axes.
      *
-     * @param dest
-     *          will hold the scaling factors for <code>x</code> and <code>y</code>
+     * @param dest will hold the scaling factors for <code>x</code> and <code>y</code>
      * @return dest
      */
     Vector2f getScale(Vector2f dest);
@@ -567,8 +501,7 @@ public interface Matrix2fc {
      * </pre>
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveX(Vector2f)} instead.
      *
-     * @param dest
-     *          will hold the direction of <code>+X</code>
+     * @param dest will hold the direction of <code>+X</code>
      * @return dest
      */
     Vector2f positiveX(Vector2f dest);
@@ -583,8 +516,7 @@ public interface Matrix2fc {
      * inv.transform(dir.set(1, 0));
      * </pre>
      *
-     * @param dest
-     *          will hold the direction of <code>+X</code>
+     * @param dest will hold the direction of <code>+X</code>
      * @return dest
      */
     Vector2f normalizedPositiveX(Vector2f dest);
@@ -599,8 +531,7 @@ public interface Matrix2fc {
      * </pre>
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveY(Vector2f)} instead.
      *
-     * @param dest
-     *          will hold the direction of <code>+Y</code>
+     * @param dest will hold the direction of <code>+Y</code>
      * @return dest
      */
     Vector2f positiveY(Vector2f dest);
@@ -615,8 +546,7 @@ public interface Matrix2fc {
      * inv.transform(dir.set(0, 1));
      * </pre>
      *
-     * @param dest
-     *          will hold the direction of <code>+Y</code>
+     * @param dest will hold the direction of <code>+Y</code>
      * @return dest
      */
     Vector2f normalizedPositiveY(Vector2f dest);
@@ -624,10 +554,8 @@ public interface Matrix2fc {
     /**
      * Component-wise add <code>this</code> and <code>other</code> and store the result in <code>dest</code>.
      *
-     * @param other
-     *          the other addend
-     * @param dest
-     *          will hold the result
+     * @param other the other addend
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2f add(Matrix2fc other, Matrix2f dest);
@@ -635,10 +563,8 @@ public interface Matrix2fc {
     /**
      * Component-wise subtract <code>subtrahend</code> from <code>this</code> and store the result in <code>dest</code>.
      *
-     * @param subtrahend
-     *          the subtrahend
-     * @param dest
-     *          will hold the result
+     * @param subtrahend the subtrahend
+     * @param dest       will hold the result
      * @return dest
      */
     Matrix2f sub(Matrix2fc subtrahend, Matrix2f dest);
@@ -646,10 +572,8 @@ public interface Matrix2fc {
     /**
      * Component-wise multiply <code>this</code> by <code>other</code> and store the result in <code>dest</code>.
      *
-     * @param other
-     *          the other matrix
-     * @param dest
-     *          will hold the result
+     * @param other the other matrix
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2f mulComponentWise(Matrix2fc other, Matrix2f dest);
@@ -661,12 +585,9 @@ public interface Matrix2fc {
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
      *
-     * @param other
-     *          the other matrix
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
-     * @param dest
-     *          will hold the result
+     * @param other the other matrix
+     * @param t     the interpolation factor between 0.0 and 1.0
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix2f lerp(Matrix2fc other, float t, Matrix2f dest);
@@ -679,10 +600,8 @@ public interface Matrix2fc {
      * and their operations, such as {@link ArrayList#contains(Object)} or {@link HashSet#remove(Object)}, since those
      * data structures only use the {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
      *
-     * @param m
-     *          the other matrix
-     * @param delta
-     *          the allowed maximum difference
+     * @param m     the other matrix
+     * @param delta the allowed maximum difference
      * @return <code>true</code> whether all of the matrix elements are equal; <code>false</code> otherwise
      */
     boolean equals(Matrix2fc m, float delta);
@@ -693,7 +612,7 @@ public interface Matrix2fc {
      * {@link Float#isInfinite() infinity}.
      *
      * @return {@code true} if all components are finite floating-point values;
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     boolean isFinite();
 

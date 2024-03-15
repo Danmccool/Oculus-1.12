@@ -32,70 +32,70 @@ import java.util.HashSet;
 
 /**
  * Interface to a read-only view of a 3x3 matrix of single-precision floats.
- * 
+ *
  * @author Kai Burjack
  */
 public interface Matrix3fc {
 
     /**
      * Return the value of the matrix element at column 0 and row 0.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m00();
 
     /**
      * Return the value of the matrix element at column 0 and row 1.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m01();
 
     /**
      * Return the value of the matrix element at column 0 and row 2.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m02();
 
     /**
      * Return the value of the matrix element at column 1 and row 0.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m10();
 
     /**
      * Return the value of the matrix element at column 1 and row 1.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m11();
 
     /**
      * Return the value of the matrix element at column 1 and row 2.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m12();
 
     /**
      * Return the value of the matrix element at column 2 and row 0.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m20();
 
     /**
      * Return the value of the matrix element at column 2 and row 1.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m21();
 
     /**
      * Return the value of the matrix element at column 2 and row 2.
-     * 
+     *
      * @return the value of the matrix element
      */
     float m22();
@@ -107,11 +107,9 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * transformation of the right matrix will be applied first!
-     * 
-     * @param right
-     *          the right operand of the matrix multiplication
-     * @param dest
-     *          will hold the result
+     *
+     * @param right the right operand of the matrix multiplication
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix3f mul(Matrix3fc right, Matrix3f dest);
@@ -124,35 +122,31 @@ public interface Matrix3fc {
      * vector <code>v</code> with the new matrix by using <code>L * M * v</code>, the
      * transformation of <code>this</code> matrix will be applied first!
      *
-     * @param left
-     *          the left operand of the matrix multiplication
-     * @param dest
-     *          the destination matrix, which will hold the result
+     * @param left the left operand of the matrix multiplication
+     * @param dest the destination matrix, which will hold the result
      * @return dest
      */
     Matrix3f mulLocal(Matrix3fc left, Matrix3f dest);
 
     /**
      * Return the determinant of this matrix.
-     * 
+     *
      * @return the determinant
      */
     float determinant();
 
     /**
      * Invert the <code>this</code> matrix and store the result in <code>dest</code>.
-     * 
-     * @param dest
-     *             will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f invert(Matrix3f dest);
 
     /**
      * Transpose <code>this</code> matrix and store the result in <code>dest</code>.
-     * 
-     * @param dest
-     *             will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f transpose(Matrix3f dest);
@@ -160,9 +154,8 @@ public interface Matrix3fc {
     /**
      * Get the current values of <code>this</code> matrix and store them into
      * <code>dest</code>.
-     * 
-     * @param dest
-     *          the destination matrix
+     *
+     * @param dest the destination matrix
      * @return the passed in destination
      */
     Matrix3f get(Matrix3f dest);
@@ -171,24 +164,20 @@ public interface Matrix3fc {
      * Get the current values of <code>this</code> matrix and store them as
      * the rotational component of <code>dest</code>. All other values of <code>dest</code> will
      * be set to identity.
-     * 
-     * @see Matrix4f#set(Matrix3fc)
-     * 
-     * @param dest
-     *          the destination matrix
+     *
+     * @param dest the destination matrix
      * @return the passed in destination
+     * @see Matrix4f#set(Matrix3fc)
      */
     Matrix4f get(Matrix4f dest);
 
     /**
      * Get the current values of <code>this</code> matrix and store the represented rotation
      * into the given {@link AxisAngle4f}.
-     * 
-     * @see AxisAngle4f#set(Matrix3fc)
-     * 
-     * @param dest
-     *          the destination {@link AxisAngle4f}
+     *
+     * @param dest the destination {@link AxisAngle4f}
      * @return the passed in destination
+     * @see AxisAngle4f#set(Matrix3fc)
      */
     AxisAngle4f getRotation(AxisAngle4f dest);
 
@@ -198,12 +187,10 @@ public interface Matrix3fc {
      * <p>
      * This method assumes that the three column vectors of this matrix are not normalized and
      * thus allows to ignore any additional scaling factor that is applied to the matrix.
-     * 
-     * @see Quaternionf#setFromUnnormalized(Matrix3fc)
-     * 
-     * @param dest
-     *          the destination {@link Quaternionf}
+     *
+     * @param dest the destination {@link Quaternionf}
      * @return the passed in destination
+     * @see Quaternionf#setFromUnnormalized(Matrix3fc)
      */
     Quaternionf getUnnormalizedRotation(Quaternionf dest);
 
@@ -212,12 +199,10 @@ public interface Matrix3fc {
      * into the given {@link Quaternionf}.
      * <p>
      * This method assumes that the three column vectors of this matrix are normalized.
-     * 
-     * @see Quaternionf#setFromNormalized(Matrix3fc)
-     * 
-     * @param dest
-     *          the destination {@link Quaternionf}
+     *
+     * @param dest the destination {@link Quaternionf}
      * @return the passed in destination
+     * @see Quaternionf#setFromNormalized(Matrix3fc)
      */
     Quaternionf getNormalizedRotation(Quaternionf dest);
 
@@ -227,12 +212,10 @@ public interface Matrix3fc {
      * <p>
      * This method assumes that the three column vectors of this matrix are not normalized and
      * thus allows to ignore any additional scaling factor that is applied to the matrix.
-     * 
-     * @see Quaterniond#setFromUnnormalized(Matrix3fc)
-     * 
-     * @param dest
-     *          the destination {@link Quaterniond}
+     *
+     * @param dest the destination {@link Quaterniond}
      * @return the passed in destination
+     * @see Quaterniond#setFromUnnormalized(Matrix3fc)
      */
     Quaterniond getUnnormalizedRotation(Quaterniond dest);
 
@@ -241,12 +224,10 @@ public interface Matrix3fc {
      * into the given {@link Quaterniond}.
      * <p>
      * This method assumes that the three column vectors of this matrix are normalized.
-     * 
-     * @see Quaterniond#setFromNormalized(Matrix3fc)
-     * 
-     * @param dest
-     *          the destination {@link Quaterniond}
+     *
+     * @param dest the destination {@link Quaterniond}
      * @return the passed in destination
+     * @see Quaterniond#setFromNormalized(Matrix3fc)
      */
     Quaterniond getNormalizedRotation(Quaterniond dest);
 
@@ -260,12 +241,10 @@ public interface Matrix3fc {
      * In order to specify the offset into the FloatBuffer at which
      * the matrix is stored, use {@link #get(int, FloatBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get(int, FloatBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, FloatBuffer)
      */
     FloatBuffer get(FloatBuffer buffer);
 
@@ -274,11 +253,9 @@ public interface Matrix3fc {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given FloatBuffer.
-     * 
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     FloatBuffer get(int index, FloatBuffer buffer);
@@ -292,12 +269,10 @@ public interface Matrix3fc {
      * In order to specify the offset into the ByteBuffer at which
      * the matrix is stored, use {@link #get(int, ByteBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get(int, ByteBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get(int, ByteBuffer)
      */
     ByteBuffer get(ByteBuffer buffer);
 
@@ -306,11 +281,9 @@ public interface Matrix3fc {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given ByteBuffer.
-     * 
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer get(int index, ByteBuffer buffer);
@@ -324,12 +297,10 @@ public interface Matrix3fc {
      * In order to specify the offset into the FloatBuffer at which
      * the matrix is stored, use {@link #get3x4(int, FloatBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get3x4(int, FloatBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this 3x3 matrix as 3x4 matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this 3x3 matrix as 3x4 matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get3x4(int, FloatBuffer)
      */
     FloatBuffer get3x4(FloatBuffer buffer);
 
@@ -338,11 +309,9 @@ public interface Matrix3fc {
      * absolute buffer position/index, with the m03, m13 and m23 components being zero.
      * <p>
      * This method will not increment the position of the given FloatBuffer.
-     * 
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this 3x3 matrix as 3x4 matrix in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this 3x3 matrix as 3x4 matrix in column-major order
      * @return the passed in buffer
      */
     FloatBuffer get3x4(int index, FloatBuffer buffer);
@@ -356,12 +325,10 @@ public interface Matrix3fc {
      * In order to specify the offset into the ByteBuffer at which
      * the matrix is stored, use {@link #get3x4(int, ByteBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #get3x4(int, ByteBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this 3x3 matrix as 3x4 matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this 3x3 matrix as 3x4 matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #get3x4(int, ByteBuffer)
      */
     ByteBuffer get3x4(ByteBuffer buffer);
 
@@ -370,11 +337,9 @@ public interface Matrix3fc {
      * absolute buffer position/index, with the m03, m13 and m23 components being zero.
      * <p>
      * This method will not increment the position of the given ByteBuffer.
-     * 
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this 3x3 matrix as 3x4 matrix in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this 3x3 matrix as 3x4 matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer get3x4(int index, ByteBuffer buffer);
@@ -388,12 +353,10 @@ public interface Matrix3fc {
      * In order to specify the offset into the FloatBuffer at which
      * the matrix is stored, use {@link #getTransposed(int, FloatBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #getTransposed(int, FloatBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #getTransposed(int, FloatBuffer)
      */
     FloatBuffer getTransposed(FloatBuffer buffer);
 
@@ -402,11 +365,9 @@ public interface Matrix3fc {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given FloatBuffer.
-     * 
-     * @param index
-     *            the absolute position into the FloatBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the FloatBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     FloatBuffer getTransposed(int index, FloatBuffer buffer);
@@ -420,12 +381,10 @@ public interface Matrix3fc {
      * In order to specify the offset into the ByteBuffer at which
      * the matrix is stored, use {@link #getTransposed(int, ByteBuffer)}, taking
      * the absolute position as parameter.
-     * 
-     * @see #getTransposed(int, ByteBuffer)
-     * 
-     * @param buffer
-     *            will receive the values of this matrix in column-major order at its current position
+     *
+     * @param buffer will receive the values of this matrix in column-major order at its current position
      * @return the passed in buffer
+     * @see #getTransposed(int, ByteBuffer)
      */
     ByteBuffer getTransposed(ByteBuffer buffer);
 
@@ -434,11 +393,9 @@ public interface Matrix3fc {
      * absolute buffer position/index.
      * <p>
      * This method will not increment the position of the given ByteBuffer.
-     * 
-     * @param index
-     *            the absolute position into the ByteBuffer
-     * @param buffer
-     *            will receive the values of this matrix in column-major order
+     *
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this matrix in column-major order
      * @return the passed in buffer
      */
     ByteBuffer getTransposed(int index, ByteBuffer buffer);
@@ -446,11 +403,9 @@ public interface Matrix3fc {
 
     /**
      * Store this matrix into the supplied float array in column-major order at the given offset.
-     * 
-     * @param arr
-     *          the array to write the matrix values into
-     * @param offset
-     *          the offset into the array
+     *
+     * @param arr    the array to write the matrix values into
+     * @param offset the offset into the array
      * @return the passed in array
      */
     float[] get(float[] arr, int offset);
@@ -459,12 +414,10 @@ public interface Matrix3fc {
      * Store this matrix into the supplied float array in column-major order.
      * <p>
      * In order to specify an explicit offset into the array, use the method {@link #get(float[], int)}.
-     * 
-     * @see #get(float[], int)
-     * 
-     * @param arr
-     *          the array to write the matrix values into
+     *
+     * @param arr the array to write the matrix values into
      * @return the passed in array
+     * @see #get(float[], int)
      */
     float[] get(float[] arr);
 
@@ -476,11 +429,9 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
-     * 
-     * @param xyz
-     *            the factors of the x, y and z component, respectively
-     * @param dest
-     *            will hold the result
+     *
+     * @param xyz  the factors of the x, y and z component, respectively
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f scale(Vector3fc xyz, Matrix3f dest);
@@ -493,15 +444,11 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
-     * 
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param z
-     *            the factor of the z component
-     * @param dest
-     *            will hold the result
+     *
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param z    the factor of the z component
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f scale(float x, float y, float z, Matrix3f dest);
@@ -514,14 +461,11 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * S</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * S * v</code>
      * , the scaling will be applied first!
-     * 
-     * @see #scale(float, float, float, Matrix3f)
-     * 
-     * @param xyz
-     *            the factor for all components
-     * @param dest
-     *            will hold the result
+     *
+     * @param xyz  the factor for all components
+     * @param dest will hold the result
      * @return dest
+     * @see #scale(float, float, float, Matrix3f)
      */
     Matrix3f scale(float xyz, Matrix3f dest);
 
@@ -533,85 +477,67 @@ public interface Matrix3fc {
      * then the new matrix will be <code>S * M</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>S * M * v</code>
      * , the scaling will be applied last!
-     * 
-     * @param x
-     *            the factor of the x component
-     * @param y
-     *            the factor of the y component
-     * @param z
-     *            the factor of the z component
-     * @param dest
-     *            will hold the result
+     *
+     * @param x    the factor of the x component
+     * @param y    the factor of the y component
+     * @param z    the factor of the z component
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f scaleLocal(float x, float y, float z, Matrix3f dest);
 
     /**
      * Transform the given vector by this matrix.
-     * 
-     * @param v
-     *          the vector to transform
+     *
+     * @param v the vector to transform
      * @return v
      */
     Vector3f transform(Vector3f v);
 
     /**
      * Transform the given vector by this matrix and store the result in <code>dest</code>.
-     * 
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     *
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector3f transform(Vector3fc v, Vector3f dest);
 
     /**
      * Transform the vector <code>(x, y, z)</code> by this matrix and store the result in <code>dest</code>.
-     * 
-     * @param x
-     *          the x coordinate of the vector to transform
-     * @param y
-     *          the y coordinate of the vector to transform
-     * @param z
-     *          the z coordinate of the vector to transform
-     * @param dest
-     *          will hold the result
+     *
+     * @param x    the x coordinate of the vector to transform
+     * @param y    the y coordinate of the vector to transform
+     * @param z    the z coordinate of the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector3f transform(float x, float y, float z, Vector3f dest);
 
     /**
      * Transform the given vector by the transpose of this matrix.
-     * 
-     * @param v
-     *          the vector to transform
+     *
+     * @param v the vector to transform
      * @return v
      */
     Vector3f transformTranspose(Vector3f v);
 
     /**
      * Transform the given vector by the transpose of this matrix and store the result in <code>dest</code>.
-     * 
-     * @param v
-     *          the vector to transform
-     * @param dest
-     *          will hold the result
+     *
+     * @param v    the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector3f transformTranspose(Vector3fc v, Vector3f dest);
 
     /**
      * Transform the vector <code>(x, y, z)</code> by the transpose of this matrix and store the result in <code>dest</code>.
-     * 
-     * @param x
-     *          the x coordinate of the vector to transform
-     * @param y
-     *          the y coordinate of the vector to transform
-     * @param z
-     *          the z coordinate of the vector to transform
-     * @param dest
-     *          will hold the result
+     *
+     * @param x    the x coordinate of the vector to transform
+     * @param y    the y coordinate of the vector to transform
+     * @param z    the z coordinate of the vector to transform
+     * @param dest will hold the result
      * @return dest
      */
     Vector3f transformTranspose(float x, float y, float z, Vector3f dest);
@@ -620,7 +546,7 @@ public interface Matrix3fc {
      * Apply rotation about the X axis to this matrix by rotating the given amount of radians
      * and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -630,11 +556,9 @@ public interface Matrix3fc {
      * , the rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateX(float ang, Matrix3f dest);
@@ -643,7 +567,7 @@ public interface Matrix3fc {
      * Apply rotation about the Y axis to this matrix by rotating the given amount of radians
      * and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -653,11 +577,9 @@ public interface Matrix3fc {
      * , the rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateY(float ang, Matrix3f dest);
@@ -666,7 +588,7 @@ public interface Matrix3fc {
      * Apply rotation about the Z axis to this matrix by rotating the given amount of radians
      * and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -676,11 +598,9 @@ public interface Matrix3fc {
      * , the rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateZ(float ang, Matrix3f dest);
@@ -689,7 +609,7 @@ public interface Matrix3fc {
      * Apply rotation of <code>angleX</code> radians about the X axis, followed by a rotation of <code>angleY</code> radians about the Y axis and
      * followed by a rotation of <code>angleZ</code> radians about the Z axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -699,15 +619,11 @@ public interface Matrix3fc {
      * rotation will be applied first!
      * <p>
      * This method is equivalent to calling: <code>rotateX(angleX, dest).rotateY(angleY).rotateZ(angleZ)</code>
-     * 
-     * @param angleX
-     *            the angle to rotate about X
-     * @param angleY
-     *            the angle to rotate about Y
-     * @param angleZ
-     *            the angle to rotate about Z
-     * @param dest
-     *            will hold the result
+     *
+     * @param angleX the angle to rotate about X
+     * @param angleY the angle to rotate about Y
+     * @param angleZ the angle to rotate about Z
+     * @param dest   will hold the result
      * @return dest
      */
     Matrix3f rotateXYZ(float angleX, float angleY, float angleZ, Matrix3f dest);
@@ -716,7 +632,7 @@ public interface Matrix3fc {
      * Apply rotation of <code>angleZ</code> radians about the Z axis, followed by a rotation of <code>angleY</code> radians about the Y axis and
      * followed by a rotation of <code>angleX</code> radians about the X axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -726,15 +642,11 @@ public interface Matrix3fc {
      * rotation will be applied first!
      * <p>
      * This method is equivalent to calling: <code>rotateZ(angleZ, dest).rotateY(angleY).rotateX(angleX)</code>
-     * 
-     * @param angleZ
-     *            the angle to rotate about Z
-     * @param angleY
-     *            the angle to rotate about Y
-     * @param angleX
-     *            the angle to rotate about X
-     * @param dest
-     *            will hold the result
+     *
+     * @param angleZ the angle to rotate about Z
+     * @param angleY the angle to rotate about Y
+     * @param angleX the angle to rotate about X
+     * @param dest   will hold the result
      * @return dest
      */
     Matrix3f rotateZYX(float angleZ, float angleY, float angleX, Matrix3f dest);
@@ -743,7 +655,7 @@ public interface Matrix3fc {
      * Apply rotation of <code>angleY</code> radians about the Y axis, followed by a rotation of <code>angleX</code> radians about the X axis and
      * followed by a rotation of <code>angleZ</code> radians about the Z axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -753,15 +665,11 @@ public interface Matrix3fc {
      * rotation will be applied first!
      * <p>
      * This method is equivalent to calling: <code>rotateY(angleY, dest).rotateX(angleX).rotateZ(angleZ)</code>
-     * 
-     * @param angleY
-     *            the angle to rotate about Y
-     * @param angleX
-     *            the angle to rotate about X
-     * @param angleZ
-     *            the angle to rotate about Z
-     * @param dest
-     *            will hold the result
+     *
+     * @param angleY the angle to rotate about Y
+     * @param angleX the angle to rotate about X
+     * @param angleZ the angle to rotate about Z
+     * @param dest   will hold the result
      * @return dest
      */
     Matrix3f rotateYXZ(float angleY, float angleX, float angleZ, Matrix3f dest);
@@ -772,7 +680,7 @@ public interface Matrix3fc {
      * <p>
      * The axis described by the three components needs to be a unit vector.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -782,17 +690,12 @@ public interface Matrix3fc {
      * , the rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param x
-     *            the x component of the axis
-     * @param y
-     *            the y component of the axis
-     * @param z
-     *            the z component of the axis
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians
+     * @param x    the x component of the axis
+     * @param y    the y component of the axis
+     * @param z    the z component of the axis
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotate(float ang, float x, float y, float z, Matrix3f dest);
@@ -803,7 +706,7 @@ public interface Matrix3fc {
      * <p>
      * The axis described by the three components needs to be a unit vector.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -813,17 +716,12 @@ public interface Matrix3fc {
      * rotation will be applied last!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians
-     * @param x
-     *            the x component of the axis
-     * @param y
-     *            the y component of the axis
-     * @param z
-     *            the z component of the axis
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians
+     * @param x    the x component of the axis
+     * @param y    the y component of the axis
+     * @param z    the z component of the axis
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateLocal(float ang, float x, float y, float z, Matrix3f dest);
@@ -832,7 +730,7 @@ public interface Matrix3fc {
      * Pre-multiply a rotation around the X axis to this matrix by rotating the given amount of radians
      * about the X axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -842,11 +740,9 @@ public interface Matrix3fc {
      * rotation will be applied last!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians to rotate about the X axis
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians to rotate about the X axis
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateLocalX(float ang, Matrix3f dest);
@@ -855,7 +751,7 @@ public interface Matrix3fc {
      * Pre-multiply a rotation around the Y axis to this matrix by rotating the given amount of radians
      * about the Y axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -865,11 +761,9 @@ public interface Matrix3fc {
      * rotation will be applied last!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians to rotate about the Y axis
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians to rotate about the Y axis
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateLocalY(float ang, Matrix3f dest);
@@ -878,7 +772,7 @@ public interface Matrix3fc {
      * Pre-multiply a rotation around the Z axis to this matrix by rotating the given amount of radians
      * about the Z axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -888,11 +782,9 @@ public interface Matrix3fc {
      * rotation will be applied last!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @param ang
-     *            the angle in radians to rotate about the Z axis
-     * @param dest
-     *            will hold the result
+     *
+     * @param ang  the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateLocalZ(float ang, Matrix3f dest);
@@ -901,7 +793,7 @@ public interface Matrix3fc {
      * Apply the rotation - and possibly scaling - transformation of the given {@link Quaternionfc} to this matrix and store
      * the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -911,11 +803,9 @@ public interface Matrix3fc {
      * the quaternion rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Quaternion">http://en.wikipedia.org</a>
-     * 
-     * @param quat
-     *          the {@link Quaternionfc}
-     * @param dest
-     *          will hold the result
+     *
+     * @param quat the {@link Quaternionfc}
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotate(Quaternionfc quat, Matrix3f dest);
@@ -924,7 +814,7 @@ public interface Matrix3fc {
      * Pre-multiply the rotation - and possibly scaling - transformation of the given {@link Quaternionfc} to this matrix and store
      * the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -934,11 +824,9 @@ public interface Matrix3fc {
      * the quaternion rotation will be applied last!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Quaternion">http://en.wikipedia.org</a>
-     * 
-     * @param quat
-     *          the {@link Quaternionfc}
-     * @param dest
-     *          will hold the result
+     *
+     * @param quat the {@link Quaternionfc}
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f rotateLocal(Quaternionfc quat, Matrix3f dest);
@@ -946,7 +834,7 @@ public interface Matrix3fc {
     /**
      * Apply a rotation transformation, rotating about the given {@link AxisAngle4f} and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -956,21 +844,18 @@ public interface Matrix3fc {
      * the {@link AxisAngle4f} rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @see #rotate(float, float, float, float, Matrix3f)
-     * 
-     * @param axisAngle
-     *          the {@link AxisAngle4f} (needs to be {@link AxisAngle4f#normalize() normalized})
-     * @param dest
-     *          will hold the result
+     *
+     * @param axisAngle the {@link AxisAngle4f} (needs to be {@link AxisAngle4f#normalize() normalized})
+     * @param dest      will hold the result
      * @return dest
+     * @see #rotate(float, float, float, float, Matrix3f)
      */
     Matrix3f rotate(AxisAngle4f axisAngle, Matrix3f dest);
 
     /**
      * Apply a rotation transformation, rotating the given radians about the specified axis and store the result in <code>dest</code>.
      * <p>
-     * When used with a right-handed coordinate system, the produced rotation will rotate a vector 
+     * When used with a right-handed coordinate system, the produced rotation will rotate a vector
      * counter-clockwise around the rotation axis, when viewing along the negative axis direction towards the origin.
      * When used with a left-handed coordinate system, the rotation is clockwise.
      * <p>
@@ -980,74 +865,57 @@ public interface Matrix3fc {
      * the axis-angle rotation will be applied first!
      * <p>
      * Reference: <a href="http://en.wikipedia.org/wiki/Rotation_matrix#Axis_and_angle">http://en.wikipedia.org</a>
-     * 
-     * @see #rotate(float, float, float, float, Matrix3f)
-     * 
-     * @param angle
-     *          the angle in radians
-     * @param axis
-     *          the rotation axis (needs to be {@link Vector3f#normalize() normalized})
-     * @param dest
-     *          will hold the result
+     *
+     * @param angle the angle in radians
+     * @param axis  the rotation axis (needs to be {@link Vector3f#normalize() normalized})
+     * @param dest  will hold the result
      * @return dest
+     * @see #rotate(float, float, float, float, Matrix3f)
      */
     Matrix3f rotate(float angle, Vector3fc axis, Matrix3f dest);
 
     /**
      * Apply a rotation transformation to this matrix to make <code>-z</code> point along <code>dir</code>
-     * and store the result in <code>dest</code>. 
+     * and store the result in <code>dest</code>.
      * <p>
      * If <code>M</code> is <code>this</code> matrix and <code>L</code> the lookalong rotation matrix,
      * then the new matrix will be <code>M * L</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * L * v</code>, the
      * lookalong rotation transformation will be applied first!
-     * 
-     * @see #lookAlong(float, float, float, float, float, float, Matrix3f)
-     * 
-     * @param dir
-     *            the direction in space to look along
-     * @param up
-     *            the direction of 'up'
-     * @param dest
-     *            will hold the result
+     *
+     * @param dir  the direction in space to look along
+     * @param up   the direction of 'up'
+     * @param dest will hold the result
      * @return dest
+     * @see #lookAlong(float, float, float, float, float, float, Matrix3f)
      */
     Matrix3f lookAlong(Vector3fc dir, Vector3fc up, Matrix3f dest);
 
     /**
      * Apply a rotation transformation to this matrix to make <code>-z</code> point along <code>dir</code>
-     * and store the result in <code>dest</code>. 
+     * and store the result in <code>dest</code>.
      * <p>
      * If <code>M</code> is <code>this</code> matrix and <code>L</code> the lookalong rotation matrix,
      * then the new matrix will be <code>M * L</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * L * v</code>, the
      * lookalong rotation transformation will be applied first!
-     * 
-     * @param dirX
-     *              the x-coordinate of the direction to look along
-     * @param dirY
-     *              the y-coordinate of the direction to look along
-     * @param dirZ
-     *              the z-coordinate of the direction to look along
-     * @param upX
-     *              the x-coordinate of the up vector
-     * @param upY
-     *              the y-coordinate of the up vector
-     * @param upZ
-     *              the z-coordinate of the up vector
-     * @param dest
-     *              will hold the result
+     *
+     * @param dirX the x-coordinate of the direction to look along
+     * @param dirY the y-coordinate of the direction to look along
+     * @param dirZ the z-coordinate of the direction to look along
+     * @param upX  the x-coordinate of the up vector
+     * @param upY  the y-coordinate of the up vector
+     * @param upZ  the z-coordinate of the up vector
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, Matrix3f dest);
 
     /**
      * Get the row at the given <code>row</code> index, starting with <code>0</code>.
-     * 
-     * @param row
-     *          the row index in <code>[0..2]</code>
-     * @param dest
-     *          will hold the row components
+     *
+     * @param row  the row index in <code>[0..2]</code>
+     * @param dest will hold the row components
      * @return the passed in destination
      * @throws IndexOutOfBoundsException if <code>row</code> is not in <code>[0..2]</code>
      */
@@ -1055,11 +923,9 @@ public interface Matrix3fc {
 
     /**
      * Get the column at the given <code>column</code> index, starting with <code>0</code>.
-     * 
-     * @param column
-     *          the column index in <code>[0..2]</code>
-     * @param dest
-     *          will hold the column components
+     *
+     * @param column the column index in <code>[0..2]</code>
+     * @param dest   will hold the column components
      * @return the passed in destination
      * @throws IndexOutOfBoundsException if <code>column</code> is not in <code>[0..2]</code>
      */
@@ -1067,22 +933,18 @@ public interface Matrix3fc {
 
     /**
      * Get the matrix element value at the given column and row.
-     * 
-     * @param column
-     *          the colum index in <code>[0..2]</code>
-     * @param row
-     *          the row index in <code>[0..2]</code>
+     *
+     * @param column the colum index in <code>[0..2]</code>
+     * @param row    the row index in <code>[0..2]</code>
      * @return the element value
      */
     float get(int column, int row);
 
     /**
      * Get the matrix element value at the given row and column.
-     * 
-     * @param row
-     *          the row index in <code>[0..2]</code>
-     * @param column
-     *          the colum index in <code>[0..2]</code>
+     *
+     * @param row    the row index in <code>[0..2]</code>
+     * @param column the colum index in <code>[0..2]</code>
      * @return the element value
      */
     float getRowColumn(int row, int column);
@@ -1091,9 +953,8 @@ public interface Matrix3fc {
      * Compute a normal matrix from <code>this</code> matrix and store it into <code>dest</code>.
      * <p>
      * The normal matrix of <code>m</code> is the transpose of the inverse of <code>m</code>.
-     * 
-     * @param dest
-     *             will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f normal(Matrix3f dest);
@@ -1103,18 +964,16 @@ public interface Matrix3fc {
      * <p>
      * The cofactor matrix can be used instead of {@link #normal(Matrix3f)} to transform normals
      * when the orientation of the normals with respect to the surface should be preserved.
-     * 
-     * @param dest
-     *             will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f cofactor(Matrix3f dest);
 
     /**
      * Get the scaling factors of <code>this</code> matrix for the three base axes.
-     * 
-     * @param dest
-     *          will hold the scaling factors for <code>x</code>, <code>y</code> and <code>z</code>
+     *
+     * @param dest will hold the scaling factors for <code>x</code>, <code>y</code> and <code>z</code>
      * @return dest
      */
     Vector3f getScale(Vector3f dest);
@@ -1130,9 +989,8 @@ public interface Matrix3fc {
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveZ(Vector3f)} instead.
      * <p>
      * Reference: <a href="http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/">http://www.euclideanspace.com</a>
-     * 
-     * @param dir
-     *          will hold the direction of <code>+Z</code>
+     *
+     * @param dir will hold the direction of <code>+Z</code>
      * @return dir
      */
     Vector3f positiveZ(Vector3f dir);
@@ -1148,9 +1006,8 @@ public interface Matrix3fc {
      * </pre>
      * <p>
      * Reference: <a href="http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/">http://www.euclideanspace.com</a>
-     * 
-     * @param dir
-     *          will hold the direction of <code>+Z</code>
+     *
+     * @param dir will hold the direction of <code>+Z</code>
      * @return dir
      */
     Vector3f normalizedPositiveZ(Vector3f dir);
@@ -1166,9 +1023,8 @@ public interface Matrix3fc {
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveX(Vector3f)} instead.
      * <p>
      * Reference: <a href="http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/">http://www.euclideanspace.com</a>
-     * 
-     * @param dir
-     *          will hold the direction of <code>+X</code>
+     *
+     * @param dir will hold the direction of <code>+X</code>
      * @return dir
      */
     Vector3f positiveX(Vector3f dir);
@@ -1184,9 +1040,8 @@ public interface Matrix3fc {
      * </pre>
      * <p>
      * Reference: <a href="http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/">http://www.euclideanspace.com</a>
-     * 
-     * @param dir
-     *          will hold the direction of <code>+X</code>
+     *
+     * @param dir will hold the direction of <code>+X</code>
      * @return dir
      */
     Vector3f normalizedPositiveX(Vector3f dir);
@@ -1202,9 +1057,8 @@ public interface Matrix3fc {
      * If <code>this</code> is already an orthogonal matrix, then consider using {@link #normalizedPositiveY(Vector3f)} instead.
      * <p>
      * Reference: <a href="http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/">http://www.euclideanspace.com</a>
-     * 
-     * @param dir
-     *          will hold the direction of <code>+Y</code>
+     *
+     * @param dir will hold the direction of <code>+Y</code>
      * @return dir
      */
     Vector3f positiveY(Vector3f dir);
@@ -1220,42 +1074,35 @@ public interface Matrix3fc {
      * </pre>
      * <p>
      * Reference: <a href="http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/threeD/">http://www.euclideanspace.com</a>
-     * 
-     * @param dir
-     *          will hold the direction of <code>+Y</code>
+     *
+     * @param dir will hold the direction of <code>+Y</code>
      * @return dir
      */
     Vector3f normalizedPositiveY(Vector3f dir);
 
     /**
      * Component-wise add <code>this</code> and <code>other</code> and store the result in <code>dest</code>.
-     * 
-     * @param other
-     *          the other addend
-     * @param dest
-     *          will hold the result
+     *
+     * @param other the other addend
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix3f add(Matrix3fc other, Matrix3f dest);
 
     /**
      * Component-wise subtract <code>subtrahend</code> from <code>this</code> and store the result in <code>dest</code>.
-     * 
-     * @param subtrahend
-     *          the subtrahend
-     * @param dest
-     *          will hold the result
+     *
+     * @param subtrahend the subtrahend
+     * @param dest       will hold the result
      * @return dest
      */
     Matrix3f sub(Matrix3fc subtrahend, Matrix3f dest);
 
     /**
      * Component-wise multiply <code>this</code> by <code>other</code> and store the result in <code>dest</code>.
-     * 
-     * @param other
-     *          the other matrix
-     * @param dest
-     *          will hold the result
+     *
+     * @param other the other matrix
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix3f mulComponentWise(Matrix3fc other, Matrix3f dest);
@@ -1267,18 +1114,15 @@ public interface Matrix3fc {
      * If <code>t</code> is <code>0.0</code> then the result is <code>this</code>. If the interpolation factor is <code>1.0</code>
      * then the result is <code>other</code>.
      *
-     * @param other
-     *          the other matrix
-     * @param t
-     *          the interpolation factor between 0.0 and 1.0
-     * @param dest
-     *          will hold the result
+     * @param other the other matrix
+     * @param t     the interpolation factor between 0.0 and 1.0
+     * @param dest  will hold the result
      * @return dest
      */
     Matrix3f lerp(Matrix3fc other, float t, Matrix3f dest);
 
     /**
-     * Apply a model transformation to this matrix for a right-handed coordinate system, 
+     * Apply a model transformation to this matrix for a right-handed coordinate system,
      * that aligns the local <code>+Z</code> axis with <code>direction</code>
      * and store the result in <code>dest</code>.
      * <p>
@@ -1288,21 +1132,17 @@ public interface Matrix3fc {
      * the lookat transformation will be applied first!
      * <p>
      * This method is equivalent to calling: <code>mul(new Matrix3f().lookAlong(new Vector3f(dir).negate(), up).invert(), dest)</code>
-     * 
-     * @see #rotateTowards(float, float, float, float, float, float, Matrix3f)
-     * 
-     * @param direction
-     *              the direction to rotate towards
-     * @param up
-     *              the model's up vector
-     * @param dest
-     *              will hold the result
+     *
+     * @param direction the direction to rotate towards
+     * @param up        the model's up vector
+     * @param dest      will hold the result
      * @return dest
+     * @see #rotateTowards(float, float, float, float, float, float, Matrix3f)
      */
     Matrix3f rotateTowards(Vector3fc direction, Vector3fc up, Matrix3f dest);
 
     /**
-     * Apply a model transformation to this matrix for a right-handed coordinate system, 
+     * Apply a model transformation to this matrix for a right-handed coordinate system,
      * that aligns the local <code>+Z</code> axis with <code>dir</code>
      * and store the result in <code>dest</code>.
      * <p>
@@ -1312,24 +1152,16 @@ public interface Matrix3fc {
      * the lookat transformation will be applied first!
      * <p>
      * This method is equivalent to calling: <code>mul(new Matrix3f().lookAlong(-dirX, -dirY, -dirZ, upX, upY, upZ).invert(), dest)</code>
-     * 
-     * @see #rotateTowards(Vector3fc, Vector3fc, Matrix3f)
-     * 
-     * @param dirX
-     *              the x-coordinate of the direction to rotate towards
-     * @param dirY
-     *              the y-coordinate of the direction to rotate towards
-     * @param dirZ
-     *              the z-coordinate of the direction to rotate towards
-     * @param upX
-     *              the x-coordinate of the up vector
-     * @param upY
-     *              the y-coordinate of the up vector
-     * @param upZ
-     *              the z-coordinate of the up vector
-     * @param dest
-     *              will hold the result
+     *
+     * @param dirX the x-coordinate of the direction to rotate towards
+     * @param dirY the y-coordinate of the direction to rotate towards
+     * @param dirZ the z-coordinate of the direction to rotate towards
+     * @param upX  the x-coordinate of the up vector
+     * @param upY  the y-coordinate of the up vector
+     * @param upZ  the z-coordinate of the up vector
+     * @param dest will hold the result
      * @return dest
+     * @see #rotateTowards(Vector3fc, Vector3fc, Matrix3f)
      */
     Matrix3f rotateTowards(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, Matrix3f dest);
 
@@ -1349,9 +1181,8 @@ public interface Matrix3fc {
      * </pre>
      * <p>
      * Reference: <a href="http://nghiaho.com/?page_id=846">http://nghiaho.com/</a>
-     * 
-     * @param dest
-     *          will hold the extracted Euler angles
+     *
+     * @param dest will hold the extracted Euler angles
      * @return dest
      */
     Vector3f getEulerAnglesZYX(Vector3f dest);
@@ -1377,13 +1208,10 @@ public interface Matrix3fc {
      * 0 1 b
      * 0 0 1
      * </pre>
-     * 
-     * @param a
-     *            the value for the z factor that applies to x
-     * @param b
-     *            the value for the z factor that applies to y
-     * @param dest
-     *            will hold the result
+     *
+     * @param a    the value for the z factor that applies to x
+     * @param b    the value for the z factor that applies to y
+     * @param dest will hold the result
      * @return dest
      */
     Matrix3f obliqueZ(float a, float b, Matrix3f dest);
@@ -1395,11 +1223,9 @@ public interface Matrix3fc {
      * Please note that this method is not used by any data structure such as {@link ArrayList} {@link HashSet} or {@link HashMap}
      * and their operations, such as {@link ArrayList#contains(Object)} or {@link HashSet#remove(Object)}, since those
      * data structures only use the {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
-     * 
-     * @param m
-     *          the other matrix
-     * @param delta
-     *          the allowed maximum difference
+     *
+     * @param m     the other matrix
+     * @param delta the allowed maximum difference
      * @return <code>true</code> whether all of the matrix elements are equal; <code>false</code> otherwise
      */
     boolean equals(Matrix3fc m, float delta);
@@ -1412,15 +1238,11 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * reflection will be applied first!
-     * 
-     * @param nx
-     *          the x-coordinate of the plane normal
-     * @param ny
-     *          the y-coordinate of the plane normal
-     * @param nz
-     *          the z-coordinate of the plane normal
-     * @param dest
-     *          will hold the result
+     *
+     * @param nx   the x-coordinate of the plane normal
+     * @param ny   the y-coordinate of the plane normal
+     * @param nz   the z-coordinate of the plane normal
+     * @param dest will hold the result
      * @return this
      */
     Matrix3f reflect(float nx, float ny, float nz, Matrix3f dest);
@@ -1437,11 +1259,9 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * reflection will be applied first!
-     * 
-     * @param orientation
-     *          the plane orientation
-     * @param dest
-     *          will hold the result
+     *
+     * @param orientation the plane orientation
+     * @param dest        will hold the result
      * @return this
      */
     Matrix3f reflect(Quaternionfc orientation, Matrix3f dest);
@@ -1454,11 +1274,9 @@ public interface Matrix3fc {
      * then the new matrix will be <code>M * R</code>. So when transforming a
      * vector <code>v</code> with the new matrix by using <code>M * R * v</code>, the
      * reflection will be applied first!
-     * 
-     * @param normal
-     *          the plane normal
-     * @param dest
-     *          will hold the result
+     *
+     * @param normal the plane normal
+     * @param dest   will hold the result
      * @return this
      */
     Matrix3f reflect(Vector3fc normal, Matrix3f dest);
@@ -1469,28 +1287,24 @@ public interface Matrix3fc {
      * {@link Float#isInfinite() infinity}.
      *
      * @return {@code true} if all components are finite floating-point values;
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     boolean isFinite();
 
     /**
      * Compute <code>(x, y, z)^T * this * (x, y, z)</code>.
-     * 
-     * @param x
-     *          the x coordinate of the vector to multiply
-     * @param y
-     *          the y coordinate of the vector to multiply
-     * @param z
-     *          the z coordinate of the vector to multiply
+     *
+     * @param x the x coordinate of the vector to multiply
+     * @param y the y coordinate of the vector to multiply
+     * @param z the z coordinate of the vector to multiply
      * @return the result
      */
     float quadraticFormProduct(float x, float y, float z);
 
     /**
      * Compute <code>v^T * this * v</code>.
-     * 
-     * @param v
-     *          the vector to multiply
+     *
+     * @param v the vector to multiply
      * @return the result
      */
     float quadraticFormProduct(Vector3fc v);

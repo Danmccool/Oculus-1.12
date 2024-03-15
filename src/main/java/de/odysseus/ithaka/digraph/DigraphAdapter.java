@@ -26,117 +26,117 @@ import java.util.Set;
  * @param <V> vertex type
  */
 public abstract class DigraphAdapter<V> implements Digraph<V> {
-	private final Digraph<V> delegate;
+    private final Digraph<V> delegate;
 
-	public DigraphAdapter(Digraph<V> delegate) {
-		this.delegate = delegate;
-	}
+    public DigraphAdapter(Digraph<V> delegate) {
+        this.delegate = delegate;
+    }
 
-	@Override
-	public boolean add(V vertex) {
-		return delegate.add(vertex);
-	}
+    @Override
+    public boolean add(V vertex) {
+        return delegate.add(vertex);
+    }
 
-	@Override
-	public boolean contains(V source, V target) {
-		return delegate.contains(source, target);
-	}
+    @Override
+    public boolean contains(V source, V target) {
+        return delegate.contains(source, target);
+    }
 
-	@Override
-	public boolean contains(V vertex) {
-		return delegate.contains(vertex);
-	}
+    @Override
+    public boolean contains(V vertex) {
+        return delegate.contains(vertex);
+    }
 
-	@Override
-	public OptionalInt get(V source, V target) {
-		return delegate.get(source, target);
-	}
+    @Override
+    public OptionalInt get(V source, V target) {
+        return delegate.get(source, target);
+    }
 
-	@Override
-	public int getOutDegree(V vertex) {
-		return delegate.getOutDegree(vertex);
-	}
+    @Override
+    public int getOutDegree(V vertex) {
+        return delegate.getOutDegree(vertex);
+    }
 
-	@Override
-	public int getEdgeCount() {
-		return delegate.getEdgeCount();
-	}
+    @Override
+    public int getEdgeCount() {
+        return delegate.getEdgeCount();
+    }
 
-	@Override
-	public int getVertexCount() {
-		return delegate.getVertexCount();
-	}
+    @Override
+    public int getVertexCount() {
+        return delegate.getVertexCount();
+    }
 
-	@Override
-	public int totalWeight() {
-		return delegate.totalWeight();
-	}
+    @Override
+    public int totalWeight() {
+        return delegate.totalWeight();
+    }
 
-	@Override
-	public Iterable<V> vertices() {
-		return delegate.vertices();
-	}
+    @Override
+    public Iterable<V> vertices() {
+        return delegate.vertices();
+    }
 
-	@Override
-	public OptionalInt put(V source, V target, int edge) {
-		return delegate.put(source, target, edge);
-	}
+    @Override
+    public OptionalInt put(V source, V target, int edge) {
+        return delegate.put(source, target, edge);
+    }
 
-	@Override
-	public OptionalInt remove(V source, V target) {
-		return delegate.remove(source, target);
-	}
+    @Override
+    public OptionalInt remove(V source, V target) {
+        return delegate.remove(source, target);
+    }
 
-	@Override
-	public boolean remove(V vertex) {
-		return delegate.remove(vertex);
-	}
+    @Override
+    public boolean remove(V vertex) {
+        return delegate.remove(vertex);
+    }
 
-	@Override
-	public void removeAll(Collection<V> vertices) {
-		delegate.removeAll(vertices);
-	}
+    @Override
+    public void removeAll(Collection<V> vertices) {
+        delegate.removeAll(vertices);
+    }
 
-	@Override
-	public Digraph<V> reverse() {
-		return delegate.reverse();
-	}
+    @Override
+    public Digraph<V> reverse() {
+        return delegate.reverse();
+    }
 
-	@Override
-	public Digraph<V> subgraph(Set<V> vertices) {
-		return delegate.subgraph(vertices);
-	}
+    @Override
+    public Digraph<V> subgraph(Set<V> vertices) {
+        return delegate.subgraph(vertices);
+    }
 
-	@Override
-	public boolean isAcyclic() {
-		return delegate.isAcyclic();
-	}
+    @Override
+    public boolean isAcyclic() {
+        return delegate.isAcyclic();
+    }
 
-	@Override
-	public Iterable<V> targets(V source) {
-		return delegate.targets(source);
-	}
+    @Override
+    public Iterable<V> targets(V source) {
+        return delegate.targets(source);
+    }
 
-	@Override
-	public String toString() {
-		return delegate.toString();
-	}
+    @Override
+    public String toString() {
+        return delegate.toString();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
 
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
 
-		return delegate.equals(((DigraphAdapter<?>) obj).delegate);
-	}
+        return delegate.equals(((DigraphAdapter<?>) obj).delegate);
+    }
 
-	@Override
-	public int hashCode() {
-		return delegate.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return delegate.hashCode();
+    }
 }

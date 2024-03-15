@@ -30,7 +30,7 @@ package net.coderbot.iris.vendored.joml;
  * <p>
  * To obtain the origin of the rays call {@link #origin(Vector3f)}.
  * Then to compute the directions of subsequent rays use {@link #dir(float, float, Vector3f)}.
- * 
+ *
  * @author Kai Burjack
  */
 public class FrustumRayBuilder {
@@ -51,9 +51,8 @@ public class FrustumRayBuilder {
 
     /**
      * Create a new {@link FrustumRayBuilder} from the given {@link Matrix4fc matrix} by extracing the matrix's frustum.
-     * 
-     * @param m
-     *          the {@link Matrix4fc} to create the frustum from
+     *
+     * @param m the {@link Matrix4fc} to create the frustum from
      */
     public FrustumRayBuilder(Matrix4fc m) {
         set(m);
@@ -66,9 +65,8 @@ public class FrustumRayBuilder {
      * Fast Extraction of Viewing Frustum Planes from the World-View-Projection Matrix</a>
      * <p>
      * Reference: <a href="http://geomalgorithms.com/a05-_intersect-1.html">http://geomalgorithms.com</a>
-     * 
-     * @param m
-     *          the {@link Matrix4fc matrix} to update the frustum corner rays and origin with
+     *
+     * @param m the {@link Matrix4fc matrix} to update the frustum corner rays and origin with
      * @return this
      */
     public FrustumRayBuilder set(Matrix4fc m) {
@@ -106,9 +104,8 @@ public class FrustumRayBuilder {
 
     /**
      * Store the eye/origin of the perspective frustum in the given <code>origin</code>.
-     * 
-     * @param origin
-     *          will hold the perspective origin
+     *
+     * @param origin will hold the perspective origin
      * @return the <code>origin</code> vector
      */
     public Vector3fc origin(Vector3f origin) {
@@ -119,18 +116,15 @@ public class FrustumRayBuilder {
     }
 
     /**
-     * Obtain the normalized direction of a ray starting at the center of the coordinate system and going 
+     * Obtain the normalized direction of a ray starting at the center of the coordinate system and going
      * through the near frustum plane.
      * <p>
      * The parameters <code>x</code> and <code>y</code> are used to interpolate the generated ray direction
      * from the bottom-left to the top-right frustum corners.
-     * 
-     * @param x
-     *          the interpolation factor along the left-to-right frustum planes, within <code>[0..1]</code>
-     * @param y
-     *          the interpolation factor along the bottom-to-top frustum planes, within <code>[0..1]</code>
-     * @param dir
-     *          will hold the normalized ray direction
+     *
+     * @param x   the interpolation factor along the left-to-right frustum planes, within <code>[0..1]</code>
+     * @param y   the interpolation factor along the bottom-to-top frustum planes, within <code>[0..1]</code>
+     * @param dir will hold the normalized ray direction
      * @return the <code>dir</code> vector
      */
     public Vector3fc dir(float x, float y, Vector3f dir) {

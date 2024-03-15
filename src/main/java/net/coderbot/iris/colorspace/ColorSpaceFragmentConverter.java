@@ -12,12 +12,13 @@ import net.coderbot.iris.shaderpack.preprocessor.JcppProcessor;
 import net.coderbot.iris.vendored.joml.Matrix4f;
 import net.minecraft.client.renderer.GlStateManager;
 import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL11C;
-import org.lwjgl.opengl.GL30C;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ColorSpaceFragmentConverter implements ColorSpaceConverter {
     private int width;
@@ -28,6 +29,7 @@ public class ColorSpaceFragmentConverter implements ColorSpaceConverter {
     private int swapTexture;
 
     private int target;
+
     public ColorSpaceFragmentConverter(int width, int height, ColorSpace colorSpace) {
         rebuildProgram(width, height, colorSpace);
     }
@@ -70,7 +72,7 @@ public class ColorSpaceFragmentConverter implements ColorSpaceConverter {
         builder.addDynamicSampler(() -> target, "readImage");
 
         swapTexture = GlStateManager.generateTexture();
-        IrisRenderSystem.texImage2D(swapTexture, GL30C.GL_TEXTURE_2D, 0, GL30C.GL_RGBA8, width, height, 0, GL30C.GL_RGBA, GL30C.GL_UNSIGNED_BYTE, null);
+        IrisRenderSystem.texImage2D(swapTexture, GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, null);
 
         this.framebuffer = new GlFramebuffer();
         framebuffer.addColorAttachment(0, swapTexture);
@@ -86,6 +88,6 @@ public class ColorSpaceFragmentConverter implements ColorSpaceConverter {
         FullScreenQuadRenderer.INSTANCE.render();
         Program.unbind();
         framebuffer.bindAsReadBuffer();
-        IrisRenderSystem.copyTexSubImage2D(targetImage, GL11C.GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
+        IrisRenderSystem.copyTexSubImage2D(targetImage, GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
     }
 }

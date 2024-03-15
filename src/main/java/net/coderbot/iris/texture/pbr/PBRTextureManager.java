@@ -1,9 +1,6 @@
 package net.coderbot.iris.texture.pbr;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.platform.GlStateManager;
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.coderbot.iris.Iris;
@@ -15,187 +12,188 @@ import net.coderbot.iris.texture.pbr.loader.PBRTextureLoader.PBRTextureConsumer;
 import net.coderbot.iris.texture.pbr.loader.PBRTextureLoaderRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
+import org.jetbrains.annotations.NotNull;
 
 public class PBRTextureManager {
-	public static final PBRTextureManager INSTANCE = new PBRTextureManager();
+    public static final PBRTextureManager INSTANCE = new PBRTextureManager();
 
-	public static final boolean DEBUG = System.getProperty("iris.pbr.debug") != null;
+    public static final boolean DEBUG = System.getProperty("iris.pbr.debug") != null;
 
-	// TODO: Figure out how to merge these two.
-	private static Runnable normalTextureChangeListener;
-	private static Runnable specularTextureChangeListener;
+    // TODO: Figure out how to merge these two.
+    private static Runnable normalTextureChangeListener;
+    private static Runnable specularTextureChangeListener;
 
-	static {
-		StateUpdateNotifiers.normalTextureChangeNotifier = listener -> normalTextureChangeListener = listener;
-		StateUpdateNotifiers.specularTextureChangeNotifier = listener -> specularTextureChangeListener = listener;
-	}
+    static {
+        StateUpdateNotifiers.normalTextureChangeNotifier = listener -> normalTextureChangeListener = listener;
+        StateUpdateNotifiers.specularTextureChangeNotifier = listener -> specularTextureChangeListener = listener;
+    }
 
-	private final Int2ObjectMap<PBRTextureHolder> holders = new Int2ObjectOpenHashMap<>();
-	private final PBRTextureConsumerImpl consumer = new PBRTextureConsumerImpl();
+    private final Int2ObjectMap<PBRTextureHolder> holders = new Int2ObjectOpenHashMap<>();
+    private final PBRTextureConsumerImpl consumer = new PBRTextureConsumerImpl();
 
-	private NativeImageBackedSingleColorTexture defaultNormalTexture;
-	private NativeImageBackedSingleColorTexture defaultSpecularTexture;
-	// Not PBRTextureHolderImpl to directly reference fields
-	private final PBRTextureHolder defaultHolder = new PBRTextureHolder() {
-		@Override
-		public @NotNull AbstractTexture getNormalTexture() {
-			return defaultNormalTexture;
-		}
+    private NativeImageBackedSingleColorTexture defaultNormalTexture;
+    private NativeImageBackedSingleColorTexture defaultSpecularTexture;
+    // Not PBRTextureHolderImpl to directly reference fields
+    private final PBRTextureHolder defaultHolder = new PBRTextureHolder() {
+        @Override
+        public @NotNull AbstractTexture getNormalTexture() {
+            return defaultNormalTexture;
+        }
 
-		@Override
-		public @NotNull AbstractTexture getSpecularTexture() {
-			return defaultSpecularTexture;
-		}
-	};
+        @Override
+        public @NotNull AbstractTexture getSpecularTexture() {
+            return defaultSpecularTexture;
+        }
+    };
 
-	private PBRTextureManager() {
-	}
+    private PBRTextureManager() {
+    }
 
-	public void init() {
-		defaultNormalTexture = new NativeImageBackedSingleColorTexture(PBRType.NORMAL.getDefaultValue());
-		defaultSpecularTexture = new NativeImageBackedSingleColorTexture(PBRType.SPECULAR.getDefaultValue());
-	}
+    private static void closeTexture(AbstractTexture texture) {
+        try {
+            texture.close();
+        } catch (Exception e) {
+            //
+        }
+        texture.releaseId();
+    }
 
-	public PBRTextureHolder getHolder(int id) {
-		PBRTextureHolder holder = holders.get(id);
-		if (holder == null) {
-			return defaultHolder;
-		}
-		return holder;
-	}
+    public static void notifyPBRTexturesChanged() {
+        if (normalTextureChangeListener != null) {
+            normalTextureChangeListener.run();
+        }
 
-	public PBRTextureHolder getOrLoadHolder(int id) {
-		PBRTextureHolder holder = holders.get(id);
-		if (holder == null) {
-			holder = loadHolder(id);
-			holders.put(id, holder);
-		}
-		return holder;
-	}
+        if (specularTextureChangeListener != null) {
+            specularTextureChangeListener.run();
+        }
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private PBRTextureHolder loadHolder(int id) {
-		AbstractTexture texture = TextureTracker.INSTANCE.getTexture(id);
-		if (texture != null) {
-			Class<? extends AbstractTexture> clazz = texture.getClass();
-			PBRTextureLoader loader = PBRTextureLoaderRegistry.INSTANCE.getLoader(clazz);
-			if (loader != null) {
-				int previousTextureBinding = GlStateManager.getActiveTextureName();
-				consumer.clear();
-				try {
-					loader.load(texture, Minecraft.getInstance().getResourceManager(), consumer);
-					return consumer.toHolder();
-				} catch (Exception e) {
-					Iris.logger.debug("Failed to load PBR textures for texture " + id, e);
-				} finally {
-					GlStateManager._bindTexture(previousTextureBinding);
-				}
-			}
-		}
-		return defaultHolder;
-	}
+    public void init() {
+        defaultNormalTexture = new NativeImageBackedSingleColorTexture(PBRType.NORMAL.getDefaultValue());
+        defaultSpecularTexture = new NativeImageBackedSingleColorTexture(PBRType.SPECULAR.getDefaultValue());
+    }
 
-	public void onDeleteTexture(int id) {
-		PBRTextureHolder holder = holders.remove(id);
-		if (holder != null) {
-			closeHolder(holder);
-		}
-	}
+    public PBRTextureHolder getHolder(int id) {
+        PBRTextureHolder holder = holders.get(id);
+        if (holder == null) {
+            return defaultHolder;
+        }
+        return holder;
+    }
 
-	public void clear() {
-		for (PBRTextureHolder holder : holders.values()) {
-			if (holder != defaultHolder) {
-				closeHolder(holder);
-			}
-		}
-		holders.clear();
-	}
+    public PBRTextureHolder getOrLoadHolder(int id) {
+        PBRTextureHolder holder = holders.get(id);
+        if (holder == null) {
+            holder = loadHolder(id);
+            holders.put(id, holder);
+        }
+        return holder;
+    }
 
-	public void close() {
-		clear();
-		defaultNormalTexture.close();
-		defaultSpecularTexture.close();
-	}
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PBRTextureHolder loadHolder(int id) {
+        AbstractTexture texture = TextureTracker.INSTANCE.getTexture(id);
+        if (texture != null) {
+            Class<? extends AbstractTexture> clazz = texture.getClass();
+            PBRTextureLoader loader = PBRTextureLoaderRegistry.INSTANCE.getLoader(clazz);
+            if (loader != null) {
+                int previousTextureBinding = GlStateManager.getActiveTextureName();
+                consumer.clear();
+                try {
+                    loader.load(texture, Minecraft.getInstance().getResourceManager(), consumer);
+                    return consumer.toHolder();
+                } catch (Exception e) {
+                    Iris.logger.debug("Failed to load PBR textures for texture " + id, e);
+                } finally {
+                    GlStateManager._bindTexture(previousTextureBinding);
+                }
+            }
+        }
+        return defaultHolder;
+    }
 
-	private void closeHolder(PBRTextureHolder holder) {
-		AbstractTexture normalTexture = holder.getNormalTexture();
-		AbstractTexture specularTexture = holder.getSpecularTexture();
-		if (normalTexture != defaultNormalTexture) {
-			closeTexture(normalTexture);
-		}
-		if (specularTexture != defaultSpecularTexture) {
-			closeTexture(specularTexture);
-		}
-	}
+    public void onDeleteTexture(int id) {
+        PBRTextureHolder holder = holders.remove(id);
+        if (holder != null) {
+            closeHolder(holder);
+        }
+    }
 
-	private static void closeTexture(AbstractTexture texture) {
-		try {
-			texture.close();
-		} catch (Exception e) {
-			//
-		}
-		texture.releaseId();
-	}
+    public void clear() {
+        for (PBRTextureHolder holder : holders.values()) {
+            if (holder != defaultHolder) {
+                closeHolder(holder);
+            }
+        }
+        holders.clear();
+    }
 
-	public static void notifyPBRTexturesChanged() {
-		if (normalTextureChangeListener != null) {
-			normalTextureChangeListener.run();
-		}
+    public void close() {
+        clear();
+        defaultNormalTexture.close();
+        defaultSpecularTexture.close();
+    }
 
-		if (specularTextureChangeListener != null) {
-			specularTextureChangeListener.run();
-		}
-	}
+    private void closeHolder(PBRTextureHolder holder) {
+        AbstractTexture normalTexture = holder.getNormalTexture();
+        AbstractTexture specularTexture = holder.getSpecularTexture();
+        if (normalTexture != defaultNormalTexture) {
+            closeTexture(normalTexture);
+        }
+        if (specularTexture != defaultSpecularTexture) {
+            closeTexture(specularTexture);
+        }
+    }
 
-	private class PBRTextureConsumerImpl implements PBRTextureConsumer {
-		private AbstractTexture normalTexture;
-		private AbstractTexture specularTexture;
-		private boolean changed;
+    private static class PBRTextureHolderImpl implements PBRTextureHolder {
+        private final AbstractTexture normalTexture;
+        private final AbstractTexture specularTexture;
 
-		@Override
-		public void acceptNormalTexture(@NotNull AbstractTexture texture) {
-			normalTexture = texture;
-			changed = true;
-		}
+        public PBRTextureHolderImpl(AbstractTexture normalTexture, AbstractTexture specularTexture) {
+            this.normalTexture = normalTexture;
+            this.specularTexture = specularTexture;
+        }
 
-		@Override
-		public void acceptSpecularTexture(@NotNull AbstractTexture texture) {
-			specularTexture = texture;
-			changed = true;
-		}
+        @Override
+        public @NotNull AbstractTexture getNormalTexture() {
+            return normalTexture;
+        }
 
-		public void clear() {
-			normalTexture = defaultNormalTexture;
-			specularTexture = defaultSpecularTexture;
-			changed = false;
-		}
+        @Override
+        public @NotNull AbstractTexture getSpecularTexture() {
+            return specularTexture;
+        }
+    }
 
-		public PBRTextureHolder toHolder() {
-			if (changed) {
-				return new PBRTextureHolderImpl(normalTexture, specularTexture);
-			} else {
-				return defaultHolder;
-			}
-		}
-	}
+    private class PBRTextureConsumerImpl implements PBRTextureConsumer {
+        private AbstractTexture normalTexture;
+        private AbstractTexture specularTexture;
+        private boolean changed;
 
-	private static class PBRTextureHolderImpl implements PBRTextureHolder {
-		private final AbstractTexture normalTexture;
-		private final AbstractTexture specularTexture;
+        @Override
+        public void acceptNormalTexture(@NotNull AbstractTexture texture) {
+            normalTexture = texture;
+            changed = true;
+        }
 
-		public PBRTextureHolderImpl(AbstractTexture normalTexture, AbstractTexture specularTexture) {
-			this.normalTexture = normalTexture;
-			this.specularTexture = specularTexture;
-		}
+        @Override
+        public void acceptSpecularTexture(@NotNull AbstractTexture texture) {
+            specularTexture = texture;
+            changed = true;
+        }
 
-		@Override
-		public @NotNull AbstractTexture getNormalTexture() {
-			return normalTexture;
-		}
+        public void clear() {
+            normalTexture = defaultNormalTexture;
+            specularTexture = defaultSpecularTexture;
+            changed = false;
+        }
 
-		@Override
-		public @NotNull AbstractTexture getSpecularTexture() {
-			return specularTexture;
-		}
-	}
+        public PBRTextureHolder toHolder() {
+            if (changed) {
+                return new PBRTextureHolderImpl(normalTexture, specularTexture);
+            } else {
+                return defaultHolder;
+            }
+        }
+    }
 }

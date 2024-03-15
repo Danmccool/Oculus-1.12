@@ -1,7 +1,8 @@
 package net.coderbot.iris.mixin.vertices;
 
-import java.nio.ByteBuffer;
-
+import com.mojang.blaze3d.vertex.*;
+import net.coderbot.iris.block_rendering.BlockRenderingSettings;
+import net.coderbot.iris.vendored.joml.Vector3f;
 import net.coderbot.iris.vertices.*;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
@@ -12,263 +13,250 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferVertexConsumer;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
-
-import net.coderbot.iris.block_rendering.BlockRenderingSettings;
-import net.coderbot.iris.vendored.joml.Vector3f;
+import java.nio.ByteBuffer;
 
 /**
  * Dynamically and transparently extends the vanilla vertex formats with additional data
  */
 @Mixin(BufferBuilder.class)
 public abstract class MixinBufferBuilder implements BufferVertexConsumer, BlockSensitiveBufferBuilder, ExtendingBufferBuilder {
-	@Unique
-	private boolean extending;
+    @Unique
+    private final BufferBuilderPolygonView polygon = new BufferBuilderPolygonView();
+    @Unique
+    private final Vector3f normal = new Vector3f();
+    @Unique
+    private boolean extending;
+    @Unique
+    private boolean iris$shouldNotExtend = false;
+    @Unique
+    private boolean iris$isTerrain = false;
+    @Unique
+    private int vertexCount;
+    @Unique
+    private boolean injectNormal;
 
-	@Unique
-	private boolean iris$shouldNotExtend = false;
+    @Unique
+    private short currentBlock;
 
-	@Unique
-	private boolean iris$isTerrain = false;
+    @Unique
+    private short currentRenderType;
 
-	@Unique
-	private int vertexCount;
+    @Unique
+    private int currentLocalPosX;
 
-	@Unique
-	private final BufferBuilderPolygonView polygon = new BufferBuilderPolygonView();
+    @Unique
+    private int currentLocalPosY;
 
-	@Unique
-	private final Vector3f normal = new Vector3f();
+    @Unique
+    private int currentLocalPosZ;
 
-	@Unique
-	private boolean injectNormal;
+    @Shadow
+    private boolean fastFormat;
 
-	@Unique
-	private short currentBlock;
+    @Shadow
+    private boolean fullFormat;
 
-	@Unique
-	private short currentRenderType;
+    @Shadow
+    private ByteBuffer buffer;
 
-	@Unique
-	private int currentLocalPosX;
+    @Shadow
+    private int mode;
 
-	@Unique
-	private int currentLocalPosY;
+    @Shadow
+    private VertexFormat format;
 
-	@Unique
-	private int currentLocalPosZ;
+    @Shadow
+    private int nextElementByte;
 
-	@Shadow
-	private boolean fastFormat;
+    @Shadow
+    private @Nullable VertexFormatElement currentElement;
 
-	@Shadow
-	private boolean fullFormat;
+    @Shadow
+    public abstract void begin(int drawMode, VertexFormat vertexFormat);
 
-	@Shadow
-	private ByteBuffer buffer;
+    @Shadow
+    public abstract void putShort(int i, short s);
 
-	@Shadow
-	private int mode;
+    @Shadow
+    protected abstract void switchFormat(VertexFormat format);
 
-	@Shadow
-	private VertexFormat format;
+    @Shadow
+    protected abstract void ensureCapacity(int i);
 
-	@Shadow
-	private int nextElementByte;
+    @Override
+    public void iris$beginWithoutExtending(int drawMode, VertexFormat vertexFormat) {
+        iris$shouldNotExtend = true;
+        begin(drawMode, vertexFormat);
+        iris$shouldNotExtend = false;
+    }
 
-	@Shadow
-	private @Nullable VertexFormatElement currentElement;
+    @Inject(method = "begin", at = @At("HEAD"))
+    private void iris$onBegin(int drawMode, VertexFormat format, CallbackInfo ci) {
+        boolean shouldExtend = (!iris$shouldNotExtend) && BlockRenderingSettings.INSTANCE.shouldUseExtendedVertexFormat();
+        extending = shouldExtend && (format == DefaultVertexFormat.BLOCK || format == DefaultVertexFormat.NEW_ENTITY
+                || format == DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
+        vertexCount = 0;
 
-	@Shadow
-	public abstract void begin(int drawMode, VertexFormat vertexFormat);
+        if (extending) {
+            injectNormal = format == DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP;
+        }
+    }
 
-	@Shadow
-	public abstract void putShort(int i, short s);
+    @Inject(method = "begin", at = @At("RETURN"))
+    private void iris$afterBegin(int drawMode, VertexFormat format, CallbackInfo ci) {
+        if (extending) {
+            if (format == DefaultVertexFormat.NEW_ENTITY) {
+                this.switchFormat(IrisVertexFormats.ENTITY);
+                this.iris$isTerrain = false;
+            } else {
+                this.switchFormat(IrisVertexFormats.TERRAIN);
+                this.iris$isTerrain = true;
+            }
+            this.currentElement = this.format.getElements().get(0);
+        }
+    }
 
-	@Shadow
-	protected abstract void switchFormat(VertexFormat format);
-	
-	@Shadow
-	protected abstract void ensureCapacity(int i);
+    @Inject(method = "discard", at = @At("HEAD"))
+    private void iris$onReset(CallbackInfo ci) {
+        extending = false;
+        vertexCount = 0;
+    }
 
-	@Override
-	public void iris$beginWithoutExtending(int drawMode, VertexFormat vertexFormat) {
-		iris$shouldNotExtend = true;
-		begin(drawMode, vertexFormat);
-		iris$shouldNotExtend = false;
-	}
+    @Inject(method = "switchFormat", at = @At("RETURN"))
+    private void iris$preventHardcodedVertexWriting(VertexFormat format, CallbackInfo ci) {
+        if (!extending) {
+            return;
+        }
 
-	@Inject(method = "begin", at = @At("HEAD"))
-	private void iris$onBegin(int drawMode, VertexFormat format, CallbackInfo ci) {
-		boolean shouldExtend = (!iris$shouldNotExtend) && BlockRenderingSettings.INSTANCE.shouldUseExtendedVertexFormat();
-		extending = shouldExtend && (format == DefaultVertexFormat.BLOCK || format == DefaultVertexFormat.NEW_ENTITY
-			|| format == DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
-		vertexCount = 0;
+        fastFormat = false;
+        fullFormat = false;
+    }
 
-		if (extending) {
-			injectNormal = format == DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP;
-		}
-	}
+    @Inject(method = "endVertex", at = @At("HEAD"))
+    private void iris$beforeNext(CallbackInfo ci) {
+        if (!extending) {
+            return;
+        }
 
-	@Inject(method = "begin", at = @At("RETURN"))
-	private void iris$afterBegin(int drawMode, VertexFormat format, CallbackInfo ci) {
-		if (extending) {
-			if (format == DefaultVertexFormat.NEW_ENTITY) {
-				this.switchFormat(IrisVertexFormats.ENTITY);
-				this.iris$isTerrain = false;
-			} else {
-				this.switchFormat(IrisVertexFormats.TERRAIN);
-				this.iris$isTerrain = true;
-			}
-			this.currentElement = this.format.getElements().get(0);
-		}
-	}
+        if (injectNormal && currentElement == DefaultVertexFormat.ELEMENT_NORMAL) {
+            this.putInt(0, 0);
+            this.nextElement();
+        }
 
-	@Inject(method = "discard", at = @At("HEAD"))
-	private void iris$onReset(CallbackInfo ci) {
-		extending = false;
-		vertexCount = 0;
-	}
+        // For Create Contraptions
+        this.ensureCapacity(15);
 
-	@Inject(method = "switchFormat", at = @At("RETURN"))
-	private void iris$preventHardcodedVertexWriting(VertexFormat format, CallbackInfo ci) {
-		if (!extending) {
-			return;
-		}
+        if (iris$isTerrain) {
+            // ENTITY_ELEMENT
+            this.putShort(0, currentBlock);
+            this.putShort(2, currentRenderType);
+            this.nextElement();
+        }
+        // MID_TEXTURE_ELEMENT
+        this.putFloat(0, 0);
+        this.putFloat(4, 0);
+        this.nextElement();
+        // TANGENT_ELEMENT
+        this.putInt(0, 0);
+        this.nextElement();
+        if (iris$isTerrain) {
+            // MID_BLOCK_ELEMENT
+            int posIndex = this.nextElementByte - 48;
+            float x = buffer.getFloat(posIndex);
+            float y = buffer.getFloat(posIndex + 4);
+            float z = buffer.getFloat(posIndex + 8);
+            this.putInt(0, ExtendedDataHelper.computeMidBlock(x, y, z, currentLocalPosX, currentLocalPosY, currentLocalPosZ));
+            this.nextElement();
+        }
 
-		fastFormat = false;
-		fullFormat = false;
-	}
+        vertexCount++;
 
-	@Inject(method = "endVertex", at = @At("HEAD"))
-	private void iris$beforeNext(CallbackInfo ci) {
-		if (!extending) {
-			return;
-		}
+        if (mode == GL11.GL_QUADS && vertexCount == 4 || mode == GL11.GL_TRIANGLES && vertexCount == 3) {
+            fillExtendedData(vertexCount);
+        }
+    }
 
-		if (injectNormal && currentElement == DefaultVertexFormat.ELEMENT_NORMAL) {
-			this.putInt(0, 0);
-			this.nextElement();
-		}
-		
-		// For Create Contraptions
-		this.ensureCapacity(15);
+    @Unique
+    private void fillExtendedData(int vertexAmount) {
+        vertexCount = 0;
 
-		if (iris$isTerrain) {
-			// ENTITY_ELEMENT
-			this.putShort(0, currentBlock);
-			this.putShort(2, currentRenderType);
-			this.nextElement();
-		}
-		// MID_TEXTURE_ELEMENT
-		this.putFloat(0, 0);
-		this.putFloat(4, 0);
-		this.nextElement();
-		// TANGENT_ELEMENT
-		this.putInt(0, 0);
-		this.nextElement();
-		if (iris$isTerrain) {
-			// MID_BLOCK_ELEMENT
-			int posIndex = this.nextElementByte - 48;
-			float x = buffer.getFloat(posIndex);
-			float y = buffer.getFloat(posIndex + 4);
-			float z = buffer.getFloat(posIndex + 8);
-			this.putInt(0, ExtendedDataHelper.computeMidBlock(x, y, z, currentLocalPosX, currentLocalPosY, currentLocalPosZ));
-			this.nextElement();
-		}
+        int stride = format.getVertexSize();
 
-		vertexCount++;
+        polygon.setup(buffer, nextElementByte, stride, vertexAmount);
 
-		if (mode == GL11.GL_QUADS && vertexCount == 4 || mode == GL11.GL_TRIANGLES && vertexCount == 3) {
-			fillExtendedData(vertexCount);
-		}
-	}
+        float midU = 0;
+        float midV = 0;
 
-	@Unique
-	private void fillExtendedData(int vertexAmount) {
-		vertexCount = 0;
+        for (int vertex = 0; vertex < vertexAmount; vertex++) {
+            midU += polygon.u(vertex);
+            midV += polygon.v(vertex);
+        }
 
-		int stride = format.getVertexSize();
+        midU /= vertexAmount;
+        midV /= vertexAmount;
 
-		polygon.setup(buffer, nextElementByte, stride, vertexAmount);
+        int midUOffset;
+        int midVOffset;
+        int normalOffset;
+        int tangentOffset;
+        if (iris$isTerrain) {
+            midUOffset = 16;
+            midVOffset = 12;
+            normalOffset = 24;
+            tangentOffset = 8;
+        } else {
+            midUOffset = 12;
+            midVOffset = 8;
+            normalOffset = 16;
+            tangentOffset = 4;
+        }
 
-		float midU = 0;
-		float midV = 0;
+        if (vertexAmount == 3) {
+            // NormalHelper.computeFaceNormalTri(normal, polygon);	// Removed to enable smooth shaded triangles. Mods rendering triangles with bad normals need to recalculate their normals manually or otherwise shading might be inconsistent.
 
-		for (int vertex = 0; vertex < vertexAmount; vertex++) {
-			midU += polygon.u(vertex);
-			midV += polygon.v(vertex);
-		}
+            for (int vertex = 0; vertex < vertexAmount; vertex++) {
+                int packedNormal = buffer.getInt(nextElementByte - normalOffset - stride * vertex); // retrieve per-vertex normal
 
-		midU /= vertexAmount;
-		midV /= vertexAmount;
+                int tangent = NormalHelper.computeTangentSmooth(NormI8.unpackX(packedNormal), NormI8.unpackY(packedNormal), NormI8.unpackZ(packedNormal), polygon);
 
-		int midUOffset;
-		int midVOffset;
-		int normalOffset;
-		int tangentOffset;
-		if (iris$isTerrain) {
-			midUOffset = 16;
-			midVOffset = 12;
-			normalOffset = 24;
-			tangentOffset = 8;
-		} else {
-			midUOffset = 12;
-			midVOffset = 8;
-			normalOffset = 16;
-			tangentOffset = 4;
-		}
+                buffer.putFloat(nextElementByte - midUOffset - stride * vertex, midU);
+                buffer.putFloat(nextElementByte - midVOffset - stride * vertex, midV);
+                buffer.putInt(nextElementByte - tangentOffset - stride * vertex, tangent);
+            }
+        } else {
+            NormalHelper.computeFaceNormal(normal, polygon);
+            int packedNormal = NormI8.pack(normal.x, normal.y, normal.z, 0.0f);
+            int tangent = NormalHelper.computeTangent(normal.x, normal.y, normal.z, polygon);
 
-		if (vertexAmount == 3) {
-			// NormalHelper.computeFaceNormalTri(normal, polygon);	// Removed to enable smooth shaded triangles. Mods rendering triangles with bad normals need to recalculate their normals manually or otherwise shading might be inconsistent.
+            for (int vertex = 0; vertex < vertexAmount; vertex++) {
+                buffer.putFloat(nextElementByte - midUOffset - stride * vertex, midU);
+                buffer.putFloat(nextElementByte - midVOffset - stride * vertex, midV);
+                buffer.putInt(nextElementByte - normalOffset - stride * vertex, packedNormal);
+                buffer.putInt(nextElementByte - tangentOffset - stride * vertex, tangent);
+            }
+        }
+    }
 
-			for (int vertex = 0; vertex < vertexAmount; vertex++) {
-				int packedNormal = buffer.getInt(nextElementByte - normalOffset - stride * vertex); // retrieve per-vertex normal
+    @Override
+    public void beginBlock(short block, short renderType, int localPosX, int localPosY, int localPosZ) {
+        this.currentBlock = block;
+        this.currentRenderType = renderType;
+        this.currentLocalPosX = localPosX;
+        this.currentLocalPosY = localPosY;
+        this.currentLocalPosZ = localPosZ;
+    }
 
-				int tangent = NormalHelper.computeTangentSmooth(NormI8.unpackX(packedNormal), NormI8.unpackY(packedNormal), NormI8.unpackZ(packedNormal), polygon);
+    @Override
+    public void endBlock() {
+        this.currentBlock = -1;
+        this.currentRenderType = -1;
+        this.currentLocalPosX = 0;
+        this.currentLocalPosY = 0;
+        this.currentLocalPosZ = 0;
+    }
 
-				buffer.putFloat(nextElementByte - midUOffset - stride * vertex, midU);
-				buffer.putFloat(nextElementByte - midVOffset - stride * vertex, midV);
-				buffer.putInt(nextElementByte - tangentOffset - stride * vertex, tangent);
-			}
-		} else {
-			NormalHelper.computeFaceNormal(normal, polygon);
-			int packedNormal = NormI8.pack(normal.x, normal.y, normal.z, 0.0f);
-			int tangent = NormalHelper.computeTangent(normal.x, normal.y, normal.z, polygon);
-
-			for (int vertex = 0; vertex < vertexAmount; vertex++) {
-				buffer.putFloat(nextElementByte - midUOffset - stride * vertex, midU);
-				buffer.putFloat(nextElementByte - midVOffset - stride * vertex, midV);
-				buffer.putInt(nextElementByte - normalOffset - stride * vertex, packedNormal);
-				buffer.putInt(nextElementByte - tangentOffset - stride * vertex, tangent);
-			}
-		}
-	}
-
-	@Override
-	public void beginBlock(short block, short renderType, int localPosX, int localPosY, int localPosZ) {
-		this.currentBlock = block;
-		this.currentRenderType = renderType;
-		this.currentLocalPosX = localPosX;
-		this.currentLocalPosY = localPosY;
-		this.currentLocalPosZ = localPosZ;
-	}
-
-	@Override
-	public void endBlock() {
-		this.currentBlock = -1;
-		this.currentRenderType = -1;
-		this.currentLocalPosX = 0;
-		this.currentLocalPosY = 0;
-		this.currentLocalPosZ = 0;
-	}
-
-	@Unique
-	private void putInt(int i, int value) {
-		this.buffer.putInt(this.nextElementByte + i, value);
-	}
+    @Unique
+    private void putInt(int i, int value) {
+        this.buffer.putInt(this.nextElementByte + i, value);
+    }
 }

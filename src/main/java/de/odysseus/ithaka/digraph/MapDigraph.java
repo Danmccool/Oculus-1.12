@@ -15,20 +15,12 @@
  */
 package de.odysseus.ithaka.digraph;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.OptionalInt;
-import java.util.Set;
-import java.util.TreeMap;
-
 import it.unimi.dsi.fastutil.objects.Object2IntAVLTreeMap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
+
+import java.util.*;
 
 /**
  * Map-based directed graph implementation.
@@ -36,398 +28,396 @@ import it.unimi.dsi.fastutil.objects.Object2IntMaps;
  * @param <V> vertex type
  */
 public class MapDigraph<V> implements Digraph<V> {
-	private static final int INVALID_WEIGHT = Integer.MIN_VALUE;
+    private static final int INVALID_WEIGHT = Integer.MIN_VALUE;
+    private final VertexMapFactory<V> vertexMapFactory;
+    private final EdgeMapFactory<V> edgeMapFactory;
+    private final Map<V, Object2IntMap<V>> vertexMap;
+    private int edgeCount;
 
-	/**
-	 * Factory creating default <code>MapDigraph</code>.
-	 *
-	 * @return map de.odysseus.ithaka.digraph factory
-	 */
-	public static <V> DigraphFactory<MapDigraph<V>> getDefaultDigraphFactory() {
-		return getMapDigraphFactory(MapDigraph.getDefaultVertexMapFactory(null), MapDigraph.getDefaultEdgeMapFactory(null));
-	}
+    /**
+     * Create de.odysseus.ithaka.digraph.
+     * {@link LinkedHashMap}s will be used as vertex/edge maps.
+     * Vertices and edge targets will be iterated in no particular order.
+     */
+    public MapDigraph() {
+        this(null);
+    }
 
-	/**
-	 * Factory creating <code>MapDigraph</code>.
-	 *
-	 * @param vertexMapFactory factory to create vertex --> edge-map maps
-	 * @param edgeMapFactory   factory to create edge-target --> edge-value maps
-	 * @return map de.odysseus.ithaka.digraph factory
-	 */
-	public static <V> DigraphFactory<MapDigraph<V>> getMapDigraphFactory(
-			final VertexMapFactory<V> vertexMapFactory,
-			final EdgeMapFactory<V> edgeMapFactory) {
-		return () -> new MapDigraph<>(vertexMapFactory, edgeMapFactory);
-	}
+    /**
+     * Create de.odysseus.ithaka.digraph.
+     * If a vertex comparator is given, {@link TreeMap}s will be used as vertex/edge maps.
+     * Vertices and edge targets will be iterated in the order given by the comparator.
+     *
+     * @param comparator vertex comparator (may be <code>null</code>)
+     */
+    public MapDigraph(final Comparator<? super V> comparator) {
+        this(comparator, comparator);
+    }
 
-	/**
-	 * Vertex map factory (vertex to edge map).
-	 */
-	public interface VertexMapFactory<V> {
-		Map<V, Object2IntMap<V>> create();
-	}
+    /**
+     * Create de.odysseus.ithaka.digraph.
+     * If a vertex comparator is given, {@link TreeMap}s will be used as vertex maps
+     * and vertices will be iterated in the order given by the vertex comparator.
+     * If an edge comparator is given, {@link TreeMap}s will be used as edge maps
+     * and edge targets will be iterated in the order given by the edge comparator.
+     */
+    public MapDigraph(final Comparator<? super V> vertexComparator, final Comparator<? super V> edgeComparator) {
+        this(MapDigraph.getDefaultVertexMapFactory(vertexComparator), MapDigraph.getDefaultEdgeMapFactory(edgeComparator));
+    }
 
-	/**
-	 * Edge map factory (edge target to edge value).
-	 */
-	public interface EdgeMapFactory<V> {
-		Object2IntMap<V> create(V source);
-	}
+    /**
+     * Create de.odysseus.ithaka.digraph.
+     *
+     * @param vertexMapFactory factory to create vertex --> edge-map maps
+     * @param edgeMapFactory   factory to create edge-target --> edge-value maps
+     */
+    public MapDigraph(VertexMapFactory<V> vertexMapFactory, EdgeMapFactory<V> edgeMapFactory) {
+        this.vertexMapFactory = vertexMapFactory;
+        this.edgeMapFactory = edgeMapFactory;
 
-	private static <V> VertexMapFactory<V> getDefaultVertexMapFactory(final Comparator<? super V> comparator) {
-		return new VertexMapFactory<V>() {
-			@Override
-			public Map<V, Object2IntMap<V>> create() {
-				if (comparator == null) {
-					return new LinkedHashMap<>(16);
-				} else {
-					return new TreeMap<>(comparator);
-				}
-			}
-		};
-	}
+        vertexMap = vertexMapFactory.create();
+    }
 
-	private static <V> EdgeMapFactory<V> getDefaultEdgeMapFactory(final Comparator<? super V> comparator) {
-		return new EdgeMapFactory<V>() {
-			@Override
-			public Object2IntMap<V> create(V ignore) {
-				Object2IntMap<V> map;
+    /**
+     * Factory creating default <code>MapDigraph</code>.
+     *
+     * @return map de.odysseus.ithaka.digraph factory
+     */
+    public static <V> DigraphFactory<MapDigraph<V>> getDefaultDigraphFactory() {
+        return getMapDigraphFactory(MapDigraph.getDefaultVertexMapFactory(null), MapDigraph.getDefaultEdgeMapFactory(null));
+    }
 
-				if (comparator == null) {
-					map = new Object2IntLinkedOpenHashMap<>(16);
-				} else {
-					map = new Object2IntAVLTreeMap<>(comparator);
-				}
+    /**
+     * Factory creating <code>MapDigraph</code>.
+     *
+     * @param vertexMapFactory factory to create vertex --> edge-map maps
+     * @param edgeMapFactory   factory to create edge-target --> edge-value maps
+     * @return map de.odysseus.ithaka.digraph factory
+     */
+    public static <V> DigraphFactory<MapDigraph<V>> getMapDigraphFactory(
+            final VertexMapFactory<V> vertexMapFactory,
+            final EdgeMapFactory<V> edgeMapFactory) {
+        return () -> new MapDigraph<>(vertexMapFactory, edgeMapFactory);
+    }
 
-				map.defaultReturnValue(INVALID_WEIGHT);
+    private static <V> VertexMapFactory<V> getDefaultVertexMapFactory(final Comparator<? super V> comparator) {
+        return new VertexMapFactory<V>() {
+            @Override
+            public Map<V, Object2IntMap<V>> create() {
+                if (comparator == null) {
+                    return new LinkedHashMap<>(16);
+                } else {
+                    return new TreeMap<>(comparator);
+                }
+            }
+        };
+    }
 
-				return map;
-			}
-		};
-	}
-	
-	private static <V> Object2IntMap<V> createEmptyMap() {
-		return Object2IntMaps.emptyMap();
-	}
+    private static <V> EdgeMapFactory<V> getDefaultEdgeMapFactory(final Comparator<? super V> comparator) {
+        return new EdgeMapFactory<V>() {
+            @Override
+            public Object2IntMap<V> create(V ignore) {
+                Object2IntMap<V> map;
 
-	private final VertexMapFactory<V> vertexMapFactory;
-	private final EdgeMapFactory<V> edgeMapFactory;
-	private final Map<V, Object2IntMap<V>> vertexMap;
+                if (comparator == null) {
+                    map = new Object2IntLinkedOpenHashMap<>(16);
+                } else {
+                    map = new Object2IntAVLTreeMap<>(comparator);
+                }
 
-	private int edgeCount;
+                map.defaultReturnValue(INVALID_WEIGHT);
 
-	/**
-	 * Create de.odysseus.ithaka.digraph.
-	 * {@link LinkedHashMap}s will be used as vertex/edge maps.
-	 * Vertices and edge targets will be iterated in no particular order.
-	 */
-	public MapDigraph() {
-		this(null);
-	}
+                return map;
+            }
+        };
+    }
 
-	/**
-	 * Create de.odysseus.ithaka.digraph.
-	 * If a vertex comparator is given, {@link TreeMap}s will be used as vertex/edge maps.
-	 * Vertices and edge targets will be iterated in the order given by the comparator.
-	 *
-	 * @param comparator vertex comparator (may be <code>null</code>)
-	 */
-	public MapDigraph(final Comparator<? super V> comparator) {
-		this(comparator, comparator);
-	}
+    private static <V> Object2IntMap<V> createEmptyMap() {
+        return Object2IntMaps.emptyMap();
+    }
 
-	/**
-	 * Create de.odysseus.ithaka.digraph.
-	 * If a vertex comparator is given, {@link TreeMap}s will be used as vertex maps
-	 * and vertices will be iterated in the order given by the vertex comparator.
-	 * If an edge comparator is given, {@link TreeMap}s will be used as edge maps
-	 * and edge targets will be iterated in the order given by the edge comparator.
-	 */
-	public MapDigraph(final Comparator<? super V> vertexComparator, final Comparator<? super V> edgeComparator) {
-		this(MapDigraph.getDefaultVertexMapFactory(vertexComparator), MapDigraph.getDefaultEdgeMapFactory(edgeComparator));
-	}
+    @Override
+    public boolean add(V vertex) {
+        if (!vertexMap.containsKey(vertex)) {
+            vertexMap.put(vertex, createEmptyMap());
+            return true;
+        }
 
-	/**
-	 * Create de.odysseus.ithaka.digraph.
-	 *
-	 * @param vertexMapFactory factory to create vertex --> edge-map maps
-	 * @param edgeMapFactory   factory to create edge-target --> edge-value maps
-	 */
-	public MapDigraph(VertexMapFactory<V> vertexMapFactory, EdgeMapFactory<V> edgeMapFactory) {
-		this.vertexMapFactory = vertexMapFactory;
-		this.edgeMapFactory = edgeMapFactory;
+        return false;
+    }
 
-		vertexMap = vertexMapFactory.create();
-	}
+    @Override
+    public OptionalInt put(V source, V target, int weight) {
+        if (weight == INVALID_WEIGHT) {
+            throw new IllegalArgumentException("Invalid weight " + weight);
+        }
 
-	@Override
-	public boolean add(V vertex) {
-		if (!vertexMap.containsKey(vertex)) {
-			vertexMap.put(vertex, createEmptyMap());
-			return true;
-		}
+        Object2IntMap<V> edgeMap = vertexMap.get(source);
 
-		return false;
-	}
+        if (edgeMap == null || edgeMap.isEmpty()) {
+            vertexMap.put(source, edgeMap = edgeMapFactory.create(source));
+        }
 
-	@Override
-	public OptionalInt put(V source, V target, int weight) {
-		if (weight == INVALID_WEIGHT) {
-			throw new IllegalArgumentException("Invalid weight " + weight);
-		}
+        int previousInt = edgeMap.put(target, weight);
+        OptionalInt previous;
 
-		Object2IntMap<V> edgeMap = vertexMap.get(source);
+        if (previousInt != INVALID_WEIGHT) {
+            previous = OptionalInt.of(previousInt);
+        } else {
+            previous = OptionalInt.empty();
+            add(target);
+            edgeCount++;
+        }
 
-		if (edgeMap == null || edgeMap.isEmpty()) {
-			vertexMap.put(source, edgeMap = edgeMapFactory.create(source));
-		}
+        return previous;
+    }
 
-		int previousInt = edgeMap.put(target, weight);
-		OptionalInt previous;
+    @Override
+    public OptionalInt get(V source, V target) {
+        Object2IntMap<V> edgeMap = vertexMap.get(source);
 
-		if (previousInt != INVALID_WEIGHT) {
-			previous = OptionalInt.of(previousInt);
-		} else {
-			previous = OptionalInt.empty();
-			add(target);
-			edgeCount++;
-		}
+        if (edgeMap == null || edgeMap.isEmpty()) {
+            return OptionalInt.empty();
+        }
 
-		return previous;
-	}
+        int result = edgeMap.getInt(target);
 
-	@Override
-	public OptionalInt get(V source, V target) {
-		Object2IntMap<V> edgeMap = vertexMap.get(source);
+        return result == INVALID_WEIGHT ? OptionalInt.empty() : OptionalInt.of(result);
+    }
 
-		if (edgeMap == null || edgeMap.isEmpty()) {
-			return OptionalInt.empty();
-		}
+    @Override
+    public OptionalInt remove(V source, V target) {
+        Object2IntMap<V> edgeMap = vertexMap.get(source);
+        if (edgeMap == null || !edgeMap.containsKey(target)) {
+            return OptionalInt.empty();
+        }
+        int result = edgeMap.removeInt(target);
+        edgeCount--;
+        if (edgeMap.isEmpty()) {
+            vertexMap.put(source, createEmptyMap());
+        }
+        return result == INVALID_WEIGHT ? OptionalInt.empty() : OptionalInt.of(result);
+    }
 
-		int result = edgeMap.getInt(target);
+    @Override
+    public boolean remove(V vertex) {
+        Object2IntMap<V> edgeMap = vertexMap.get(vertex);
+        if (edgeMap == null) {
+            return false;
+        }
+        edgeCount -= edgeMap.size();
+        vertexMap.remove(vertex);
+        for (V source : vertexMap.keySet()) {
+            remove(source, vertex);
+        }
+        return true;
+    }
 
-		return result == INVALID_WEIGHT ? OptionalInt.empty() : OptionalInt.of(result);
-	}
+    @Override
+    public void removeAll(Collection<V> vertices) {
+        for (V vertex : vertices) {
+            Object2IntMap<V> edgeMap = vertexMap.get(vertex);
+            if (edgeMap != null) {
+                edgeCount -= edgeMap.size();
+                vertexMap.remove(vertex);
+            }
+        }
+        for (V source : vertexMap.keySet()) {
+            Object2IntMap<V> edgeMap = vertexMap.get(source);
+            Iterator<V> iterator = edgeMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                if (vertices.contains(iterator.next())) {
+                    iterator.remove();
+                    edgeCount--;
+                }
+            }
+            if (edgeMap.isEmpty()) {
+                vertexMap.put(source, createEmptyMap());
+            }
+        }
+    }
 
-	@Override
-	public OptionalInt remove(V source, V target) {
-		Object2IntMap<V> edgeMap = vertexMap.get(source);
-		if (edgeMap == null || !edgeMap.containsKey(target)) {
-			return OptionalInt.empty();
-		}
-		int result = edgeMap.removeInt(target);
-		edgeCount--;
-		if (edgeMap.isEmpty()) {
-			vertexMap.put(source, createEmptyMap());
-		}
-		return result == INVALID_WEIGHT ? OptionalInt.empty() : OptionalInt.of(result);
-	}
+    @Override
+    public boolean contains(V source, V target) {
+        Object2IntMap<V> edgeMap = vertexMap.get(source);
 
-	@Override
-	public boolean remove(V vertex) {
-		Object2IntMap<V> edgeMap = vertexMap.get(vertex);
-		if (edgeMap == null) {
-			return false;
-		}
-		edgeCount -= edgeMap.size();
-		vertexMap.remove(vertex);
-		for (V source : vertexMap.keySet()) {
-			remove(source, vertex);
-		}
-		return true;
-	}
+        if (edgeMap == null || edgeMap.isEmpty()) {
+            return false;
+        }
 
-	@Override
-	public void removeAll(Collection<V> vertices) {
-		for (V vertex : vertices) {
-			Object2IntMap<V> edgeMap = vertexMap.get(vertex);
-			if (edgeMap != null) {
-				edgeCount -= edgeMap.size();
-				vertexMap.remove(vertex);
-			}
-		}
-		for (V source : vertexMap.keySet()) {
-			Object2IntMap<V> edgeMap = vertexMap.get(source);
-			Iterator<V> iterator = edgeMap.keySet().iterator();
-			while (iterator.hasNext()) {
-				if (vertices.contains(iterator.next())) {
-					iterator.remove();
-					edgeCount--;
-				}
-			}
-			if (edgeMap.isEmpty()) {
-				vertexMap.put(source, createEmptyMap());
-			}
-		}
-	}
+        return edgeMap.containsKey(target);
+    }
 
-	@Override
-	public boolean contains(V source, V target) {
-		Object2IntMap<V> edgeMap = vertexMap.get(source);
+    @Override
+    public boolean contains(V vertex) {
+        return vertexMap.containsKey(vertex);
+    }
 
-		if (edgeMap == null || edgeMap.isEmpty()) {
-			return false;
-		}
+    @Override
+    public Iterable<V> vertices() {
+        if (vertexMap.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return new Iterable<V>() {
+            @Override
+            public Iterator<V> iterator() {
+                return new Iterator<V>() {
+                    private final Iterator<V> delegate = vertexMap.keySet().iterator();
+                    V vertex = null;
 
-		return edgeMap.containsKey(target);
-	}
+                    @Override
+                    public boolean hasNext() {
+                        return delegate.hasNext();
+                    }
 
-	@Override
-	public boolean contains(V vertex) {
-		return vertexMap.containsKey(vertex);
-	}
+                    @Override
+                    public V next() {
+                        return vertex = delegate.next();
+                    }
 
-	@Override
-	public Iterable<V> vertices() {
-		if (vertexMap.isEmpty()) {
-			return Collections.emptySet();
-		}
-		return new Iterable<V>() {
-			@Override
-			public Iterator<V> iterator() {
-				return new Iterator<V>() {
-					private final Iterator<V> delegate = vertexMap.keySet().iterator();
-					V vertex = null;
+                    @Override
+                    public void remove() {
+                        Object2IntMap<V> edgeMap = vertexMap.get(vertex);
+                        delegate.remove();
+                        edgeCount -= edgeMap.size();
+                        for (V source : vertexMap.keySet()) {
+                            MapDigraph.this.remove(source, vertex);
+                        }
+                    }
+                };
+            }
 
-					@Override
-					public boolean hasNext() {
-						return delegate.hasNext();
-					}
+            @Override
+            public String toString() {
+                return vertexMap.keySet().toString();
+            }
+        };
+    }
 
-					@Override
-					public V next() {
-						return vertex = delegate.next();
-					}
+    @Override
+    public Iterable<V> targets(final V source) {
+        final Object2IntMap<V> edgeMap = vertexMap.get(source);
+        if (edgeMap == null || edgeMap.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return new Iterable<V>() {
+            @Override
+            public Iterator<V> iterator() {
+                return new Iterator<V>() {
+                    private final Iterator<V> delegate = edgeMap.keySet().iterator();
 
-					@Override
-					public void remove() {
-						Object2IntMap<V> edgeMap = vertexMap.get(vertex);
-						delegate.remove();
-						edgeCount -= edgeMap.size();
-						for (V source : vertexMap.keySet()) {
-							MapDigraph.this.remove(source, vertex);
-						}
-					}
-				};
-			}
+                    @Override
+                    public boolean hasNext() {
+                        return delegate.hasNext();
+                    }
 
-			@Override
-			public String toString() {
-				return vertexMap.keySet().toString();
-			}
-		};
-	}
+                    @Override
+                    public V next() {
+                        return delegate.next();
+                    }
 
-	@Override
-	public Iterable<V> targets(final V source) {
-		final Object2IntMap<V> edgeMap = vertexMap.get(source);
-		if (edgeMap == null || edgeMap.isEmpty()) {
-			return Collections.emptySet();
-		}
-		return new Iterable<V>() {
-			@Override
-			public Iterator<V> iterator() {
-				return new Iterator<V>() {
-					private final Iterator<V> delegate = edgeMap.keySet().iterator();
+                    @Override
+                    public void remove() {
+                        delegate.remove();
+                        edgeCount--;
+                        if (edgeMap.isEmpty()) {
+                            vertexMap.put(source, createEmptyMap());
+                        }
+                    }
+                };
+            }
 
-					@Override
-					public boolean hasNext() {
-						return delegate.hasNext();
-					}
+            @Override
+            public String toString() {
+                return edgeMap.keySet().toString();
+            }
+        };
+    }
 
-					@Override
-					public V next() {
-						return delegate.next();
-					}
+    @Override
+    public int getVertexCount() {
+        return vertexMap.size();
+    }
 
-					@Override
-					public void remove() {
-						delegate.remove();
-						edgeCount--;
-						if (edgeMap.isEmpty()) {
-							vertexMap.put(source, createEmptyMap());
-						}
-					}
-				};
-			}
+    @Override
+    public int totalWeight() {
+        int weight = 0;
 
-			@Override
-			public String toString() {
-				return edgeMap.keySet().toString();
-			}
-		};
-	}
+        for (V source : vertices()) {
+            for (V target : targets(source)) {
+                weight += get(source, target).getAsInt();
+            }
+        }
 
-	@Override
-	public int getVertexCount() {
-		return vertexMap.size();
-	}
+        return weight;
+    }
 
-	@Override
-	public int totalWeight() {
-		int weight = 0;
+    @Override
+    public int getOutDegree(V vertex) {
+        Object2IntMap<V> edgeMap = vertexMap.get(vertex);
+        if (edgeMap == null) {
+            return 0;
+        }
+        return edgeMap.size();
+    }
 
-		for (V source : vertices()) {
-			for (V target : targets(source)) {
-				weight += get(source, target).getAsInt();
-			}
-		}
+    @Override
+    public int getEdgeCount() {
+        return edgeCount;
+    }
 
-		return weight;
-	}
+    public DigraphFactory<? extends MapDigraph<V>> getDigraphFactory() {
+        return () -> new MapDigraph<>(vertexMapFactory, edgeMapFactory);
+    }
 
-	@Override
-	public int getOutDegree(V vertex) {
-		Object2IntMap<V> edgeMap = vertexMap.get(vertex);
-		if (edgeMap == null) {
-			return 0;
-		}
-		return edgeMap.size();
-	}
+    @Override
+    public MapDigraph<V> reverse() {
+        return Digraphs.<V, MapDigraph<V>>reverse(this, getDigraphFactory());
+    }
 
-	@Override
-	public int getEdgeCount() {
-		return edgeCount;
-	}
+    @Override
+    public MapDigraph<V> subgraph(Set<V> vertices) {
+        return Digraphs.<V, MapDigraph<V>>subgraph(this, vertices, getDigraphFactory());
+    }
 
-	public DigraphFactory<? extends MapDigraph<V>> getDigraphFactory() {
-		return () -> new MapDigraph<>(vertexMapFactory, edgeMapFactory);
-	}
+    @Override
+    public boolean isAcyclic() {
+        return Digraphs.isAcyclic(this);
+    }
 
-	@Override
-	public MapDigraph<V> reverse() {
-		return Digraphs.<V, MapDigraph<V>>reverse(this, getDigraphFactory());
-	}
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append(getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1));
+        b.append("(");
+        Iterator<V> vertices = vertices().iterator();
+        while (vertices.hasNext()) {
+            V v = vertices.next();
+            b.append(v);
+            b.append(targets(v));
+            if (vertices.hasNext()) {
+                b.append(", ");
+                if (b.length() > 1000) {
+                    b.append("...");
+                    break;
+                }
+            }
+        }
+        b.append(")");
+        return b.toString();
+    }
 
-	@Override
-	public MapDigraph<V> subgraph(Set<V> vertices) {
-		return Digraphs.<V, MapDigraph<V>>subgraph(this, vertices, getDigraphFactory());
-	}
+    /**
+     * Vertex map factory (vertex to edge map).
+     */
+    public interface VertexMapFactory<V> {
+        Map<V, Object2IntMap<V>> create();
+    }
 
-	@Override
-	public boolean isAcyclic() {
-		return Digraphs.isAcyclic(this);
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1));
-		b.append("(");
-		Iterator<V> vertices = vertices().iterator();
-		while (vertices.hasNext()) {
-			V v = vertices.next();
-			b.append(v);
-			b.append(targets(v));
-			if (vertices.hasNext()) {
-				b.append(", ");
-				if (b.length() > 1000) {
-					b.append("...");
-					break;
-				}
-			}
-		}
-		b.append(")");
-		return b.toString();
-	}
+    /**
+     * Edge map factory (edge target to edge value).
+     */
+    public interface EdgeMapFactory<V> {
+        Object2IntMap<V> create(V source);
+    }
 }

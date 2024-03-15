@@ -26,13 +26,12 @@ package net.coderbot.iris.vendored.joml;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
-//#ifndef __GWT__
 import java.util.Locale;
 
 
 /**
  * Utility class for reading system properties.
- * 
+ *
  * @author Kai Burjack
  */
 public final class Options {
@@ -66,11 +65,11 @@ public final class Options {
      */
     public static final boolean USE_MATH_FMA = hasOption(System.getProperty("joml.useMathFma", "false"));
 
-	/**
-	 * Whether to use a {@link NumberFormat} producing scientific notation output when formatting matrix,
-	 * vector and quaternion components to strings.
-	 */
-	public static final boolean useNumberFormat = hasOption(System.getProperty("joml.format", "true"));
+    /**
+     * Whether to use a {@link NumberFormat} producing scientific notation output when formatting matrix,
+     * vector and quaternion components to strings.
+     */
+    public static final boolean useNumberFormat = hasOption(System.getProperty("joml.format", "true"));
 
     /**
      * Determines the number of decimal digits produced in the formatted numbers.

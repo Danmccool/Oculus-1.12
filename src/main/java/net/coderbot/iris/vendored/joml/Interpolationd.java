@@ -25,7 +25,7 @@ package net.coderbot.iris.vendored.joml;
 
 /**
  * Contains various interpolation functions.
- * 
+ *
  * @author Kai Burjack
  */
 public class Interpolationd {
@@ -34,29 +34,18 @@ public class Interpolationd {
      * Bilinearly interpolate the single scalar value <i>f</i> over the given triangle.
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">https://en.wikipedia.org/</a>
-     * 
-     * @param v0X
-     *            the x coordinate of the first triangle vertex
-     * @param v0Y
-     *            the y coordinate of the first triangle vertex
-     * @param f0
-     *            the value of <i>f</i> at the first vertex
-     * @param v1X
-     *            the x coordinate of the second triangle vertex
-     * @param v1Y
-     *            the y coordinate of the second triangle vertex
-     * @param f1
-     *            the value of <i>f</i> at the second vertex
-     * @param v2X
-     *            the x coordinate of the third triangle vertex
-     * @param v2Y
-     *            the y coordinate of the third triangle vertex
-     * @param f2
-     *            the value of <i>f</i> at the third vertex
-     * @param x
-     *            the x coordinate of the point to interpolate <i>f</i> at
-     * @param y
-     *            the y coordinate of the point to interpolate <i>f</i> at
+     *
+     * @param v0X the x coordinate of the first triangle vertex
+     * @param v0Y the y coordinate of the first triangle vertex
+     * @param f0  the value of <i>f</i> at the first vertex
+     * @param v1X the x coordinate of the second triangle vertex
+     * @param v1Y the y coordinate of the second triangle vertex
+     * @param f1  the value of <i>f</i> at the second vertex
+     * @param v2X the x coordinate of the third triangle vertex
+     * @param v2Y the y coordinate of the third triangle vertex
+     * @param f2  the value of <i>f</i> at the third vertex
+     * @param x   the x coordinate of the point to interpolate <i>f</i> at
+     * @param y   the y coordinate of the point to interpolate <i>f</i> at
      * @return the interpolated value of <i>f</i>
      */
     public static double interpolateTriangle(
@@ -80,37 +69,22 @@ public class Interpolationd {
      * Bilinearly interpolate the two-dimensional vector <i>f</i> over the given triangle and store the result in <code>dest</code>.
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">https://en.wikipedia.org/</a>
-     * 
-     * @param v0X
-     *            the x coordinate of the first triangle vertex
-     * @param v0Y
-     *            the y coordinate of the first triangle vertex
-     * @param f0X
-     *            the x component of the value of <i>f</i> at the first vertex
-     * @param f0Y
-     *            the y component of the value of <i>f</i> at the first vertex
-     * @param v1X
-     *            the x coordinate of the second triangle vertex
-     * @param v1Y
-     *            the y coordinate of the second triangle vertex
-     * @param f1X
-     *            the x component of the value of <i>f</i> at the second vertex
-     * @param f1Y
-     *            the y component of the value of <i>f</i> at the second vertex
-     * @param v2X
-     *            the x coordinate of the third triangle vertex
-     * @param v2Y
-     *            the y coordinate of the third triangle vertex
-     * @param f2X
-     *            the x component of the value of <i>f</i> at the third vertex
-     * @param f2Y
-     *            the y component of the value of <i>f</i> at the third vertex
-     * @param x
-     *            the x coordinate of the point to interpolate <i>f</i> at
-     * @param y
-     *            the y coordinate of the point to interpolate <i>f</i> at
-     * @param dest
-     *            will hold the interpolation result
+     *
+     * @param v0X  the x coordinate of the first triangle vertex
+     * @param v0Y  the y coordinate of the first triangle vertex
+     * @param f0X  the x component of the value of <i>f</i> at the first vertex
+     * @param f0Y  the y component of the value of <i>f</i> at the first vertex
+     * @param v1X  the x coordinate of the second triangle vertex
+     * @param v1Y  the y coordinate of the second triangle vertex
+     * @param f1X  the x component of the value of <i>f</i> at the second vertex
+     * @param f1Y  the y component of the value of <i>f</i> at the second vertex
+     * @param v2X  the x coordinate of the third triangle vertex
+     * @param v2Y  the y coordinate of the third triangle vertex
+     * @param f2X  the x component of the value of <i>f</i> at the third vertex
+     * @param f2Y  the y component of the value of <i>f</i> at the third vertex
+     * @param x    the x coordinate of the point to interpolate <i>f</i> at
+     * @param y    the y coordinate of the point to interpolate <i>f</i> at
+     * @param dest will hold the interpolation result
      * @return dest
      */
     public static Vector2d interpolateTriangle(
@@ -139,33 +113,20 @@ public class Interpolationd {
      * <p>
      * This method computes the constant rate of change for <i>f</i> given the three values of <i>f</i>
      * at the specified three inputs <code>(v0X, v0Y)</code>, <code>(v1X, v1Y)</code> and <code>(v2X, v2Y)</code>.
-     * 
-     * @param v0X
-     *            the x coordinate of the first triangle vertex
-     * @param v0Y
-     *            the y coordinate of the first triangle vertex
-     * @param f0X
-     *            the x component of the value of <i>f</i> at the first vertex
-     * @param f0Y
-     *            the y component of the value of <i>f</i> at the first vertex
-     * @param v1X
-     *            the x coordinate of the second triangle vertex
-     * @param v1Y
-     *            the y coordinate of the second triangle vertex
-     * @param f1X
-     *            the x component of the value of <i>f</i> at the second vertex
-     * @param f1Y
-     *            the y component of the value of <i>f</i> at the second vertex
-     * @param v2X
-     *            the x coordinate of the third triangle vertex
-     * @param v2Y
-     *            the y coordinate of the third triangle vertex
-     * @param f2X
-     *            the x component of the value of <i>f</i> at the third vertex
-     * @param f2Y
-     *            the y component of the value of <i>f</i> at the third vertex
-     * @param dest
-     *            will hold the result
+     *
+     * @param v0X  the x coordinate of the first triangle vertex
+     * @param v0Y  the y coordinate of the first triangle vertex
+     * @param f0X  the x component of the value of <i>f</i> at the first vertex
+     * @param f0Y  the y component of the value of <i>f</i> at the first vertex
+     * @param v1X  the x coordinate of the second triangle vertex
+     * @param v1Y  the y coordinate of the second triangle vertex
+     * @param f1X  the x component of the value of <i>f</i> at the second vertex
+     * @param f1Y  the y component of the value of <i>f</i> at the second vertex
+     * @param v2X  the x coordinate of the third triangle vertex
+     * @param v2Y  the y coordinate of the third triangle vertex
+     * @param f2X  the x component of the value of <i>f</i> at the third vertex
+     * @param f2Y  the y component of the value of <i>f</i> at the third vertex
+     * @param dest will hold the result
      * @return dest
      */
     public static Vector2d dFdxLinear(
@@ -188,33 +149,20 @@ public class Interpolationd {
      * <p>
      * This method computes the constant rate of change for <i>f</i> given the three values of <i>f</i>
      * at the specified three inputs <code>(v0X, v0Y)</code>, <code>(v1X, v1Y)</code> and <code>(v2X, v2Y)</code>.
-     * 
-     * @param v0X
-     *            the x coordinate of the first triangle vertex
-     * @param v0Y
-     *            the y coordinate of the first triangle vertex
-     * @param f0X
-     *            the x component of the value of <i>f</i> at the first vertex
-     * @param f0Y
-     *            the y component of the value of <i>f</i> at the first vertex
-     * @param v1X
-     *            the x coordinate of the second triangle vertex
-     * @param v1Y
-     *            the y coordinate of the second triangle vertex
-     * @param f1X
-     *            the x component of the value of <i>f</i> at the second vertex
-     * @param f1Y
-     *            the y component of the value of <i>f</i> at the second vertex
-     * @param v2X
-     *            the x coordinate of the third triangle vertex
-     * @param v2Y
-     *            the y coordinate of the third triangle vertex
-     * @param f2X
-     *            the x component of the value of <i>f</i> at the third vertex
-     * @param f2Y
-     *            the y component of the value of <i>f</i> at the third vertex
-     * @param dest
-     *            will hold the result
+     *
+     * @param v0X  the x coordinate of the first triangle vertex
+     * @param v0Y  the y coordinate of the first triangle vertex
+     * @param f0X  the x component of the value of <i>f</i> at the first vertex
+     * @param f0Y  the y component of the value of <i>f</i> at the first vertex
+     * @param v1X  the x coordinate of the second triangle vertex
+     * @param v1Y  the y coordinate of the second triangle vertex
+     * @param f1X  the x component of the value of <i>f</i> at the second vertex
+     * @param f1Y  the y component of the value of <i>f</i> at the second vertex
+     * @param v2X  the x coordinate of the third triangle vertex
+     * @param v2Y  the y coordinate of the third triangle vertex
+     * @param f2X  the x component of the value of <i>f</i> at the third vertex
+     * @param f2Y  the y component of the value of <i>f</i> at the third vertex
+     * @param dest will hold the result
      * @return dest
      */
     public static Vector2d dFdyLinear(
@@ -236,43 +184,25 @@ public class Interpolationd {
      * Bilinearly interpolate the three-dimensional vector <i>f</i> over the given triangle and store the result in <code>dest</code>.
      * <p>
      * Reference: <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">https://en.wikipedia.org/</a>
-     * 
-     * @param v0X
-     *            the x coordinate of the first triangle vertex
-     * @param v0Y
-     *            the y coordinate of the first triangle vertex
-     * @param f0X
-     *            the x component of the value of <i>f</i> at the first vertex
-     * @param f0Y
-     *            the y component of the value of <i>f</i> at the first vertex
-     * @param f0Z
-     *            the z component of the value of <i>f</i> at the first vertex
-     * @param v1X
-     *            the x coordinate of the second triangle vertex
-     * @param v1Y
-     *            the y coordinate of the second triangle vertex
-     * @param f1X
-     *            the x component of the value of <i>f</i> at the second vertex
-     * @param f1Y
-     *            the y component of the value of <i>f</i> at the second vertex
-     * @param f1Z
-     *            the z component of the value of <i>f</i> at the second vertex
-     * @param v2X
-     *            the x coordinate of the third triangle vertex
-     * @param v2Y
-     *            the y coordinate of the third triangle vertex
-     * @param f2X
-     *            the x component of the value of <i>f</i> at the third vertex
-     * @param f2Y
-     *            the y component of the value of <i>f</i> at the third vertex
-     * @param f2Z
-     *            the z component of the value of <i>f</i> at the third vertex
-     * @param x
-     *            the x coordinate of the point to interpolate <i>f</i> at
-     * @param y
-     *            the y coordinate of the point to interpolate <i>f</i> at
-     * @param dest
-     *            will hold the interpolation result
+     *
+     * @param v0X  the x coordinate of the first triangle vertex
+     * @param v0Y  the y coordinate of the first triangle vertex
+     * @param f0X  the x component of the value of <i>f</i> at the first vertex
+     * @param f0Y  the y component of the value of <i>f</i> at the first vertex
+     * @param f0Z  the z component of the value of <i>f</i> at the first vertex
+     * @param v1X  the x coordinate of the second triangle vertex
+     * @param v1Y  the y coordinate of the second triangle vertex
+     * @param f1X  the x component of the value of <i>f</i> at the second vertex
+     * @param f1Y  the y component of the value of <i>f</i> at the second vertex
+     * @param f1Z  the z component of the value of <i>f</i> at the second vertex
+     * @param v2X  the x coordinate of the third triangle vertex
+     * @param v2Y  the y coordinate of the third triangle vertex
+     * @param f2X  the x component of the value of <i>f</i> at the third vertex
+     * @param f2Y  the y component of the value of <i>f</i> at the third vertex
+     * @param f2Z  the z component of the value of <i>f</i> at the third vertex
+     * @param x    the x coordinate of the point to interpolate <i>f</i> at
+     * @param y    the y coordinate of the point to interpolate <i>f</i> at
+     * @param dest will hold the interpolation result
      * @return dest
      */
     public static Vector3d interpolateTriangle(
@@ -285,37 +215,28 @@ public class Interpolationd {
         interpolationFactorsTriangle(v0X, v0Y, v1X, v1Y, v2X, v2Y, x, y, t);
         // interpolate using these factors
         return dest.set(t.x * f0X + t.y * f1X + t.z * f2X,
-                        t.x * f0Y + t.y * f1Y + t.z * f2Y,
-                        t.x * f0Z + t.y * f1Z + t.z * f2Z);
+                t.x * f0Y + t.y * f1Y + t.z * f2Y,
+                t.x * f0Z + t.y * f1Z + t.z * f2Z);
     }
 
     /**
-     * Compute the interpolation factors <code>(t0, t1, t2)</code> in order to interpolate an arbitrary value over a given 
+     * Compute the interpolation factors <code>(t0, t1, t2)</code> in order to interpolate an arbitrary value over a given
      * triangle at the given point <code>(x, y)</code>.
      * <p>
-     * This method takes in the 2D vertex positions of the three vertices of a triangle and stores in <code>dest</code> the 
+     * This method takes in the 2D vertex positions of the three vertices of a triangle and stores in <code>dest</code> the
      * factors <code>(t0, t1, t2)</code> in the equation <code>v' = v0 * t0 + v1 * t1 + v2 * t2</code> where <code>(v0, v1, v2)</code> are
      * arbitrary (scalar or vector) values associated with the respective vertices of the triangle. The computed value <code>v'</code>
      * is the interpolated value at the given position <code>(x, y)</code>.
-     * 
-     * @param v0X
-     *            the x coordinate of the first triangle vertex
-     * @param v0Y
-     *            the y coordinate of the first triangle vertex
-     * @param v1X
-     *            the x coordinate of the second triangle vertex
-     * @param v1Y
-     *            the y coordinate of the second triangle vertex
-     * @param v2X
-     *            the x coordinate of the third triangle vertex
-     * @param v2Y
-     *            the y coordinate of the third triangle vertex
-     * @param x
-     *            the x coordinate of the point to interpolate at
-     * @param y
-     *            the y coordinate of the point to interpolate at
-     * @param dest
-     *            will hold the interpolation factors <code>(t0, t1, t2)</code>
+     *
+     * @param v0X  the x coordinate of the first triangle vertex
+     * @param v0Y  the y coordinate of the first triangle vertex
+     * @param v1X  the x coordinate of the second triangle vertex
+     * @param v1Y  the y coordinate of the second triangle vertex
+     * @param v2X  the x coordinate of the third triangle vertex
+     * @param v2Y  the y coordinate of the third triangle vertex
+     * @param x    the x coordinate of the point to interpolate at
+     * @param y    the y coordinate of the point to interpolate at
+     * @param dest will hold the interpolation factors <code>(t0, t1, t2)</code>
      * @return dest
      */
     public static Vector3d interpolationFactorsTriangle(

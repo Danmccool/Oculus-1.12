@@ -27,36 +27,35 @@ import java.text.NumberFormat;
 
 /**
  * Internal class to detect features of the runtime.
- * 
+ *
  * @author Kai Burjack
  */
 public final class Runtime {
 
-//#ifndef __GWT__
+    //#ifndef __GWT__
     public static final boolean HAS_floatToRawIntBits = hasFloatToRawIntBits();
     public static final boolean HAS_doubleToRawLongBits = hasDoubleToRawLongBits();
     public static final boolean HAS_Long_rotateLeft = hasLongRotateLeft();
 
-//#ifdef __HAS_MATH_FMA__
+    //#ifdef __HAS_MATH_FMA__
     public static final boolean HAS_Math_fma = Options.USE_MATH_FMA && hasMathFma();
+
+    private Runtime() {
+    }
 
     private static boolean hasMathFma() {
         try {
-            java.lang.Math.class.getDeclaredMethod("fma", new Class[] { float.class, float.class, float.class });
+            java.lang.Math.class.getDeclaredMethod("fma", float.class, float.class, float.class);
             return true;
         } catch (NoSuchMethodException e) {
             return false;
         }
     }
 
-
-    private Runtime() {
-    }
-
-//#ifndef __GWT__
+    //#ifndef __GWT__
     private static boolean hasFloatToRawIntBits() {
         try {
-            Float.class.getDeclaredMethod("floatToRawIntBits", new Class[] { float.class });
+            Float.class.getDeclaredMethod("floatToRawIntBits", float.class);
             return true;
         } catch (NoSuchMethodException e) {
             return false;
@@ -65,7 +64,7 @@ public final class Runtime {
 
     private static boolean hasDoubleToRawLongBits() {
         try {
-            Double.class.getDeclaredMethod("doubleToRawLongBits", new Class[] { double.class });
+            Double.class.getDeclaredMethod("doubleToRawLongBits", double.class);
             return true;
         } catch (NoSuchMethodException e) {
             return false;
@@ -74,7 +73,7 @@ public final class Runtime {
 
     private static boolean hasLongRotateLeft() {
         try {
-            Long.class.getDeclaredMethod("rotateLeft", new Class[] { long.class, int.class });
+            Long.class.getDeclaredMethod("rotateLeft", long.class, int.class);
             return true;
         } catch (NoSuchMethodException e) {
             return false;
@@ -89,7 +88,8 @@ public final class Runtime {
 
         return floatToIntBits1_2(flt);
     }
-//#ifndef __GWT__
+
+    //#ifndef __GWT__
     private static int floatToIntBits1_3(float flt) {
         return Float.floatToRawIntBits(flt);
     }
@@ -105,7 +105,8 @@ public final class Runtime {
 
         return doubleToLongBits1_2(dbl);
     }
-//#ifndef __GWT__
+
+    //#ifndef __GWT__
     private static long doubleToLongBits1_3(double dbl) {
         return Double.doubleToRawLongBits(dbl);
     }

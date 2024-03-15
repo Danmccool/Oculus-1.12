@@ -1,11 +1,10 @@
 package net.coderbot.iris.mixin.vertices.block_rendering;
 
+import net.coderbot.iris.block_rendering.BlockRenderingSettings;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-
-import net.coderbot.iris.block_rendering.BlockRenderingSettings;
-import net.minecraft.client.multiplayer.ClientLevel;
 
 /**
  * Allows the vanilla directional shading effect to be fully disabled by shader packs. This is needed by many packs
@@ -13,12 +12,12 @@ import net.minecraft.client.multiplayer.ClientLevel;
  */
 @Mixin(ClientLevel.class)
 public class MixinClientLevel {
-	@ModifyVariable(method = "getShade", at = @At("HEAD"), argsOnly = true)
-	private boolean iris$maybeDisableDirectionalShading(boolean shaded) {
-		if (BlockRenderingSettings.INSTANCE.shouldDisableDirectionalShading()) {
-			return false;
-		} else {
-			return shaded;
-		}
-	}
+    @ModifyVariable(method = "getShade", at = @At("HEAD"), argsOnly = true)
+    private boolean iris$maybeDisableDirectionalShading(boolean shaded) {
+        if (BlockRenderingSettings.INSTANCE.shouldDisableDirectionalShading()) {
+            return false;
+        } else {
+            return shaded;
+        }
+    }
 }

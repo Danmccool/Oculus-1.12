@@ -15,60 +15,60 @@
  */
 package de.odysseus.ithaka.digraph.io.tgf;
 
+import de.odysseus.ithaka.digraph.Digraph;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.odysseus.ithaka.digraph.Digraph;
-
 public class TgfExporter {
-	private final String newline;
+    private final String newline;
 
-	public TgfExporter() {
-		this(System.getProperty("line.separator"));
-	}
+    public TgfExporter() {
+        this(System.getProperty("line.separator"));
+    }
 
-	public TgfExporter(String newline) {
-		this.newline = newline;
-	}
+    public TgfExporter(String newline) {
+        this.newline = newline;
+    }
 
-	public <V> void export(
-			TgfLabelProvider<V> provider,
-			Digraph<V> digraph,
-			Writer writer) throws IOException {
-		Map<V, Integer> index = new HashMap<>();
-		int n = 0;
+    public <V> void export(
+            TgfLabelProvider<V> provider,
+            Digraph<V> digraph,
+            Writer writer) throws IOException {
+        Map<V, Integer> index = new HashMap<>();
+        int n = 0;
 
-		for (V vertex : digraph.vertices()) {
-			n += 1;
-			index.put(vertex, n);
-			writer.write(String.valueOf(n));
-			String label = provider.getVertexLabel(vertex);
-			if (label != null) {
-				writer.write(' ');
-				writer.write(label);
-			}
-			writer.write(newline);
-		}
+        for (V vertex : digraph.vertices()) {
+            n += 1;
+            index.put(vertex, n);
+            writer.write(String.valueOf(n));
+            String label = provider.getVertexLabel(vertex);
+            if (label != null) {
+                writer.write(' ');
+                writer.write(label);
+            }
+            writer.write(newline);
+        }
 
-		writer.write('#');
-		writer.write(newline);
+        writer.write('#');
+        writer.write(newline);
 
-		for (V source : digraph.vertices()) {
-			for (V target : digraph.targets(source)) {
-				writer.write(String.valueOf(index.get(source)));
-				writer.write(' ');
-				writer.write(String.valueOf(index.get(target)));
-				String label = provider.getEdgeLabel(digraph.get(source, target).getAsInt());
-				if (label != null) {
-					writer.write(' ');
-					writer.write(label);
-				}
-				writer.write(newline);
-			}
-		}
+        for (V source : digraph.vertices()) {
+            for (V target : digraph.targets(source)) {
+                writer.write(String.valueOf(index.get(source)));
+                writer.write(' ');
+                writer.write(String.valueOf(index.get(target)));
+                String label = provider.getEdgeLabel(digraph.get(source, target).getAsInt());
+                if (label != null) {
+                    writer.write(' ');
+                    writer.write(label);
+                }
+                writer.write(newline);
+            }
+        }
 
-		writer.flush();
-	}
+        writer.flush();
+    }
 }

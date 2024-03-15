@@ -1,92 +1,91 @@
 package net.coderbot.iris.layer;
 
-import java.util.Objects;
-import java.util.Optional;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.coderbot.batchedentityrendering.impl.WrappableRenderType;
 import net.coderbot.iris.mixin.rendertype.RenderTypeAccessor;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class OuterWrappedRenderType extends RenderType implements WrappableRenderType {
-	private final RenderStateShard extra;
-	private final RenderType wrapped;
+    private final RenderStateShard extra;
+    private final RenderType wrapped;
 
-	private OuterWrappedRenderType(String name, RenderType wrapped, RenderStateShard extra) {
-		super(name, wrapped.format(), wrapped.mode(), wrapped.bufferSize(),
-			wrapped.affectsCrumbling(), shouldSortOnUpload(wrapped), wrapped::setupRenderState, wrapped::clearRenderState);
+    private OuterWrappedRenderType(String name, RenderType wrapped, RenderStateShard extra) {
+        super(name, wrapped.format(), wrapped.mode(), wrapped.bufferSize(),
+                wrapped.affectsCrumbling(), shouldSortOnUpload(wrapped), wrapped::setupRenderState, wrapped::clearRenderState);
 
-		this.extra = extra;
-		this.wrapped = wrapped;
-	}
+        this.extra = extra;
+        this.wrapped = wrapped;
+    }
 
-	public static OuterWrappedRenderType wrapExactlyOnce(String name, RenderType wrapped, RenderStateShard extra) {
-		if (wrapped instanceof OuterWrappedRenderType) {
-			wrapped = ((OuterWrappedRenderType) wrapped).unwrap();
-		}
+    public static OuterWrappedRenderType wrapExactlyOnce(String name, RenderType wrapped, RenderStateShard extra) {
+        if (wrapped instanceof OuterWrappedRenderType) {
+            wrapped = ((OuterWrappedRenderType) wrapped).unwrap();
+        }
 
-		return new OuterWrappedRenderType(name, wrapped, extra);
-	}
+        return new OuterWrappedRenderType(name, wrapped, extra);
+    }
 
-	@Override
-	public void setupRenderState() {
-		extra.setupRenderState();
+    private static boolean shouldSortOnUpload(RenderType type) {
+        return ((RenderTypeAccessor) type).shouldSortOnUpload();
+    }
 
-		super.setupRenderState();
-	}
+    @Override
+    public void setupRenderState() {
+        extra.setupRenderState();
 
-	@Override
-	public void clearRenderState() {
-		super.clearRenderState();
+        super.setupRenderState();
+    }
 
-		extra.clearRenderState();
-	}
+    @Override
+    public void clearRenderState() {
+        super.clearRenderState();
 
-	@Override
-	public RenderType unwrap() {
-		return this.wrapped;
-	}
+        extra.clearRenderState();
+    }
 
-	@Override
-	public Optional<RenderType> outline() {
-		return this.wrapped.outline();
-	}
+    @Override
+    public RenderType unwrap() {
+        return this.wrapped;
+    }
 
-	@Override
-	public boolean isOutline() {
-		return this.wrapped.isOutline();
-	}
+    @Override
+    public Optional<RenderType> outline() {
+        return this.wrapped.outline();
+    }
 
-	@Override
-	public boolean equals(@Nullable Object object) {
-		if (object == null) {
-			return false;
-		}
+    @Override
+    public boolean isOutline() {
+        return this.wrapped.isOutline();
+    }
 
-		if (object.getClass() != this.getClass()) {
-			return false;
-		}
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if (object == null) {
+            return false;
+        }
 
-		OuterWrappedRenderType other = (OuterWrappedRenderType) object;
+        if (object.getClass() != this.getClass()) {
+            return false;
+        }
 
-		return Objects.equals(this.wrapped, other.wrapped) && Objects.equals(this.extra, other.extra);
-	}
+        OuterWrappedRenderType other = (OuterWrappedRenderType) object;
 
-	@Override
-	public int hashCode() {
-		// Add one so that we don't have the exact same hash as the wrapped object.
-		// This means that we won't have a guaranteed collision if we're inserted to a map alongside the unwrapped object.
-		return this.wrapped.hashCode() + 1;
-	}
+        return Objects.equals(this.wrapped, other.wrapped) && Objects.equals(this.extra, other.extra);
+    }
 
-	@Override
-	public String toString() {
-		return "iris_wrapped:" + this.wrapped.toString();
-	}
+    @Override
+    public int hashCode() {
+        // Add one so that we don't have the exact same hash as the wrapped object.
+        // This means that we won't have a guaranteed collision if we're inserted to a map alongside the unwrapped object.
+        return this.wrapped.hashCode() + 1;
+    }
 
-	private static boolean shouldSortOnUpload(RenderType type) {
-		return ((RenderTypeAccessor) type).shouldSortOnUpload();
-	}
+    @Override
+    public String toString() {
+        return "iris_wrapped:" + this.wrapped.toString();
+    }
 }

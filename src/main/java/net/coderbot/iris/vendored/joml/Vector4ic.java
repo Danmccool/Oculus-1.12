@@ -30,7 +30,7 @@ import java.nio.IntBuffer;
 
 /**
  * Interface to a read-only view of a 4-dimensional vector of integers.
- * 
+ *
  * @author Kai Burjack
  */
 public interface Vector4ic {
@@ -66,11 +66,9 @@ public interface Vector4ic {
      * stored, use {@link #get(int, IntBuffer)}, taking the absolute position as
      * parameter.
      *
-     * @see #get(int, IntBuffer)
-     *
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z, w</code> order
+     * @param buffer will receive the values of this vector in <code>x, y, z, w</code> order
      * @return the passed in buffer
+     * @see #get(int, IntBuffer)
      */
     IntBuffer get(IntBuffer buffer);
 
@@ -80,10 +78,8 @@ public interface Vector4ic {
      * <p>
      * This method will not increment the position of the given IntBuffer.
      *
-     * @param index
-     *          the absolute position into the IntBuffer
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z, w</code> order
+     * @param index  the absolute position into the IntBuffer
+     * @param buffer will receive the values of this vector in <code>x, y, z, w</code> order
      * @return the passed in buffer
      */
     IntBuffer get(int index, IntBuffer buffer);
@@ -98,11 +94,9 @@ public interface Vector4ic {
      * stored, use {@link #get(int, ByteBuffer)}, taking the absolute position
      * as parameter.
      *
-     * @see #get(int, ByteBuffer)
-     *
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z, w</code> order
+     * @param buffer will receive the values of this vector in <code>x, y, z, w</code> order
      * @return the passed in buffer
+     * @see #get(int, ByteBuffer)
      */
     ByteBuffer get(ByteBuffer buffer);
 
@@ -112,10 +106,8 @@ public interface Vector4ic {
      * <p>
      * This method will not increment the position of the given ByteBuffer.
      *
-     * @param index
-     *          the absolute position into the ByteBuffer
-     * @param buffer
-     *          will receive the values of this vector in <code>x, y, z, w</code> order
+     * @param index  the absolute position into the ByteBuffer
+     * @param buffer will receive the values of this vector in <code>x, y, z, w</code> order
      * @return the passed in buffer
      */
     ByteBuffer get(int index, ByteBuffer buffer);
@@ -125,10 +117,8 @@ public interface Vector4ic {
      * Subtract the supplied vector from this one and store the result in
      * <code>dest</code>.
      *
-     * @param v
-     *          the vector to subtract from <code>this</code>
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to subtract from <code>this</code>
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i sub(Vector4ic v, Vector4i dest);
@@ -137,16 +127,11 @@ public interface Vector4ic {
      * Subtract <code>(x, y, z, w)</code> from this and store the result in
      * <code>dest</code>.
      *
-     * @param x
-     *          the x component to subtract
-     * @param y
-     *          the y component to subtract
-     * @param z
-     *          the z component to subtract
-     * @param w
-     *          the w component to subtract
-     * @param dest
-     *          will hold the result
+     * @param x    the x component to subtract
+     * @param y    the y component to subtract
+     * @param z    the z component to subtract
+     * @param w    the w component to subtract
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i sub(int x, int y, int z, int w, Vector4i dest);
@@ -155,10 +140,8 @@ public interface Vector4ic {
      * Add the supplied vector to this one and store the result in
      * <code>dest</code>.
      *
-     * @param v
-     *          the vector to add
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to add
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i add(Vector4ic v, Vector4i dest);
@@ -167,16 +150,11 @@ public interface Vector4ic {
      * Increment the components of this vector by the given values and store the
      * result in <code>dest</code>.
      *
-     * @param x
-     *          the x component to add
-     * @param y
-     *          the y component to add
-     * @param z
-     *          the z component to add
-     * @param w
-     *          the w component to add
-     * @param dest
-     *          will hold the result
+     * @param x    the x component to add
+     * @param y    the y component to add
+     * @param z    the z component to add
+     * @param w    the w component to add
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i add(int x, int y, int z, int w, Vector4i dest);
@@ -185,10 +163,8 @@ public interface Vector4ic {
      * Multiply this Vector4i component-wise by another Vector4ic and store the
      * result in <code>dest</code>.
      *
-     * @param v
-     *          the other vector
-     * @param dest
-     *          will hold the result
+     * @param v    the other vector
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i mul(Vector4ic v, Vector4i dest);
@@ -197,10 +173,8 @@ public interface Vector4ic {
      * Divide this Vector4i component-wise by another Vector4ic and store the
      * result in <code>dest</code>.
      *
-     * @param v
-     *          the vector to divide by
-     * @param dest
-     *          will hold the result
+     * @param v    the vector to divide by
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i div(Vector4ic v, Vector4i dest);
@@ -209,10 +183,8 @@ public interface Vector4ic {
      * Multiply all components of this {@link Vector4i} by the given scalar
      * value and store the result in <code>dest</code>.
      *
-     * @param scalar
-     *          the scalar to multiply by
-     * @param dest
-     *          will hold the result
+     * @param scalar the scalar to multiply by
+     * @param dest   will hold the result
      * @return dest
      */
     Vector4i mul(int scalar, Vector4i dest);
@@ -221,10 +193,8 @@ public interface Vector4ic {
      * Divide all components of this {@link Vector4i} by the given scalar value
      * and store the result in <code>dest</code>.
      *
-     * @param scalar
-     *          the scalar to divide by
-     * @param dest
-     *          will hold the result
+     * @param scalar the scalar to divide by
+     * @param dest   will hold the result
      * @return dest
      */
     Vector4i div(float scalar, Vector4i dest);
@@ -233,10 +203,8 @@ public interface Vector4ic {
      * Divide all components of this {@link Vector4i} by the given scalar value
      * and store the result in <code>dest</code>.
      *
-     * @param scalar
-     *          the scalar to divide by
-     * @param dest
-     *          will hold the result
+     * @param scalar the scalar to divide by
+     * @param dest   will hold the result
      * @return dest
      */
     Vector4i div(int scalar, Vector4i dest);
@@ -258,8 +226,7 @@ public interface Vector4ic {
     /**
      * Return the distance between this Vector and <code>v</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the distance
      */
     double distance(Vector4ic v);
@@ -267,14 +234,10 @@ public interface Vector4ic {
     /**
      * Return the distance between <code>this</code> vector and <code>(x, y, z, w)</code>.
      *
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
-     * @param w
-     *          the w component of the other vector
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
+     * @param w the w component of the other vector
      * @return the euclidean distance
      */
     double distance(int x, int y, int z, int w);
@@ -283,8 +246,7 @@ public interface Vector4ic {
      * Return the grid distance in between (aka 1-Norm, Minkowski or Manhattan distance)
      * <code>(x, y)</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the grid distance
      */
     long gridDistance(Vector4ic v);
@@ -293,14 +255,10 @@ public interface Vector4ic {
      * Return the grid distance in between (aka 1-Norm, Minkowski or Manhattan distance)
      * <code>(x, y)</code>.
      *
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
-     * @param w
-     *          the w component of the other vector
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
+     * @param w the w component of the other vector
      * @return the grid distance
      */
     long gridDistance(int x, int y, int z, int w);
@@ -308,8 +266,7 @@ public interface Vector4ic {
     /**
      * Return the square of the distance between this vector and <code>v</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the squared of the distance
      */
     int distanceSquared(Vector4ic v);
@@ -318,14 +275,10 @@ public interface Vector4ic {
      * Return the square of the distance between <code>this</code> vector and
      * <code>(x, y, z, w)</code>.
      *
-     * @param x
-     *          the x component of the other vector
-     * @param y
-     *          the y component of the other vector
-     * @param z
-     *          the z component of the other vector
-     * @param w
-     *          the w component of the other vector
+     * @param x the x component of the other vector
+     * @param y the y component of the other vector
+     * @param z the z component of the other vector
+     * @param w the w component of the other vector
      * @return the square of the distance
      */
     int distanceSquared(int x, int y, int z, int w);
@@ -333,8 +286,7 @@ public interface Vector4ic {
     /**
      * Compute the dot product (inner product) of this vector and <code>v</code>.
      *
-     * @param v
-     *          the other vector
+     * @param v the other vector
      * @return the dot product
      */
     int dot(Vector4ic v);
@@ -342,8 +294,7 @@ public interface Vector4ic {
     /**
      * Negate this vector and store the result in <code>dest</code>.
      *
-     * @param dest
-     *          will hold the result
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i negate(Vector4i dest);
@@ -351,10 +302,8 @@ public interface Vector4ic {
     /**
      * Set the components of <code>dest</code> to be the component-wise minimum of this and the other vector.
      *
-     * @param v
-     *          the other vector
-     * @param dest
-     *          will hold the result
+     * @param v    the other vector
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i min(Vector4ic v, Vector4i dest);
@@ -362,19 +311,16 @@ public interface Vector4ic {
     /**
      * Set the components of <code>dest</code> to be the component-wise maximum of this and the other vector.
      *
-     * @param v
-     *          the other vector
-     * @param dest
-     *          will hold the result
+     * @param v    the other vector
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i max(Vector4ic v, Vector4i dest);
 
     /**
      * Get the value of the specified component of this vector.
-     * 
-     * @param component
-     *          the component, within <code>[0..3]</code>
+     *
+     * @param component the component, within <code>[0..3]</code>
      * @return the value
      * @throws IllegalArgumentException if <code>component</code> is not within <code>[0..3]</code>
      */
@@ -382,14 +328,14 @@ public interface Vector4ic {
 
     /**
      * Determine the component with the biggest absolute value.
-     * 
+     *
      * @return the component index, within <code>[0..3]</code>
      */
     int maxComponent();
 
     /**
      * Determine the component with the smallest (towards zero) absolute value.
-     * 
+     *
      * @return the component index, within <code>[0..3]</code>
      */
     int minComponent();
@@ -397,9 +343,8 @@ public interface Vector4ic {
     /**
      * Compute the absolute of each of this vector's components
      * and store the result into <code>dest</code>.
-     * 
-     * @param dest
-     *          will hold the result
+     *
+     * @param dest will hold the result
      * @return dest
      */
     Vector4i absolute(Vector4i dest);
@@ -408,14 +353,10 @@ public interface Vector4ic {
      * Compare the vector components of <code>this</code> vector with the given <code>(x, y, z, w)</code>
      * and return whether all of them are equal.
      *
-     * @param x
-     *          the x component to compare to
-     * @param y
-     *          the y component to compare to
-     * @param z
-     *          the z component to compare to
-     * @param w
-     *          the w component to compare to
+     * @param x the x component to compare to
+     * @param y the y component to compare to
+     * @param z the z component to compare to
+     * @param w the w component to compare to
      * @return <code>true</code> if all the vector components are equal
      */
     boolean equals(int x, int y, int z, int w);

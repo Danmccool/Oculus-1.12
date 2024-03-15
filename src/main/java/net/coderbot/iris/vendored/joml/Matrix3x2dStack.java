@@ -34,7 +34,7 @@ import java.io.ObjectOutput;
  * {@link Matrix3x2dStack}/{@link Matrix3x2d} itself. This affects all operations in {@link Matrix3x2d} that take
  * another {@link Matrix3x2d} as parameter. If a {@link Matrix3x2dStack} is used as argument to those methods, the
  * effective argument will always be the <i>current</i> matrix of the matrix stack.
- * 
+ *
  * @author Kai Burjack
  */
 public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
@@ -55,10 +55,9 @@ public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
      * Create a new {@link Matrix3x2dStack} of the given size.
      * <p>
      * Initially the stack pointer is at zero and the current matrix is set to identity.
-     * 
-     * @param stackSize
-     *            the size of the stack. This must be at least 1, in which case the {@link Matrix3x2dStack} simply only consists of <code>this</code>
-     *            {@link Matrix3x2d}
+     *
+     * @param stackSize the size of the stack. This must be at least 1, in which case the {@link Matrix3x2dStack} simply only consists of <code>this</code>
+     *                  {@link Matrix3x2d}
      */
     public Matrix3x2dStack(int stackSize) {
         if (stackSize < 1) {
@@ -74,7 +73,7 @@ public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
     /**
      * Do not invoke manually! Only meant for serialization.
      * <p>
-     * Invoking this constructor from client code will result in an inconsistent state of the 
+     * Invoking this constructor from client code will result in an inconsistent state of the
      * created {@link Matrix3x2dStack} instance.
      */
     public Matrix3x2dStack() {
@@ -83,7 +82,7 @@ public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
 
     /**
      * Set the stack pointer to zero and set the current/bottom matrix to {@link #identity() identity}.
-     * 
+     *
      * @return this
      */
     public Matrix3x2dStack clear() {
@@ -94,7 +93,7 @@ public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
 
     /**
      * Increment the stack pointer by one and set the values of the new current matrix to the one directly below it.
-     * 
+     *
      * @return this
      */
     public Matrix3x2dStack pushMatrix() {
@@ -109,7 +108,7 @@ public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
      * Decrement the stack pointer by one.
      * <p>
      * This will effectively dispose of the current matrix.
-     * 
+     *
      * @return this
      */
     public Matrix3x2dStack popMatrix() {
@@ -132,7 +131,7 @@ public class Matrix3x2dStack extends Matrix3x2d implements Cloneable {
 
     /*
      * Contract between Matrix3x2d and Matrix3x2dStack:
-     * 
+     *
      * - Matrix3x2d.equals(Matrix3x2dStack) is true iff all the 6 matrix elements are equal
      * - Matrix3x2dStack.equals(Matrix3x2d) is true iff all the 6 matrix elements are equal
      * - Matrix3x2dStack.equals(Matrix3x2dStack) is true iff all 6 matrix elements are equal AND the matrix arrays as well as the stack pointer are equal
