@@ -1,43 +1,43 @@
 package net.coderbot.iris.mixin;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 
 @Mixin(GlStateManager.class)
 public interface GlStateManagerAccessor {
-    @Accessor("activeTexture")
+    @Accessor("activeTextureUnit")
     static int getActiveTexture() {
         throw new AssertionError();
     }
 
-    @Accessor("ALPHA_TEST")
+    @Accessor("alphaState")
     static GlStateManager.AlphaState getALPHA_TEST() {
         throw new UnsupportedOperationException("Not accessed");
     }
 
-    @Accessor("BLEND")
+    @Accessor("blendState")
     static GlStateManager.BlendState getBLEND() {
         throw new UnsupportedOperationException("Not accessed");
     }
 
-    @Accessor("COLOR_MASK")
+    @Accessor("colorMaskState")
     static GlStateManager.ColorMask getCOLOR_MASK() {
         throw new UnsupportedOperationException("Not accessed");
     }
 
-    @Accessor("DEPTH")
+    @Accessor("depthState")
     static GlStateManager.DepthState getDEPTH() {
         throw new UnsupportedOperationException("Not accessed");
     }
 
-    @Accessor("FOG")
+    @Accessor("fogState")
     static GlStateManager.FogState getFOG() {
         throw new UnsupportedOperationException("Not accessed");
     }
 
-    @Accessor("TEXTURES")
+    @Accessor("textureState")
     static GlStateManager.TextureState[] getTEXTURES() {
         throw new UnsupportedOperationException("Not accessed");
     }

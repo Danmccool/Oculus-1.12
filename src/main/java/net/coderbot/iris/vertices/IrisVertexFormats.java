@@ -1,9 +1,10 @@
 package net.coderbot.iris.vertices;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.renderer.vertex.VertexFormatElement;
+import net.minecraftforge.common.ForgeHooks;
 
 public class IrisVertexFormats {
     public static final VertexFormatElement ENTITY_ELEMENT;
@@ -15,15 +16,17 @@ public class IrisVertexFormats {
     public static final VertexFormat ENTITY;
 
     static {
-        ENTITY_ELEMENT = new VertexFormatElement(11, VertexFormatElement.Type.SHORT, VertexFormatElement.Usage.GENERIC, 2);
-        MID_TEXTURE_ELEMENT = new VertexFormatElement(12, VertexFormatElement.Type.FLOAT, VertexFormatElement.Usage.GENERIC, 2);
-        TANGENT_ELEMENT = new VertexFormatElement(13, VertexFormatElement.Type.BYTE, VertexFormatElement.Usage.GENERIC, 4);
-        MID_BLOCK_ELEMENT = new VertexFormatElement(14, VertexFormatElement.Type.BYTE, VertexFormatElement.Usage.GENERIC, 3);
+        ENTITY_ELEMENT = new VertexFormatElement(11, VertexFormatElement.EnumType.SHORT, VertexFormatElement.EnumUsage.GENERIC, 2);
+        MID_TEXTURE_ELEMENT = new VertexFormatElement(12, VertexFormatElement.EnumType.FLOAT, VertexFormatElement.EnumUsage.GENERIC, 2);
+        TANGENT_ELEMENT = new VertexFormatElement(13, VertexFormatElement.EnumType.BYTE, VertexFormatElement.EnumUsage.GENERIC, 4);
+        MID_BLOCK_ELEMENT = new VertexFormatElement(14, VertexFormatElement.EnumType.BYTE, VertexFormatElement.EnumUsage.GENERIC, 3);
 
         ImmutableList.Builder<VertexFormatElement> terrainElements = ImmutableList.builder();
         ImmutableList.Builder<VertexFormatElement> entityElements = ImmutableList.builder();
 
-        terrainElements.add(DefaultVertexFormat.ELEMENT_POSITION); // 12
+
+
+        terrainElements.add(DefaultVertexFormats.ELEMENT_POSITION); // 12
         terrainElements.add(DefaultVertexFormat.ELEMENT_COLOR); // 16
         terrainElements.add(DefaultVertexFormat.ELEMENT_UV0); // 24
         terrainElements.add(DefaultVertexFormat.ELEMENT_UV2); // 28

@@ -1,7 +1,6 @@
 package net.coderbot.iris;
 
 import com.google.common.base.Throwables;
-import com.mojang.blaze3d.platform.GlDebug;
 import io.github.singlerr.TextComponentExtension;
 import lombok.experimental.ExtensionMethod;
 import net.coderbot.iris.config.IrisConfig;
@@ -23,26 +22,27 @@ import net.coderbot.iris.shaderpack.option.Profile;
 import net.coderbot.iris.shaderpack.option.values.MutableOptionValues;
 import net.coderbot.iris.shaderpack.option.values.OptionValues;
 import net.coderbot.iris.texture.pbr.PBRTextureManager;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,9 +93,8 @@ public class Iris {
     // Wrapped in try-catch due to early initializing class
     public Iris() {
         try {
-            MinecraftForge.EVENT_BUS.addListener(this::onKeyInput);
-
-            ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+            MinecraftForge.EVENT_BUS.register(this);
+            //ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
         } catch (Exception ignored) {
         }
     }
@@ -353,8 +352,7 @@ public class Iris {
         if (enable) {
             success = GLDebug.setupDebugMessageCallback();
         } else {
-            GLDebug
-                    GlDebug.enableDebugCallback(Minecraft.getMinecraft().gameSettings.showDebugInfo, false);
+            //GlDebug.enableDebugCallback(Minecraft.getMinecraft().gameSettings.showDebugInfo, false);
             success = 1;
         }
 
@@ -545,7 +543,7 @@ public class Iris {
         WorldClient level = Minecraft.getMinecraft().world;
 
         if (level != null) {
-            return new NamespacedId(level.dimension().location().getNamespace(), level.dimension().location().getPath());
+            return new NamespacedId(level.provider.getDimensionType().getName(), level.provider.getDimensionType().getSuffix());
         } else {
             // This prevents us from reloading the shaderpack unless we need to. Otherwise, if the player is in the
             // nether and quits the game, we might end up reloading the shaders on exit and on entry to the level
@@ -608,18 +606,18 @@ public class Iris {
     }
 
     public static String getFormattedVersion() {
-        ChatFormatting color;
+        TextFormatting color;
         String version = getVersion();
 
         if (version.endsWith("-development-environment")) {
-            color = ChatFormatting.GOLD;
+            color = TextFormatting.GOLD;
             version = version.replace("-development-environment", " (Development Environment)");
         } else if (version.endsWith("-dirty") || version.contains("unknown") || version.endsWith("-nogit")) {
-            color = ChatFormatting.RED;
+            color = TextFormatting.RED;
         } else if (version.contains("+rev.")) {
-            color = ChatFormatting.LIGHT_PURPLE;
+            color = TextFormatting.LIGHT_PURPLE;
         } else {
-            color = ChatFormatting.GREEN;
+            color = TextFormatting.GREEN;
         }
 
         return color + version;
@@ -631,7 +629,7 @@ public class Iris {
 
     public static Path getShaderpacksDirectory() {
         if (shaderpacksDirectory == null) {
-            shaderpacksDirectory = FMLPaths.GAMEDIR.get().resolve("shaderpacks");
+            shaderpacksDirectory = Launch.minecraftHome.toPath().resolve("shaderpacks");
         }
 
         return shaderpacksDirectory;
@@ -688,6 +686,7 @@ public class Iris {
         ClientRegistry.registerKeyBinding(shaderpackScreenKeybind);
     }
 
+    @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         handleKeybinds(Minecraft.getMinecraft());
     }

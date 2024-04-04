@@ -1,7 +1,7 @@
 package net.coderbot.iris.gl.blending;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.coderbot.iris.mixin.GlStateManagerAccessor;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class DepthColorStorage {
     private static boolean originalDepthEnable;
@@ -17,15 +17,14 @@ public class DepthColorStorage {
             // Only save the previous state if the depth and color mask wasn't already locked
             GlStateManager.ColorMask colorMask = GlStateManagerAccessor.getCOLOR_MASK();
             GlStateManager.DepthState depthState = GlStateManagerAccessor.getDEPTH();
-
-            originalDepthEnable = depthState.mask;
+            originalDepthEnable = depthState.maskEnabled;
             originalColor = new ColorMask(colorMask.red, colorMask.green, colorMask.blue, colorMask.alpha);
         }
 
         depthColorLocked = false;
 
-        GlStateManager._depthMask(false);
-        GlStateManager._colorMask(false, false, false, false);
+        GlStateManager.depthMask(false);
+        GlStateManager.colorMask(false, false, false, false);
 
         depthColorLocked = true;
     }
@@ -46,11 +45,11 @@ public class DepthColorStorage {
         depthColorLocked = false;
 
         if (originalDepthEnable) {
-            GlStateManager._depthMask(true);
+            GlStateManager.depthMask(true);
         } else {
-            GlStateManager._depthMask(false);
+            GlStateManager.depthMask(false);
         }
 
-        GlStateManager._colorMask(originalColor.isRedMasked(), originalColor.isGreenMasked(), originalColor.isBlueMasked(), originalColor.isAlphaMasked());
+        GlStateManager.colorMask(originalColor.isRedMasked(), originalColor.isGreenMasked(), originalColor.isBlueMasked(), originalColor.isAlphaMasked());
     }
 }

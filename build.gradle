@@ -24,8 +24,7 @@ minecraft {
 	mcpMappingChannel = mappings_channel
 	mcpMappingVersion = mappings_version
 	injectedTags.put("MOD_VERSION", mod_version)
-	injectedTags.put("MOD_NAME", "Occulus")
-
+	injectedTags.put("MOD_NAME", "Oculus")
 }
 
 tasks.injectTags.outputClassName.set("${mod_base_package}.Tags")

@@ -2,7 +2,6 @@ package net.coderbot.iris.gl.program;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.coderbot.iris.gl.IrisRenderSystem;
 import net.coderbot.iris.gl.sampler.SamplerBinding;
@@ -11,7 +10,10 @@ import net.coderbot.iris.gl.sampler.SamplerLimits;
 import net.coderbot.iris.gl.state.ValueUpdateNotifier;
 import net.coderbot.iris.mixin.GlStateManagerAccessor;
 import net.coderbot.iris.shaderpack.PackRenderTargetDirectives;
-import org.lwjgl.opengl.GL20C;
+import net.minecraft.client.renderer.OpenGlHelper;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +73,7 @@ public class ProgramSamplers {
             samplerBinding.update();
         }
 
-        RenderSystem.activeTexture(GL20C.GL_TEXTURE0 + activeTexture);
+        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0 + activeTexture);
     }
 
     public void removeListeners() {

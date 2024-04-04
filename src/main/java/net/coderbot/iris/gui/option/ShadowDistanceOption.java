@@ -2,6 +2,8 @@ package net.coderbot.iris.gui.option;
 
 import net.minecraft.client.Options;
 import net.minecraft.client.ProgressOption;
+import net.minecraft.client.gui.GuiOptionSlider;
+import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 

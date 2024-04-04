@@ -5,8 +5,11 @@ package net.coderbot.iris.gl.shader;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.coderbot.iris.gl.GLDebug;
 import net.coderbot.iris.gl.IrisRenderSystem;
+import net.minecraft.client.renderer.OpenGlHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL20C;
 import org.lwjgl.opengl.KHRDebug;
 
@@ -14,7 +17,7 @@ public class ProgramCreator {
     private static final Logger LOGGER = LogManager.getLogger(ProgramCreator.class);
 
     public static int create(String name, GlShader... shaders) {
-        int program = GlStateManager.glCreateProgram();
+        int program = OpenGlHelper.glCreateProgram();
 
         // TODO: This is *really* hardcoded, we need to refactor this to support external calls
         // to glBindAttribLocation
@@ -24,10 +27,10 @@ public class ProgramCreator {
         IrisRenderSystem.bindAttributeLocation(program, 14, "at_midBlock");
 
         for (GlShader shader : shaders) {
-            GlStateManager.glAttachShader(program, shader.getHandle());
+            OpenGlHelper.glAttachShader(program, shader.getHandle());
         }
 
-        GlStateManager.glLinkProgram(program);
+        OpenGlHelper.glLinkProgram(program);
 
         GLDebug.nameObject(KHRDebug.GL_PROGRAM, program, name);
 
@@ -42,9 +45,9 @@ public class ProgramCreator {
             LOGGER.warn("Program link log for " + name + ": " + log);
         }
 
-        int result = GlStateManager.glGetProgrami(program, GL20C.GL_LINK_STATUS);
+        int result = OpenGlHelper.glGetProgrami(program, GL20.GL_LINK_STATUS);
 
-        if (result != GL20C.GL_TRUE) {
+        if (result != GL11.GL_TRUE) {
             throw new RuntimeException("Shader program linking failed, see log for details");
         }
 

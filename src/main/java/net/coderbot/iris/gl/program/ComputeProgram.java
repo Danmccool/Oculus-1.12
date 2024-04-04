@@ -1,14 +1,15 @@
 package net.coderbot.iris.gl.program;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.shaders.ProgramManager;
+
 import net.coderbot.iris.Iris;
 import net.coderbot.iris.gl.GlResource;
 import net.coderbot.iris.gl.IrisRenderSystem;
 import net.coderbot.iris.pipeline.WorldRenderingPipeline;
 import net.coderbot.iris.vendored.joml.Vector2f;
 import net.coderbot.iris.vendored.joml.Vector3i;
-import org.lwjgl.opengl.GL43C;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import org.lwjgl.opengl.GL43;
 
 public final class ComputeProgram extends GlResource {
     private final ProgramUniforms uniforms;
@@ -25,7 +26,7 @@ public final class ComputeProgram extends GlResource {
         super(program);
 
         localSize = new int[3];
-        IrisRenderSystem.getProgramiv(program, GL43C.GL_COMPUTE_WORK_GROUP_SIZE, localSize);
+        IrisRenderSystem.getProgramiv(program, GL43.GL_COMPUTE_WORK_GROUP_SIZE, localSize);
         this.uniforms = uniforms;
         this.samplers = samplers;
         this.images = images;
@@ -33,7 +34,7 @@ public final class ComputeProgram extends GlResource {
 
     public static void unbind() {
         ProgramUniforms.clearActiveUniforms();
-        ProgramManager.glUseProgram(0);
+        OpenGlHelper.glUseProgram(0);
     }
 
     public void setWorkGroupInfo(Vector2f relativeWorkGroups, Vector3i absoluteWorkGroups) {
@@ -60,7 +61,7 @@ public final class ComputeProgram extends GlResource {
     }
 
     public void use() {
-        ProgramManager.glUseProgram(getGlId());
+        OpenGlHelper.glUseProgram(getGlId());
 
         uniforms.update();
         samplers.update();
@@ -68,7 +69,7 @@ public final class ComputeProgram extends GlResource {
     }
 
     public void dispatch(float width, float height) {
-        ProgramManager.glUseProgram(getGlId());
+        OpenGlHelper.glUseProgram(getGlId());
         uniforms.update();
         samplers.update();
         images.update();
@@ -81,7 +82,7 @@ public final class ComputeProgram extends GlResource {
     }
 
     public void destroyInternal() {
-        GlStateManager.glDeleteProgram(getGlId());
+        OpenGlHelper.glDeleteProgram(getGlId());
     }
 
     /**
