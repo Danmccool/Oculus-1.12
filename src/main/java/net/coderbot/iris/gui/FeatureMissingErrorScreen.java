@@ -1,6 +1,7 @@
 package net.coderbot.iris.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.ErrorScreen;
@@ -8,10 +9,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.util.text.ITextComponent;
 
-public class FeatureMissingErrorScreen extends Screen {
-    private final Screen parent;
-    private final FormattedText messageTemp;
+public class FeatureMissingErrorScreen extends GuiScreen {
+    private final GuiScreen parent;
+    private final ITextComponent messageTemp;
     private MultiLineLabel message;
 
     public FeatureMissingErrorScreen(Screen parent, Component title, Component message) {
